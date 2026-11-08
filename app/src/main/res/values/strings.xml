@@ -157,6 +157,84 @@
     <string name="label_percent">%1$d%%</string>
     <string name="msg_settings_saved">Configuración guardada</string>
 
+    <!-- Splash, biometría y recuperación -->
+    <string name="splash_loading">Cargando…</string>
+    <string name="btn_biometric">Ingresar con huella</string>
+    <string name="cd_fingerprint">Huella digital</string>
+    <string name="biometric_title">Ingreso con biometría</string>
+    <string name="biometric_subtitle">Usa tu huella o rostro para ingresar a TechNova</string>
+    <string name="biometric_unavailable">Este dispositivo no tiene biometría configurada</string>
+    <string name="biometric_failed">No se reconoció la huella. Intenta de nuevo.</string>
+    <string name="txt_forgot_password">¿Olvidaste tu contraseña?</string>
+    <string name="forgot_title">Recuperar contraseña</string>
+    <string name="forgot_subtitle">Escribe el correo con el que te registraste y te enviaremos un enlace para crear una nueva contraseña.</string>
+    <string name="btn_send_link">Enviar enlace</string>
+    <string name="forgot_sent_title">Revisa tu correo</string>
+    <string name="forgot_sent_msg">Enviamos un enlace de recuperación a %1$s. El enlace vence en 30 minutos.</string>
+    <string name="btn_back_login">Volver al inicio de sesión</string>
+    <string name="btn_resend">Reenviar enlace</string>
+
+    <!-- Inicio del comprador -->
+    <string name="nav_catalog">Catálogo</string>
+    <string name="home_greeting">Hola, Laura</string>
+    <string name="home_subtitle">Descubre lo último en tecnología</string>
+    <string name="promo_tag">Oferta de la semana</string>
+    <string name="promo_title">Hasta 30% en smartwatches</string>
+    <string name="promo_button">Ver ofertas</string>
+    <string name="section_best_sellers">Más vendidos</string>
+    <string name="btn_see_all">Ver todo</string>
+
+    <!-- Pasarela de pago -->
+    <string name="hint_card_number">Número de tarjeta</string>
+    <string name="hint_card_name">Nombre en la tarjeta</string>
+    <string name="hint_card_expiry">MM/AA</string>
+    <string name="hint_card_cvv">CVV</string>
+    <string name="card_preview_number">•••• •••• •••• ••••</string>
+    <string name="card_preview_name">NOMBRE APELLIDO</string>
+    <string name="card_preview_expiry">MM/AA</string>
+    <string name="hint_bank">Banco</string>
+    <string name="hint_nequi_phone">Celular Nequi</string>
+    <string name="cash_info">Pagas en efectivo al recibir tu pedido. Ten el valor exacto.</string>
+    <string name="secure_payment">Pago seguro cifrado · PCI-DSS</string>
+    <string name="processing_payment">Procesando pago…</string>
+    <string name="err_card_number">Número de tarjeta inválido</string>
+
+    <!-- Vendedor: perfil -->
+    <string name="seller_store_name">Tienda Samuel Tech</string>
+    <string name="seller_email">samuel.ortiz@technova.co</string>
+    <string name="seller_rating">4,8</string>
+    <string name="label_rating_title">Calificación</string>
+    <string name="label_products_title">Productos</string>
+    <string name="label_sales_title">Ventas</string>
+    <string name="seller_store_data">Datos de la tienda</string>
+    <string name="seller_payout">Cuenta para recibir pagos</string>
+    <string name="seller_notifications">Notificaciones</string>
+    <string name="seller_help">Ayuda y soporte</string>
+
+    <!-- Administrador: usuarios, productos y reportes -->
+    <string name="nav_dashboard">Inicio</string>
+    <string name="nav_reports">Reportes</string>
+    <string name="nav_settings_short">Ajustes</string>
+    <string name="section_all_products">Productos de la tienda</string>
+    <string name="user_form_new">Nuevo usuario</string>
+    <string name="user_form_edit">Editar usuario</string>
+    <string name="hint_role">Rol</string>
+    <string name="label_user_active">Cuenta activa</string>
+    <string name="msg_user_saved">Usuario guardado</string>
+    <string name="msg_user_deleted">Usuario eliminado</string>
+    <string name="delete_user_confirm">¿Eliminar a %1$s?</string>
+    <string name="reports_title">Reporte de ventas</string>
+    <string name="period_week">Semana</string>
+    <string name="period_month">Mes</string>
+    <string name="period_year">Año</string>
+    <string name="stat_total_sales">Ventas totales</string>
+    <string name="stat_orders">Pedidos</string>
+    <string name="stat_avg_ticket">Ticket promedio</string>
+    <string name="section_sales_chart">Ventas por período</string>
+    <string name="section_top_products">Productos más vendidos</string>
+    <string name="label_units_sold">%1$d unidades</string>
+    <string name="btn_export_report">Exportar reporte (PDF)</string>
+
     <plurals name="label_products_count">
         <item quantity="one">%1$d producto</item>
         <item quantity="other">%1$d productos</item>

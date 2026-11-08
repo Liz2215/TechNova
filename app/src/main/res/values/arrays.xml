@@ -21,4 +21,28 @@
         <item>@string/status_shipped</item>
         <item>@string/status_delivered</item>
     </string-array>
+    <string-array name="month_weeks">
+        <item>Sem 1</item>
+        <item>Sem 2</item>
+        <item>Sem 3</item>
+        <item>Sem 4</item>
+    </string-array>
+    <string-array name="year_quarters">
+        <item>Trim 1</item>
+        <item>Trim 2</item>
+        <item>Trim 3</item>
+        <item>Trim 4</item>
+    </string-array>
+    <string-array name="banks">
+        <item>Bancolombia</item>
+        <item>Davivienda</item>
+        <item>Banco de Bogotá</item>
+        <item>BBVA</item>
+        <item>Nu Colombia</item>
+    </string-array>
+    <string-array name="user_roles">
+        <item>@string/role_buyer</item>
+        <item>@string/role_seller</item>
+        <item>@string/role_admin</item>
+    </string-array>
 </resources>

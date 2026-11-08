@@ -26,6 +26,12 @@
     <dimen name="product_thumb">64dp</dimen>
     <dimen name="product_image_grid">110dp</dimen>
     <dimen name="product_image_detail">240dp</dimen>
+    <dimen name="logo_size_small">56dp</dimen>
+    <dimen name="splash_logo">128dp</dimen>
+    <dimen name="credit_card_height">180dp</dimen>
+    <dimen name="promo_height">184dp</dimen>
+    <dimen name="product_card_width">160dp</dimen>
+    <dimen name="category_tile">72dp</dimen>
     <dimen name="fab_clearance">88dp</dimen>
     <dimen name="chart_height">140dp</dimen>
     <dimen name="chart_bar_width">36dp</dimen>

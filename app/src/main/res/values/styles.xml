@@ -76,6 +76,8 @@
         <item name="itemIconTint">@color/selector_nav_item</item>
         <item name="itemTextColor">@color/selector_nav_item</item>
         <item name="itemActiveIndicatorStyle">@style/Widget.TechNova.NavIndicator</item>
+        <!-- Muestra siempre el texto de cada opción, aunque haya 4 o 5 -->
+        <item name="labelVisibilityMode">labeled</item>
     </style>
 
     <style name="Widget.TechNova.NavIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
