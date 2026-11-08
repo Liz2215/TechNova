@@ -12,9 +12,13 @@ Proyecto de la asignatura **Desarrollo de Aplicaciones Móviles Nativas** — Fu
 
 ## Capturas
 
-| Login | Catálogo (Comprador) | Panel Vendedor | Panel Administrador |
+| Splash | Login (con huella) | Inicio Comprador | Pasarela de pago |
 |---|---|---|---|
-| ![](docs/capturas/login.png) | ![](docs/capturas/buyerHome.png) | ![](docs/capturas/sellerHome.png) | ![](docs/capturas/adminMetrics.png) |
+| ![](docs/capturas/splash.png) | ![](docs/capturas/login.png) | ![](docs/capturas/buyerHome.png) | ![](docs/capturas/checkout.png) |
+
+| Panel Vendedor | Perfil Vendedor | Dashboard Admin | Reporte de ventas |
+|---|---|---|---|
+| ![](docs/capturas/sellerHome.png) | ![](docs/capturas/sellerProfile.png) | ![](docs/capturas/adminDashboard.png) | ![](docs/capturas/adminReports.png) |
 
 Más pantallas en [`docs/capturas`](docs/capturas).
 
@@ -22,12 +26,12 @@ Más pantallas en [`docs/capturas`](docs/capturas).
 
 | Rol | Pantallas |
 |---|---|
-| **Todos** | Inicio de sesión (con selector de rol), Registro (autorización Ley 1581 y términos Ley 527) |
-| **Comprador** | Catálogo con búsqueda y filtro por categoría · Categorías · Detalle de producto · Carrito · Checkout (dirección y método de pago) · Pedido confirmado · Perfil (pedidos, PQR, aviso de privacidad, eliminar cuenta) |
-| **Vendedor** | Inicio (indicadores, gráfico de ventas semanal, pedidos recientes) · Mis productos (editar / eliminar) · Formulario de producto (crear / editar) · Pedidos (filtro y cambio de estado) |
-| **Administrador** | Métricas del negocio y ventas por categoría · Gestión de usuarios (filtro por rol, suspender / activar) · Configuración general (mantenimiento, notificaciones, costo de envío, pasarelas de pago) |
+| **Transversal (todos)** | Splash screen · Inicio de sesión con selector de rol · **Autenticación con biometría** (huella/rostro con `BiometricPrompt`) · **Recuperación de contraseña** · Registro (autorización Ley 1581 y términos Ley 527) · Menú de navegación **Bottom Navigation** en cada rol |
+| **Comprador** | Pantalla de inicio (promoción, categorías, más vendidos) · Catálogo con búsqueda y filtros · Categorías · Detalle de producto · Carrito · **Pasarela de pagos** (tarjeta con vista previa, PSE, Nequi, contraentrega) · Pedido confirmado · Perfil (pedidos, PQR, aviso de privacidad, eliminar cuenta) |
+| **Vendedor** | Inicio (indicadores, gráfico semanal, pedidos recientes) · Panel de productos con **CRUD completo** · Historial de pedidos (filtro y cambio de estado) · **Perfil de vendedor** |
+| **Administrador** | **Dashboard principal** · **Gestión de usuarios** (listado, creación, edición, eliminación) · **Gestión de productos** · **Reporte de ventas** (semana/mes/año, gráfico, más vendidos, ventas por categoría) · Ajustes generales |
 
-**Navegación:** cada rol tiene su propio `BottomNavigationView` (3 secciones con *fragments*) y una barra superior
+**Navegación:** cada rol tiene su propio `BottomNavigationView` (secciones con *fragments*) y una barra superior
 (`MaterialToolbar`) con menú de opciones (carrito y cerrar sesión).
 
 ## Estructura del proyecto
@@ -37,11 +41,11 @@ app/src/main/
 ├── java/com/ucompensar/technova/
 │   ├── data/            Modelos (Product, Order, User…) y FakeRepository (datos de prueba)
 │   └── ui/
-│       ├── auth/        LoginActivity, RegisterActivity
-│       ├── buyer/       BuyerActivity + fragments, detalle, carrito, checkout
-│       ├── seller/      SellerActivity + fragments, formulario de producto
-│       ├── admin/       AdminActivity + fragments
-│       └── common/      Formato de moneda (COP) y cierre de sesión
+│       ├── auth/        SplashActivity, LoginActivity (biometría), RegisterActivity, ForgotPasswordActivity
+│       ├── buyer/       BuyerActivity + fragments (inicio, catálogo, categorías, perfil), detalle, carrito, checkout
+│       ├── seller/      SellerActivity + fragments (inicio, productos, pedidos, perfil), formulario de producto
+│       ├── admin/       AdminActivity + fragments (dashboard, usuarios, productos, reportes, ajustes), formulario de usuario
+│       └── common/      Formato de moneda (COP), cierre de sesión, gráfico de barras y adaptador de productos compartido
 └── res/
     ├── layout/          activity_*, fragment_*, item_* (filas de listas), layout_* (bloques reutilizables con <include>)
     ├── drawable/        ic_* (íconos vectoriales) y bg_* (fondos con <shape>: degradados, bordes, etiquetas)
@@ -67,21 +71,27 @@ app/src/main/
 1. Clonar el repositorio y abrirlo con **Android Studio** (Koala o superior).
 2. Esperar la sincronización de Gradle.
 3. Ejecutar en un emulador o celular con Android 7.0 (API 24) o superior.
-4. En el login escribir cualquier correo válido y una contraseña de 6+ caracteres, elegir el rol y entrar.
+4. Se abre el splash y luego el login: escribir cualquier correo válido y una contraseña de 6+ caracteres, elegir el rol y entrar
+   (o usar **Ingresar con huella** si el dispositivo tiene biometría configurada).
+
+**APK listo para validar:** en la sección [Releases](https://github.com/Liz2215/TechNova/releases) del repositorio.
 
 **Generar el APK:** `Build > Build App Bundle(s) / APK(s) > Build APK(s)` o `./gradlew assembleDebug`
 → queda en `app/build/outputs/apk/debug/app-debug.apk`.
 
 ## Tecnologías
 
-Kotlin 1.9 · Android Gradle Plugin 8.5 · compileSdk 34 · minSdk 24 · Material Components 1.12 · ConstraintLayout · RecyclerView · Fragments · ViewBinding
+Kotlin 1.9 · Android Gradle Plugin 8.5 · compileSdk 34 · minSdk 24 · Material Components 1.12 · ConstraintLayout · RecyclerView · Fragments · ViewBinding · AndroidX Biometric
 
 ## Requerimientos cubiertos en esta entrega
 
 | Requerimiento | Dónde |
 |---|---|
-| RF-01 Autenticación | `LoginActivity`, `RegisterActivity` |
-| RF-02 Catálogo | `BuyerHomeFragment`, `BuyerCategoriesFragment`, `ProductDetailActivity` |
+| RF-01 Autenticación | `SplashActivity`, `LoginActivity` (biometría), `RegisterActivity`, `ForgotPasswordActivity` |
+| RF-02 Catálogo | `BuyerHomeFragment`, `CatalogFragment`, `BuyerCategoriesFragment`, `ProductDetailActivity` |
 | RF-03 Carrito y checkout | `CartActivity`, `CheckoutActivity` |
-| RF-04 Administración | `SellerProductsFragment`, `ProductFormActivity`, `SellerOrdersFragment`, `AdminUsersFragment` |
+| RF-04 Productos | `SellerProductsFragment`, `AdminProductsFragment`, `ProductFormActivity` |
+| RF-05 Pedidos | `SellerDashboardFragment`, `SellerOrdersFragment` |
+| RF-06 Administración | `AdminDashboardFragment`, `AdminUsersFragment`, `UserFormActivity`, `AdminReportsFragment`, `AdminSettingsFragment` |
+| RF-07 Perfiles | `BuyerProfileFragment`, `SellerProfileFragment` |
 | RNF-03 Usabilidad | Material 3, 48dp, modo oscuro |
