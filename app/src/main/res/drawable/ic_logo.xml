@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Logo de TechNova: rombo índigo con rayo menta -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="96dp"
+    android:height="96dp"
+    android:viewportWidth="96"
+    android:viewportHeight="96">
+    <path
+        android:fillColor="@color/tn_indigo"
+        android:pathData="M24,8h48a16,16 0,0 1,16 16v48a16,16 0,0 1,-16 16h-48a16,16 0,0 1,-16 -16v-48a16,16 0,0 1,16 -16z" />
+    <path
+        android:fillColor="@color/tn_mint"
+        android:pathData="M54,18L30,54h16l-6,24 26,-38H50z" />
+</vector>
