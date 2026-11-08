@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Perfil del vendedor: datos de la tienda, indicadores y opciones de cuenta -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/space_l">
+
+        <!-- Encabezado de la tienda -->
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_header"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:padding="@dimen/space_l">
+
+                <ImageView
+                    android:layout_width="@dimen/logo_size"
+                    android:layout_height="@dimen/logo_size"
+                    android:background="@drawable/bg_icon_circle"
+                    android:contentDescription="@string/cd_avatar"
+                    android:padding="@dimen/space_l"
+                    android:src="@drawable/ic_store" />
+
+                <TextView
+                    android:id="@+id/tvStoreName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_s"
+                    android:text="@string/seller_store_name"
+                    android:textColor="@color/tn_white"
+                    android:textSize="@dimen/text_title"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/seller_email"
+                    android:textColor="@color/tn_mint_light"
+                    android:textSize="@dimen/text_body" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Indicadores del vendedor (tarjeta reutilizable) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_s"
+            android:orientation="horizontal">
+
+            <include android:id="@+id/statRating" layout="@layout/layout_stat_card" />
+
+            <include android:id="@+id/statProducts" layout="@layout/layout_stat_card" />
+
+            <include android:id="@+id/statSales" layout="@layout/layout_stat_card" />
+        </LinearLayout>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_s">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/optStore"
+                    style="@style/Widget.TechNova.OptionRow"
+                    android:drawableStart="@drawable/ic_store"
+                    android:text="@string/seller_store_data" />
+
+                <View style="@style/Widget.TechNova.Divider" />
+
+                <TextView
+                    android:id="@+id/optPayout"
+                    style="@style/Widget.TechNova.OptionRow"
+                    android:drawableStart="@drawable/ic_credit_card"
+                    android:text="@string/seller_payout" />
+
+                <View style="@style/Widget.TechNova.Divider" />
+
+                <TextView
+                    android:id="@+id/optNotifications"
+                    style="@style/Widget.TechNova.OptionRow"
+                    android:drawableStart="@drawable/ic_notifications"
+                    android:text="@string/seller_notifications" />
+
+                <View style="@style/Widget.TechNova.Divider" />
+
+                <TextView
+                    android:id="@+id/optHelp"
+                    style="@style/Widget.TechNova.OptionRow"
+                    android:drawableStart="@drawable/ic_help"
+                    android:text="@string/seller_help" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnLogout"
+            style="@style/Widget.TechNova.Button.Outlined"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_xl"
+            android:text="@string/action_logout" />
+    </LinearLayout>
+</ScrollView>

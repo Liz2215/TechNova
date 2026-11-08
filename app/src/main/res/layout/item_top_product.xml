@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Fila del ranking de productos más vendidos -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:minHeight="@dimen/touch_min"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/tvRank"
+        style="@style/Text.TechNova.Badge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_badge_info"
+        android:minWidth="@dimen/icon_m"
+        android:gravity="center"
+        android:textColor="@color/tn_indigo" />
+
+    <TextView
+        android:id="@+id/tvName"
+        style="@style/Text.TechNova.Body"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/space_m"
+        android:layout_weight="1"
+        android:textColor="@color/tn_text_primary" />
+
+    <TextView
+        android:id="@+id/tvUnits"
+        style="@style/Text.TechNova.Caption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</LinearLayout>
