@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- RNF-03: soporte de modo oscuro -->
+<resources>
+    <color name="tn_indigo">#9C95F0</color>
+    <color name="tn_indigo_dark">#14122E</color>
+    <color name="tn_indigo_light">#2C2858</color>
+    <color name="tn_mint_light">#123D31</color>
+    <color name="tn_coral_light">#4A2219</color>
+    <color name="tn_background">#121220</color>
+    <color name="tn_surface">#1E1D33</color>
+    <color name="tn_text_primary">#F1F0FA</color>
+    <color name="tn_text_secondary">#B2B1C8</color>
+    <color name="tn_divider">#34334D</color>
+</resources>
