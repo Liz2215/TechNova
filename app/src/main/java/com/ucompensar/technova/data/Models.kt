@@ -35,9 +35,10 @@ data class Order(
 
 /** Usuario registrado, visible para el administrador. */
 data class User(
-    val name: String,
-    val email: String,
-    val role: Role,
+    val id: Int,
+    var name: String,
+    var email: String,
+    var role: Role,
     var active: Boolean
 )
 

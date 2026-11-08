@@ -40,12 +40,12 @@ object FakeRepository {
     )
 
     val users = mutableListOf(
-        User("Natalia Romero", "natalia.romero@technova.co", Role.ADMIN, true),
-        User("Samuel Ortiz", "samuel.ortiz@technova.co", Role.SELLER, true),
-        User("Valentina Ríos", "vale.rios@gmail.com", Role.SELLER, true),
-        User("Laura Gómez", "laura.gomez@gmail.com", Role.BUYER, true),
-        User("Andrés Ruiz", "andres.ruiz@hotmail.com", Role.BUYER, false),
-        User("Camila Torres", "camila.t@gmail.com", Role.BUYER, true)
+        User(1, "Natalia Romero", "natalia.romero@technova.co", Role.ADMIN, true),
+        User(2, "Samuel Ortiz", "samuel.ortiz@technova.co", Role.SELLER, true),
+        User(3, "Valentina Ríos", "vale.rios@gmail.com", Role.SELLER, true),
+        User(4, "Laura Gómez", "laura.gomez@gmail.com", Role.BUYER, true),
+        User(5, "Andrés Ruiz", "andres.ruiz@hotmail.com", Role.BUYER, false),
+        User(6, "Camila Torres", "camila.t@gmail.com", Role.BUYER, true)
     )
 
     /** Ventas de los últimos 7 días (en miles de COP) para el gráfico del vendedor. */
@@ -67,6 +67,24 @@ object FakeRepository {
     private fun countBy(category: String) = products.count { it.category == category }
 
     fun findProduct(id: Int): Product? = products.find { it.id == id }
+
+    fun findUser(id: Int): User? = users.find { it.id == id }
+
+    /** Ventas por período para el reporte del administrador (miles de COP). */
+    val salesByPeriod = mapOf(
+        "week" to listOf(420, 610, 380, 890, 720, 1_150, 960),
+        "month" to listOf(3_900, 4_650, 4_100, 5_300),
+        "year" to listOf(41_200, 46_800, 52_300, 61_900)
+    )
+
+    /** Pedidos por período (para calcular el ticket promedio). */
+    val ordersByPeriod = mapOf("week" to 38, "month" to 154, "year" to 1_720)
+
+    /** Productos más vendidos con sus unidades. */
+    val topProducts = listOf(
+        "Audífonos Bluetooth G3" to 86, "Smartwatch Nova Pro" to 64,
+        "Earbuds Mini" to 51, "Power Bank 20.000 mAh" to 47, "Teclado Mecánico K1" to 33
+    )
 
     fun addToCart(product: Product) {
         val item = cart.find { it.product.id == product.id }
