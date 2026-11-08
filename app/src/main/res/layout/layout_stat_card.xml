@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Tarjeta reutilizable de indicador (se incluye con <include> en vendedor y administrador) -->
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/space_xs"
+    android:layout_weight="1">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/stat_card_min_height"
+        android:orientation="vertical"
+        android:padding="@dimen/space_m">
+
+        <ImageView
+            android:id="@+id/ivStatIcon"
+            android:layout_width="@dimen/icon_l"
+            android:layout_height="@dimen/icon_l"
+            android:background="@drawable/bg_icon_circle"
+            android:importantForAccessibility="no"
+            android:padding="@dimen/space_s"
+            android:src="@drawable/ic_chart" />
+
+        <TextView
+            android:id="@+id/tvStatValue"
+            style="@style/Text.TechNova.StatValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_s" />
+
+        <TextView
+            android:id="@+id/tvStatLabel"
+            style="@style/Text.TechNova.Caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

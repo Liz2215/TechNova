@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Diálogo personalizado de pedido confirmado -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="@dimen/space_xl">
+
+    <ImageView
+        android:layout_width="@dimen/logo_size"
+        android:layout_height="@dimen/logo_size"
+        android:background="@drawable/bg_badge_ok"
+        android:importantForAccessibility="no"
+        android:padding="@dimen/space_l"
+        android:src="@drawable/ic_check_circle" />
+
+    <TextView
+        style="@style/Text.TechNova.Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_l"
+        android:text="@string/order_ok_title" />
+
+    <TextView
+        style="@style/Text.TechNova.Body"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_s"
+        android:gravity="center"
+        android:text="@string/order_ok_msg" />
+
+    <TextView
+        android:id="@+id/tvOrderNumber"
+        style="@style/Text.TechNova.Subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_m"
+        android:textColor="@color/tn_indigo" />
+</LinearLayout>
