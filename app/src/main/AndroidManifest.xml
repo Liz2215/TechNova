@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <!-- Permiso para usar la huella / rostro (autenticación biométrica) -->
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+
     <application
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
@@ -10,15 +13,17 @@
         android:theme="@style/Theme.TechNova">
 
         <!-- Autenticación -->
+        <!-- Splash: primera pantalla al abrir la app -->
         <activity
-            android:name=".ui.auth.LoginActivity"
-            android:exported="true"
-            android:windowSoftInputMode="adjustResize">
+            android:name=".ui.auth.SplashActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.auth.LoginActivity" android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".ui.auth.ForgotPasswordActivity" android:windowSoftInputMode="adjustResize" />
         <activity android:name=".ui.auth.RegisterActivity" android:windowSoftInputMode="adjustResize" />
 
         <!-- Rol Comprador -->
@@ -33,5 +38,6 @@
 
         <!-- Rol Administrador -->
         <activity android:name=".ui.admin.AdminActivity" android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".ui.admin.UserFormActivity" android:windowSoftInputMode="adjustResize" />
     </application>
 </manifest>
