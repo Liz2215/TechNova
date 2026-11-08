@@ -2,16 +2,25 @@ package com.ucompensar.technova.ui.buyer
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.view.View
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doAfterTextChanged
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textfield.TextInputLayout
 import com.ucompensar.technova.R
 import com.ucompensar.technova.data.FakeRepository
 import com.ucompensar.technova.databinding.ActivityCheckoutBinding
 import com.ucompensar.technova.databinding.DialogOrderSuccessBinding
 import com.ucompensar.technova.ui.common.toCop
 
-/** Proceso de pago: dirección, método de pago, resumen y confirmación. */
+/**
+ * Pasarela de pagos: dirección de envío, método de pago (tarjeta, PSE, Nequi o contraentrega)
+ * con su propio formulario, resumen y confirmación del pedido.
+ */
 class CheckoutActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCheckoutBinding
@@ -27,17 +36,69 @@ class CheckoutActivity : AppCompatActivity() {
         binding.summary.tvShipping.text = FakeRepository.SHIPPING_COST.toCop()
         binding.summary.tvTotal.text = (subtotal + FakeRepository.SHIPPING_COST).toCop()
 
-        binding.btnPay.setOnClickListener { if (validate()) showSuccess() }
+        val banks = resources.getStringArray(R.array.banks)
+        binding.actBank.setAdapter(ArrayAdapter(this, android.R.layout.simple_list_item_1, banks))
+
+        // Muestra solo el formulario del método de pago elegido
+        binding.rgPayment.setOnCheckedChangeListener { _, checkedId -> showPaymentForm(checkedId) }
+        showPaymentForm(binding.rgPayment.checkedRadioButtonId)
+
+        // La tarjeta de vista previa se actualiza mientras se escribe
+        binding.etCardNumber.doAfterTextChanged { text ->
+            binding.tvCardNumber.text = if (text.isNullOrEmpty()) getString(R.string.card_preview_number)
+            else text.chunked(4).joinToString(" ")
+        }
+        binding.etCardName.doAfterTextChanged { text ->
+            binding.tvCardName.text = if (text.isNullOrEmpty()) getString(R.string.card_preview_name) else text
+        }
+        binding.etCardExpiry.doAfterTextChanged { text ->
+            binding.tvCardExpiry.text = if (text.isNullOrEmpty()) getString(R.string.card_preview_expiry) else text
+        }
+
+        binding.btnPay.setOnClickListener { if (validate()) processPayment() }
+    }
+
+    private fun showPaymentForm(checkedId: Int) {
+        binding.layoutCard.visibility = if (checkedId == R.id.rbCard) View.VISIBLE else View.GONE
+        binding.tilBank.visibility = if (checkedId == R.id.rbPse) View.VISIBLE else View.GONE
+        binding.tilNequi.visibility = if (checkedId == R.id.rbNequi) View.VISIBLE else View.GONE
+        binding.tvCashInfo.visibility = if (checkedId == R.id.rbCash) View.VISIBLE else View.GONE
     }
 
     private fun validate(): Boolean {
         val required = getString(R.string.err_required)
-        binding.tilAddress.error = if (binding.etAddress.text.isNullOrBlank()) required else null
-        binding.tilCity.error = if (binding.etCity.text.isNullOrBlank()) required else null
+        fun check(layout: TextInputLayout, ok: Boolean, error: String = required): Boolean {
+            layout.error = if (ok) null else error
+            return ok
+        }
+
+        var valid = check(binding.tilAddress, !binding.etAddress.text.isNullOrBlank())
+        valid = check(binding.tilCity, !binding.etCity.text.isNullOrBlank()) && valid
+
+        when (binding.rgPayment.checkedRadioButtonId) {
+            R.id.rbCard -> {
+                valid = check(binding.tilCardNumber, binding.etCardNumber.text?.length == 16,
+                    getString(R.string.err_card_number)) && valid
+                valid = check(binding.tilCardName, !binding.etCardName.text.isNullOrBlank()) && valid
+                valid = check(binding.tilCardExpiry, binding.etCardExpiry.text?.length == 5) && valid
+                valid = check(binding.tilCardCvv, (binding.etCardCvv.text?.length ?: 0) >= 3) && valid
+            }
+            R.id.rbPse -> valid = check(binding.tilBank, !binding.actBank.text.isNullOrBlank()) && valid
+            R.id.rbNequi -> valid = check(binding.tilNequi, binding.etNequi.text?.length == 10) && valid
+        }
+
         if (!binding.cbTerms.isChecked) {
             Toast.makeText(this, R.string.err_accept, Toast.LENGTH_SHORT).show()
+            valid = false
         }
-        return binding.tilAddress.error == null && binding.tilCity.error == null && binding.cbTerms.isChecked
+        return valid
+    }
+
+    /** Simula la respuesta de la pasarela (en la fase de backend se conectará con Wompi / PayU). */
+    private fun processPayment() {
+        binding.btnPay.isEnabled = false
+        binding.btnPay.setText(R.string.processing_payment)
+        Handler(Looper.getMainLooper()).postDelayed({ showSuccess() }, 1500)
     }
 
     private fun showSuccess() {

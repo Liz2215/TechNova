@@ -25,7 +25,7 @@ class BuyerCategoriesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.rvCategories.adapter = CategoryAdapter(FakeRepository.categories()) { category ->
-            (activity as? BuyerActivity)?.openCategory(category.name)
+            (activity as? BuyerActivity)?.openCatalog(category.name)
         }
     }
 
@@ -34,7 +34,7 @@ class BuyerCategoriesFragment : Fragment() {
         _binding = null
     }
 
-    private class CategoryAdapter(
+    class CategoryAdapter(
         private val items: List<Category>,
         private val onClick: (Category) -> Unit
     ) : RecyclerView.Adapter<CategoryAdapter.Holder>() {

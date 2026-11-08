@@ -11,7 +11,8 @@ import com.ucompensar.technova.ui.common.toCop
 /** Adaptador de la cuadrícula de productos del comprador. */
 class ProductGridAdapter(
     private val onClick: (Product) -> Unit,
-    private val onAddCart: (Product) -> Unit
+    private val onAddCart: (Product) -> Unit,
+    private val horizontal: Boolean = false // true en la fila deslizable de "Más vendidos"
 ) : RecyclerView.Adapter<ProductGridAdapter.Holder>() {
 
     private var items: List<Product> = emptyList()
@@ -23,8 +24,14 @@ class ProductGridAdapter(
 
     inner class Holder(val binding: ItemProductGridBinding) : RecyclerView.ViewHolder(binding.root)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        Holder(ItemProductGridBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
+        val binding = ItemProductGridBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        if (horizontal) {
+            // En una lista horizontal cada tarjeta necesita un ancho fijo
+            binding.root.layoutParams.width = parent.resources.getDimensionPixelSize(R.dimen.product_card_width)
+        }
+        return Holder(binding)
+    }
 
     override fun getItemCount() = items.size
 

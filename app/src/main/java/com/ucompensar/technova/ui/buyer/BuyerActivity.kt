@@ -8,7 +8,7 @@ import com.ucompensar.technova.R
 import com.ucompensar.technova.databinding.ActivityPanelBinding
 import com.ucompensar.technova.ui.common.logout
 
-/** Panel del rol Comprador: Inicio (catálogo), Categorías y Perfil. */
+/** Panel del rol Comprador: Inicio, Catálogo, Categorías y Perfil. */
 class BuyerActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPanelBinding
@@ -31,19 +31,20 @@ class BuyerActivity : AppCompatActivity() {
         binding.bottomNav.inflateMenu(R.menu.menu_buyer_nav)
         binding.bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.nav_buyer_home -> show(BuyerHomeFragment.newInstance(null))
+                R.id.nav_buyer_home -> show(BuyerHomeFragment())
+                R.id.nav_buyer_catalog -> show(CatalogFragment.newInstance(null))
                 R.id.nav_buyer_categories -> show(BuyerCategoriesFragment())
                 R.id.nav_buyer_profile -> show(BuyerProfileFragment())
             }
             true
         }
-        if (savedInstanceState == null) show(BuyerHomeFragment.newInstance(null))
+        if (savedInstanceState == null) show(BuyerHomeFragment())
     }
 
-    /** Abre el catálogo filtrado por la categoría elegida. */
-    fun openCategory(category: String) {
-        binding.bottomNav.menu.findItem(R.id.nav_buyer_home).isChecked = true
-        show(BuyerHomeFragment.newInstance(category))
+    /** Abre la pestaña Catálogo, filtrada por categoría si se indica una. */
+    fun openCatalog(category: String? = null) {
+        binding.bottomNav.menu.findItem(R.id.nav_buyer_catalog).isChecked = true
+        show(CatalogFragment.newInstance(category))
     }
 
     private fun show(fragment: Fragment) {

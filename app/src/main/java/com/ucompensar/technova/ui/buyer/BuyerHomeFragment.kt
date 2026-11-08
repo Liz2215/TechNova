@@ -6,20 +6,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
-import com.google.android.material.chip.Chip
+import androidx.recyclerview.widget.RecyclerView
 import com.ucompensar.technova.R
+import com.ucompensar.technova.data.Category
 import com.ucompensar.technova.data.FakeRepository
 import com.ucompensar.technova.databinding.FragmentBuyerHomeBinding
+import com.ucompensar.technova.databinding.ItemCategoryTileBinding
 
-/** Catálogo: búsqueda por nombre y filtro por categoría (RF-02). */
+/** Inicio del comprador: promoción, accesos a categorías y productos más vendidos. */
 class BuyerHomeFragment : Fragment() {
 
     private var _binding: FragmentBuyerHomeBinding? = null
     private val binding get() = _binding!!
-    private lateinit var adapter: ProductGridAdapter
-    private var selectedCategory: String? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, state: Bundle?): View {
         _binding = FragmentBuyerHomeBinding.inflate(inflater, container, false)
@@ -27,9 +26,18 @@ class BuyerHomeFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        selectedCategory = arguments?.getString(ARG_CATEGORY)
+        val buyer = activity as? BuyerActivity
 
-        adapter = ProductGridAdapter(
+        binding.btnPromo.setOnClickListener { buyer?.openCatalog("Smartwatches") }
+        binding.btnSeeAll.setOnClickListener { buyer?.openCatalog() }
+
+        binding.rvCategories.adapter = CategoryTileAdapter(FakeRepository.categories()) { category ->
+            buyer?.openCatalog(category.name)
+        }
+
+        // Más vendidos: los 5 productos con mejor calificación
+        val bestSellers = FakeRepository.products.sortedByDescending { it.rating }.take(5)
+        val adapter = ProductGridAdapter(
             onClick = { product ->
                 val intent = Intent(requireContext(), ProductDetailActivity::class.java)
                 intent.putExtra(ProductDetailActivity.EXTRA_ID, product.id)
@@ -38,39 +46,11 @@ class BuyerHomeFragment : Fragment() {
             onAddCart = { product ->
                 FakeRepository.addToCart(product)
                 Toast.makeText(requireContext(), getString(R.string.msg_added_cart, product.name), Toast.LENGTH_SHORT).show()
-            }
+            },
+            horizontal = true
         )
-        binding.rvProducts.adapter = adapter
-
-        buildCategoryChips()
-        binding.etSearch.doAfterTextChanged { applyFilters() }
-        applyFilters()
-    }
-
-    /** Crea un chip por cada categoría a partir del arreglo de recursos. */
-    private fun buildCategoryChips() {
-        val categories = resources.getStringArray(R.array.product_categories)
-        categories.forEach { name ->
-            val chip = layoutInflater.inflate(R.layout.view_filter_chip, binding.chipCategories, false) as Chip
-            chip.id = View.generateViewId()
-            chip.text = name
-            binding.chipCategories.addView(chip)
-            if (name == selectedCategory) chip.isChecked = true
-        }
-        binding.chipCategories.setOnCheckedStateChangeListener { group, ids ->
-            val chip = group.findViewById<Chip>(ids.firstOrNull() ?: R.id.chipAll)
-            selectedCategory = if (chip.id == R.id.chipAll) null else chip.text.toString()
-            applyFilters()
-        }
-    }
-
-    private fun applyFilters() {
-        val query = binding.etSearch.text.toString().trim()
-        val list = FakeRepository.products.filter { product ->
-            (selectedCategory == null || product.category == selectedCategory) &&
-                product.name.contains(query, ignoreCase = true)
-        }
-        adapter.submit(list)
+        adapter.submit(bestSellers)
+        binding.rvBestSellers.adapter = adapter
     }
 
     override fun onDestroyView() {
@@ -78,11 +58,24 @@ class BuyerHomeFragment : Fragment() {
         _binding = null
     }
 
-    companion object {
-        private const val ARG_CATEGORY = "category"
+    /** Adaptador de los íconos de categoría (fila horizontal). */
+    class CategoryTileAdapter(
+        private val items: List<Category>,
+        private val onClick: (Category) -> Unit
+    ) : RecyclerView.Adapter<CategoryTileAdapter.Holder>() {
 
-        fun newInstance(category: String?) = BuyerHomeFragment().apply {
-            arguments = Bundle().apply { putString(ARG_CATEGORY, category) }
+        class Holder(val binding: ItemCategoryTileBinding) : RecyclerView.ViewHolder(binding.root)
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+            Holder(ItemCategoryTileBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+
+        override fun getItemCount() = items.size
+
+        override fun onBindViewHolder(holder: Holder, position: Int) {
+            val category = items[position]
+            holder.binding.ivIcon.setImageResource(category.iconRes)
+            holder.binding.tvName.text = category.name
+            holder.binding.root.setOnClickListener { onClick(category) }
         }
     }
 }
