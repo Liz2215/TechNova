@@ -41,4 +41,6 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("androidx.fragment:fragment-ktx:1.8.2")
+    // Autenticación con huella / rostro
+    implementation("androidx.biometric:biometric:1.1.0")
 }
