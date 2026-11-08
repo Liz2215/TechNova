@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Paleta propia de TechNova (no se usan los colores por defecto de Android) -->
+<resources>
+    <!-- Marca -->
+    <color name="tn_indigo">#2E2A6B</color>
+    <color name="tn_indigo_dark">#1C1945</color>
+    <color name="tn_indigo_light">#E6E4F7</color>
+    <color name="tn_mint">#12B886</color>
+    <color name="tn_mint_light">#D3F5EA</color>
+    <color name="tn_coral">#FF6B4A</color>
+    <color name="tn_coral_light">#FFE3DC</color>
+    <color name="tn_amber">#FFB020</color>
+
+    <!-- Neutros -->
+    <color name="tn_white">#FFFFFF</color>
+    <color name="tn_background">#F4F3FA</color>
+    <color name="tn_surface">#FFFFFF</color>
+    <color name="tn_text_primary">#1A1A2E</color>
+    <color name="tn_text_secondary">#5F6077</color>
+    <color name="tn_divider">#DCDBE8</color>
+
+    <!-- Estados -->
+    <color name="tn_status_ok">#12B886</color>
+    <color name="tn_status_pending">#FFB020</color>
+    <color name="tn_status_error">#E5484D</color>
+</resources>

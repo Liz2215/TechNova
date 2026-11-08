@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Tema principal con colores propios (Material Design 3) -->
+    <style name="Theme.TechNova" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/tn_indigo</item>
+        <item name="colorOnPrimary">@color/tn_white</item>
+        <item name="colorPrimaryContainer">@color/tn_indigo_light</item>
+        <item name="colorSecondary">@color/tn_mint</item>
+        <item name="colorOnSecondary">@color/tn_white</item>
+        <item name="colorSecondaryContainer">@color/tn_mint_light</item>
+        <item name="colorTertiary">@color/tn_coral</item>
+        <item name="colorError">@color/tn_status_error</item>
+        <item name="android:colorBackground">@color/tn_background</item>
+        <item name="colorSurface">@color/tn_surface</item>
+        <item name="colorOnSurface">@color/tn_text_primary</item>
+        <item name="colorOnSurfaceVariant">@color/tn_text_secondary</item>
+        <item name="colorOutline">@color/tn_divider</item>
+        <item name="android:statusBarColor">@color/tn_indigo_dark</item>
+        <item name="android:windowBackground">@color/tn_background</item>
+        <item name="materialButtonStyle">@style/Widget.TechNova.Button</item>
+        <item name="textInputStyle">@style/Widget.TechNova.TextInput</item>
+        <item name="materialCardViewStyle">@style/Widget.TechNova.Card</item>
+    </style>
+</resources>

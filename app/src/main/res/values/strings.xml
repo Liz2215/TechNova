@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TechNova</string>
+    <string name="app_slogan">Gadgets y tecnología a un toque</string>
+
+    <!-- Generales -->
+    <string name="action_logout">Cerrar sesión</string>
+    <string name="action_save">Guardar</string>
+    <string name="action_cancel">Cancelar</string>
+    <string name="action_edit">Editar</string>
+    <string name="action_delete">Eliminar</string>
+    <string name="action_back">Volver</string>
+    <string name="action_see_detail">Ver detalle</string>
+    <string name="cd_product_image">Imagen del producto</string>
+    <string name="cd_logo">Logo de TechNova</string>
+    <string name="cd_avatar">Foto de perfil</string>
+    <string name="cd_add">Agregar</string>
+    <string name="cd_cart">Ver carrito</string>
+    <string name="cd_minus">Restar uno</string>
+    <string name="cd_plus">Sumar uno</string>
+    <string name="msg_not_available">Función disponible en la siguiente entrega</string>
+
+    <!-- Login / registro -->
+    <string name="login_title">Bienvenido de nuevo</string>
+    <string name="login_subtitle">Ingresa para continuar comprando o gestionando tu tienda</string>
+    <string name="hint_email">Correo electrónico</string>
+    <string name="hint_password">Contraseña</string>
+    <string name="hint_name">Nombre completo</string>
+    <string name="hint_phone">Celular</string>
+    <string name="label_role">Ingresar como</string>
+    <string name="role_buyer">Comprador</string>
+    <string name="role_seller">Vendedor</string>
+    <string name="role_admin">Admin</string>
+    <string name="btn_login">Iniciar sesión</string>
+    <string name="btn_google">Continuar con Google</string>
+    <string name="txt_no_account">¿No tienes cuenta? Regístrate</string>
+    <string name="txt_or">o</string>
+    <string name="register_title">Crea tu cuenta</string>
+    <string name="register_subtitle">Regístrate como comprador o vendedor</string>
+    <string name="chk_habeas_data">Autorizo el tratamiento de mis datos personales (Ley 1581 de 2012)</string>
+    <string name="chk_terms">Acepto los términos y condiciones (Ley 527 de 1999)</string>
+    <string name="btn_register">Crear cuenta</string>
+    <string name="err_required">Este campo es obligatorio</string>
+    <string name="err_email">Correo no válido</string>
+    <string name="err_password">Mínimo 6 caracteres</string>
+    <string name="err_accept">Debes aceptar la autorización y los términos</string>
+    <string name="msg_register_ok">Cuenta creada. Ahora inicia sesión.</string>
+
+    <!-- Comprador -->
+    <string name="buyer_title">Hola, ¿qué buscas hoy?</string>
+    <string name="hint_search">Buscar gadgets…</string>
+    <string name="section_featured">Destacados</string>
+    <string name="section_categories">Categorías</string>
+    <string name="btn_add_cart">Agregar al carrito</string>
+    <string name="msg_added_cart">%1$s agregado al carrito</string>
+    <string name="label_stock">Stock: %1$d</string>
+    <string name="label_rating">★ %1$s</string>
+    <string name="label_sku">SKU: %1$s</string>
+    <string name="label_quantity">Cantidad</string>
+    <string name="detail_description">Descripción</string>
+    <string name="detail_warranty">Garantía de 12 meses (Ley 1480 de 2011)</string>
+    <string name="cart_title">Mi carrito</string>
+    <string name="cart_empty">Tu carrito está vacío</string>
+    <string name="label_subtotal">Subtotal</string>
+    <string name="label_shipping">Envío</string>
+    <string name="label_total">Total</string>
+    <string name="btn_checkout">Ir a pagar</string>
+    <string name="checkout_title">Pagar pedido</string>
+    <string name="section_address">Dirección de envío</string>
+    <string name="hint_address">Dirección</string>
+    <string name="hint_city">Ciudad</string>
+    <string name="section_payment">Método de pago</string>
+    <string name="pay_card">Tarjeta crédito / débito</string>
+    <string name="pay_pse">PSE</string>
+    <string name="pay_nequi">Nequi</string>
+    <string name="pay_cash">Contraentrega</string>
+    <string name="section_summary">Resumen</string>
+    <string name="btn_pay">Confirmar y pagar</string>
+    <string name="order_ok_title">¡Pedido confirmado!</string>
+    <string name="order_ok_msg">Te avisaremos cuando tu pedido salga a camino.</string>
+    <string name="categories_title">Categorías</string>
+    <string name="profile_title">Mi perfil</string>
+    <string name="profile_orders">Mis pedidos</string>
+    <string name="profile_addresses">Mis direcciones</string>
+    <string name="profile_pqr">Peticiones, quejas y reclamos (PQR)</string>
+    <string name="profile_privacy">Aviso de privacidad</string>
+    <string name="profile_delete">Eliminar mi cuenta</string>
+    <string name="profile_delete_confirm">¿Seguro que quieres eliminar tu cuenta? Esta acción no se puede deshacer.</string>
+    <string name="demo_user_name">Laura Gómez</string>
+    <string name="demo_user_email">laura.gomez@gmail.com</string>
+    <string name="nav_home">Inicio</string>
+    <string name="nav_categories">Categorías</string>
+    <string name="nav_profile">Perfil</string>
+
+    <!-- Vendedor -->
+    <string name="seller_title">Panel de vendedor</string>
+    <string name="section_summary_week">Ventas de la semana</string>
+    <string name="stat_sales">Ventas (COP)</string>
+    <string name="stat_new_clients">Clientes nuevos</string>
+    <string name="stat_to_ship">Por enviar</string>
+    <string name="section_my_products">Mis productos</string>
+    <string name="section_recent_orders">Pedidos recientes</string>
+    <string name="nav_products">Productos</string>
+    <string name="nav_orders">Pedidos</string>
+    <string name="product_form_new">Nuevo producto</string>
+    <string name="product_form_edit">Editar producto</string>
+    <string name="hint_product_name">Nombre del producto</string>
+    <string name="hint_product_price">Precio (COP)</string>
+    <string name="hint_product_stock">Stock</string>
+    <string name="hint_product_sku">SKU</string>
+    <string name="hint_product_category">Categoría</string>
+    <string name="hint_product_description">Descripción</string>
+    <string name="btn_upload_image">Subir imagen</string>
+    <string name="msg_product_saved">Producto guardado</string>
+    <string name="msg_product_deleted">Producto eliminado</string>
+    <string name="delete_product_confirm">¿Eliminar %1$s?</string>
+    <string name="label_order_number">Pedido #%1$s</string>
+    <string name="label_order_items">%1$d artículos · %2$s</string>
+    <string name="status_pending">Pendiente</string>
+    <string name="status_shipped">Enviado</string>
+    <string name="status_delivered">Entregado</string>
+    <string name="btn_change_status">Cambiar estado</string>
+    <string name="msg_status_changed">Pedido #%1$s: %2$s</string>
+
+    <!-- Administrador -->
+    <string name="admin_title">Administración</string>
+    <string name="section_business_stats">Estadísticas del negocio</string>
+    <string name="stat_active_sellers">Vendedores activos</string>
+    <string name="stat_registered_clients">Clientes registrados</string>
+    <string name="stat_monthly_orders">Pedidos del mes</string>
+    <string name="stat_app_status">Estado de la app</string>
+    <string name="value_app_ok">Operando</string>
+    <string name="section_sales_by_category">Ventas por categoría</string>
+    <string name="section_users">Gestión de cuentas</string>
+    <string name="filter_all">Todos</string>
+    <string name="status_active">Activo</string>
+    <string name="status_suspended">Suspendido</string>
+    <string name="btn_suspend">Suspender</string>
+    <string name="btn_activate">Activar</string>
+    <string name="msg_user_status">%1$s ahora está %2$s</string>
+    <string name="nav_metrics">Métricas</string>
+    <string name="nav_users">Usuarios</string>
+    <string name="nav_settings">Configuración</string>
+    <string name="settings_title">Configuración general</string>
+    <string name="setting_maintenance">Modo mantenimiento</string>
+    <string name="setting_maintenance_desc">Bloquea las compras temporalmente</string>
+    <string name="setting_notifications">Notificaciones push</string>
+    <string name="setting_notifications_desc">Avisos de pedidos y pagos</string>
+    <string name="setting_new_sellers">Aprobar vendedores nuevos</string>
+    <string name="setting_new_sellers_desc">Revisión manual antes de publicar</string>
+    <string name="setting_shipping">Costo de envío (COP)</string>
+    <string name="section_payment_gateways">Pasarelas de pago</string>
+    <string name="gateway_wompi">Wompi</string>
+    <string name="gateway_payu">PayU</string>
+    <string name="gateway_mercadopago">Mercado Pago</string>
+    <string name="default_shipping">12000</string>
+    <string name="label_percent">%1$d%%</string>
+    <string name="msg_settings_saved">Configuración guardada</string>
+
+    <plurals name="label_products_count">
+        <item quantity="one">%1$d producto</item>
+        <item quantity="other">%1$d productos</item>
+    </plurals>
+</resources>
