@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Tarjeta de producto en la cuadrícula del catálogo -->
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/space_xs"
+    android:clickable="true"
+    android:focusable="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/space_m">
+
+        <ImageView
+            android:id="@+id/ivProduct"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/product_image_grid"
+            android:background="@drawable/bg_product_image"
+            android:contentDescription="@string/cd_product_image"
+            android:padding="@dimen/space_xl" />
+
+        <TextView
+            android:id="@+id/tvName"
+            style="@style/Text.TechNova.Subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_s"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textSize="@dimen/text_body" />
+
+        <TextView
+            android:id="@+id/tvRating"
+            style="@style/Text.TechNova.Caption"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/tn_amber" />
+
+        <TextView
+            android:id="@+id/tvPrice"
+            style="@style/Text.TechNova.Price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAddCart"
+            style="@style/Widget.TechNova.Button.Small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_s"
+            android:text="@string/btn_add_cart"
+            android:textSize="@dimen/text_caption" />
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>
