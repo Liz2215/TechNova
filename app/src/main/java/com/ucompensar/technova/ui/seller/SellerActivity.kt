@@ -7,7 +7,7 @@ import com.ucompensar.technova.R
 import com.ucompensar.technova.databinding.ActivityPanelBinding
 import com.ucompensar.technova.ui.common.logout
 
-/** Panel del rol Vendedor: Inicio (resumen), Productos y Pedidos. */
+/** Panel del rol Vendedor: Inicio (resumen), Productos, Pedidos y Perfil. */
 class SellerActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPanelBinding
@@ -30,6 +30,7 @@ class SellerActivity : AppCompatActivity() {
                 R.id.nav_seller_home -> show(SellerDashboardFragment())
                 R.id.nav_seller_products -> show(SellerProductsFragment())
                 R.id.nav_seller_orders -> show(SellerOrdersFragment())
+                R.id.nav_seller_profile -> show(SellerProfileFragment())
             }
             true
         }

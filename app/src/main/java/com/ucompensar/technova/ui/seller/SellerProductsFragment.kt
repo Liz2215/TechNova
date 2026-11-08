@@ -7,14 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.ucompensar.technova.R
 import com.ucompensar.technova.data.FakeRepository
 import com.ucompensar.technova.data.Product
 import com.ucompensar.technova.databinding.FragmentSellerProductsBinding
-import com.ucompensar.technova.databinding.ItemProductRowBinding
-import com.ucompensar.technova.ui.common.toCop
+import com.ucompensar.technova.ui.common.ProductRowAdapter
 
 /** Inventario del vendedor: crear, editar y eliminar productos. */
 class SellerProductsFragment : Fragment() {
@@ -63,30 +61,5 @@ class SellerProductsFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    private class ProductRowAdapter(
-        private val onEdit: (Product) -> Unit,
-        private val onDelete: (Product) -> Unit
-    ) : RecyclerView.Adapter<ProductRowAdapter.Holder>() {
-
-        class Holder(val binding: ItemProductRowBinding) : RecyclerView.ViewHolder(binding.root)
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-            Holder(ItemProductRowBinding.inflate(LayoutInflater.from(parent.context), parent, false))
-
-        override fun getItemCount() = FakeRepository.products.size
-
-        override fun onBindViewHolder(holder: Holder, position: Int) {
-            val product = FakeRepository.products[position]
-            with(holder.binding) {
-                ivProduct.setImageResource(product.imageRes)
-                tvName.text = product.name
-                tvStock.text = root.context.getString(R.string.label_stock, product.stock)
-                tvPrice.text = product.price.toCop()
-                btnEdit.setOnClickListener { onEdit(product) }
-                btnDelete.setOnClickListener { onDelete(product) }
-            }
-        }
     }
 }
