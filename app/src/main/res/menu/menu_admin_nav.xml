@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Menú inferior del rol Administrador -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/nav_admin_metrics" android:icon="@drawable/ic_chart" android:title="@string/nav_metrics" />
+    <item android:id="@+id/nav_admin_users" android:icon="@drawable/ic_users" android:title="@string/nav_users" />
+    <item android:id="@+id/nav_admin_settings" android:icon="@drawable/ic_settings" android:title="@string/nav_settings" />
+</menu>
