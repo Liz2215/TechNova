@@ -7,7 +7,7 @@ import com.ucompensar.technova.R
 import com.ucompensar.technova.databinding.ActivityPanelBinding
 import com.ucompensar.technova.ui.common.logout
 
-/** Panel del rol Administrador: Métricas, Usuarios y Configuración. */
+/** Panel del rol Administrador: Inicio (dashboard), Usuarios, Productos, Reportes y Ajustes. */
 class AdminActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPanelBinding
@@ -27,13 +27,15 @@ class AdminActivity : AppCompatActivity() {
         binding.bottomNav.inflateMenu(R.menu.menu_admin_nav)
         binding.bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.nav_admin_metrics -> show(AdminMetricsFragment())
+                R.id.nav_admin_dashboard -> show(AdminDashboardFragment())
                 R.id.nav_admin_users -> show(AdminUsersFragment())
+                R.id.nav_admin_products -> show(AdminProductsFragment())
+                R.id.nav_admin_reports -> show(AdminReportsFragment())
                 R.id.nav_admin_settings -> show(AdminSettingsFragment())
             }
             true
         }
-        if (savedInstanceState == null) show(AdminMetricsFragment())
+        if (savedInstanceState == null) show(AdminDashboardFragment())
     }
 
     private fun show(fragment: Fragment) {

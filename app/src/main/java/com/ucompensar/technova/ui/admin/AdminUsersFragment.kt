@@ -1,5 +1,6 @@
 package com.ucompensar.technova.ui.admin
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.ucompensar.technova.R
 import com.ucompensar.technova.data.FakeRepository
 import com.ucompensar.technova.data.Role
@@ -15,18 +17,17 @@ import com.ucompensar.technova.data.User
 import com.ucompensar.technova.databinding.FragmentAdminUsersBinding
 import com.ucompensar.technova.databinding.ItemUserBinding
 
-/** Gestión de cuentas de usuario por rol (RBAC). */
+/** Gestión de usuarios (RBAC): listado con filtro por rol, crear, editar y eliminar. */
 class AdminUsersFragment : Fragment() {
 
     private var _binding: FragmentAdminUsersBinding? = null
     private val binding get() = _binding!!
     private var filter: Role? = null
-    private val adapter = UserAdapter { user ->
-        user.active = !user.active
-        val status = getString(if (user.active) R.string.status_active else R.string.status_suspended)
-        Toast.makeText(requireContext(), getString(R.string.msg_user_status, user.name, status), Toast.LENGTH_SHORT).show()
-        refresh()
-    }
+
+    private val adapter = UserAdapter(
+        onEdit = { user -> openForm(user.id) },
+        onDelete = { user -> confirmDelete(user) }
+    )
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, state: Bundle?): View {
         _binding = FragmentAdminUsersBinding.inflate(inflater, container, false)
@@ -44,11 +45,35 @@ class AdminUsersFragment : Fragment() {
             }
             refresh()
         }
-        refresh()
+        binding.fabAdd.setOnClickListener { openForm(null) }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        refresh() // al volver del formulario se ven los cambios
     }
 
     private fun refresh() {
         adapter.submit(FakeRepository.users.filter { filter == null || it.role == filter })
+    }
+
+    /** Abre el formulario: sin id crea un usuario nuevo, con id lo edita. */
+    private fun openForm(userId: Int?) {
+        val intent = Intent(requireContext(), UserFormActivity::class.java)
+        userId?.let { intent.putExtra(UserFormActivity.EXTRA_ID, it) }
+        startActivity(intent)
+    }
+
+    private fun confirmDelete(user: User) {
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(R.string.delete_user_confirm, user.name))
+            .setNegativeButton(R.string.action_cancel, null)
+            .setPositiveButton(R.string.action_delete) { _, _ ->
+                FakeRepository.users.remove(user)
+                refresh()
+                Toast.makeText(requireContext(), R.string.msg_user_deleted, Toast.LENGTH_SHORT).show()
+            }
+            .show()
     }
 
     override fun onDestroyView() {
@@ -56,8 +81,10 @@ class AdminUsersFragment : Fragment() {
         _binding = null
     }
 
-    private class UserAdapter(private val onToggle: (User) -> Unit) :
-        RecyclerView.Adapter<UserAdapter.Holder>() {
+    class UserAdapter(
+        private val onEdit: (User) -> Unit,
+        private val onDelete: (User) -> Unit
+    ) : RecyclerView.Adapter<UserAdapter.Holder>() {
 
         private var items: List<User> = emptyList()
 
@@ -79,28 +106,28 @@ class AdminUsersFragment : Fragment() {
             with(holder.binding) {
                 tvName.text = user.name
                 tvEmail.text = user.email
-                tvRole.setText(
-                    when (user.role) {
-                        Role.BUYER -> R.string.role_buyer
-                        Role.SELLER -> R.string.role_seller
-                        Role.ADMIN -> R.string.role_admin
-                    }
-                )
+                tvRole.setText(roleLabel(user.role))
                 if (user.active) {
                     tvStatus.setText(R.string.status_active)
                     tvStatus.setTextColor(ContextCompat.getColor(ctx, R.color.tn_status_ok))
                     tvStatus.setBackgroundResource(R.drawable.bg_badge_ok)
-                    btnToggle.setText(R.string.btn_suspend)
                 } else {
                     tvStatus.setText(R.string.status_suspended)
                     tvStatus.setTextColor(ContextCompat.getColor(ctx, R.color.tn_status_error))
                     tvStatus.setBackgroundResource(R.drawable.bg_badge_error)
-                    btnToggle.setText(R.string.btn_activate)
                 }
-                // El administrador no puede suspenderse a sí mismo
-                btnToggle.visibility = if (user.role == Role.ADMIN) View.GONE else View.VISIBLE
-                btnToggle.setOnClickListener { onToggle(user) }
+                btnEdit.setOnClickListener { onEdit(user) }
+                // Un administrador no se puede eliminar desde la app
+                btnDelete.visibility = if (user.role == Role.ADMIN) View.INVISIBLE else View.VISIBLE
+                btnDelete.setOnClickListener { onDelete(user) }
             }
         }
     }
+}
+
+/** Texto del rol para mostrar en pantalla. */
+fun roleLabel(role: Role): Int = when (role) {
+    Role.BUYER -> R.string.role_buyer
+    Role.SELLER -> R.string.role_seller
+    Role.ADMIN -> R.string.role_admin
 }
