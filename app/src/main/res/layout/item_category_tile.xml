@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Ícono de categoría en la fila deslizable del inicio -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tile"
+    android:layout_width="@dimen/category_tile"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/space_xs"
+    android:layout_marginEnd="@dimen/space_xs"
+    android:background="?attr/selectableItemBackground"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="@dimen/space_xs">
+
+    <ImageView
+        android:id="@+id/ivIcon"
+        android:layout_width="@dimen/logo_size_small"
+        android:layout_height="@dimen/logo_size_small"
+        android:background="@drawable/bg_icon_circle"
+        android:importantForAccessibility="no"
+        android:padding="@dimen/space_m" />
+
+    <TextView
+        android:id="@+id/tvName"
+        style="@style/Text.TechNova.Caption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_xs"
+        android:ellipsize="end"
+        android:maxLines="1" />
+</LinearLayout>

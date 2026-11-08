@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Checkout (RF-03): dirección de envío, método de pago y confirmación -->
+<!-- Checkout y pasarela de pagos (RF-03): dirección, método de pago con su formulario y confirmación -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -136,6 +136,197 @@
                             android:text="@string/pay_cash"
                             app:buttonTint="@color/tn_mint" />
                     </RadioGroup>
+
+                    <!-- Formulario de tarjeta (visible cuando se elige tarjeta) -->
+                    <LinearLayout
+                        android:id="@+id/layoutCard"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_m"
+                        android:orientation="vertical">
+
+                        <!-- Vista previa de la tarjeta -->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/credit_card_height"
+                            android:background="@drawable/bg_credit_card"
+                            android:orientation="vertical"
+                            android:padding="@dimen/space_l">
+
+                            <ImageView
+                                android:layout_width="@dimen/icon_l"
+                                android:layout_height="@dimen/icon_l"
+                                android:importantForAccessibility="no"
+                                android:src="@drawable/ic_credit_card"
+                                app:tint="@color/tn_white" />
+
+                            <TextView
+                                android:id="@+id/tvCardNumber"
+                                android:layout_width="wrap_content"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"
+                                android:gravity="center_vertical"
+                                android:letterSpacing="0.1"
+                                android:text="@string/card_preview_number"
+                                android:textColor="@color/tn_white"
+                                android:textSize="@dimen/text_title"
+                                android:textStyle="bold" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/tvCardName"
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:ellipsize="end"
+                                    android:maxLines="1"
+                                    android:text="@string/card_preview_name"
+                                    android:textColor="@color/tn_white"
+                                    android:textSize="@dimen/text_body" />
+
+                                <TextView
+                                    android:id="@+id/tvCardExpiry"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/card_preview_expiry"
+                                    android:textColor="@color/tn_white"
+                                    android:textSize="@dimen/text_body" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tilCardNumber"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/space_m"
+                            android:hint="@string/hint_card_number"
+                            app:counterEnabled="true"
+                            app:counterMaxLength="16"
+                            app:startIconDrawable="@drawable/ic_credit_card"
+                            app:startIconTint="@color/tn_indigo">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etCardNumber"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="number"
+                                android:maxLength="16" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/tilCardName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/space_s"
+                            android:hint="@string/hint_card_name">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/etCardName"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="textCapCharacters" />
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/space_s"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/tilCardExpiry"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="@dimen/space_s"
+                                android:layout_weight="1"
+                                android:hint="@string/hint_card_expiry">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/etCardExpiry"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="date"
+                                    android:maxLength="5" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/tilCardCvv"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/space_s"
+                                android:layout_weight="1"
+                                android:hint="@string/hint_card_cvv"
+                                app:endIconMode="password_toggle">
+
+                                <com.google.android.material.textfield.TextInputEditText
+                                    android:id="@+id/etCardCvv"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="numberPassword"
+                                    android:maxLength="4" />
+                            </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- PSE: selección de banco -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilBank"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_m"
+                        android:hint="@string/hint_bank"
+                        android:visibility="gone">
+
+                        <AutoCompleteTextView
+                            android:id="@+id/actBank"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="none" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Nequi: número de celular -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tilNequi"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_m"
+                        android:hint="@string/hint_nequi_phone"
+                        android:visibility="gone">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etNequi"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="phone"
+                            android:maxLength="10" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Contraentrega: solo información -->
+                    <TextView
+                        android:id="@+id/tvCashInfo"
+                        style="@style/Text.TechNova.Body"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_m"
+                        android:background="@drawable/bg_badge_pending"
+                        android:padding="@dimen/space_m"
+                        android:text="@string/cash_info"
+                        android:visibility="gone" />
+
+                    <TextView
+                        style="@style/Text.TechNova.Caption"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/space_m"
+                        android:drawablePadding="@dimen/space_xs"
+                        android:gravity="center_vertical"
+                        android:text="@string/secure_payment"
+                        app:drawableStartCompat="@drawable/ic_lock" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -172,5 +363,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/space_l"
-        android:text="@string/btn_pay" />
+        android:text="@string/btn_pay"
+        app:icon="@drawable/ic_lock"
+        app:iconGravity="textStart"
+        app:iconTint="@color/tn_white" />
 </LinearLayout>

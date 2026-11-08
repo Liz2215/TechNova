@@ -111,11 +111,20 @@
                         android:inputType="textPassword" />
                 </com.google.android.material.textfield.TextInputLayout>
 
+                <!-- Recuperación de contraseña -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnForgot"
+                    style="@style/Widget.TechNova.Button.Text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:text="@string/txt_forgot_password" />
+
                 <TextView
                     style="@style/Text.TechNova.Caption"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/space_l"
+                    android:layout_marginTop="@dimen/space_xs"
                     android:text="@string/label_role" />
 
                 <!-- Selector de rol: Comprador, Vendedor o Administrador -->
@@ -170,6 +179,18 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/space_s"
                     android:text="@string/txt_or" />
+
+                <!-- Autenticación con biometría (huella o rostro) -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnBiometric"
+                    style="@style/Widget.TechNova.Button.Outlined"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_s"
+                    android:text="@string/btn_biometric"
+                    app:icon="@drawable/ic_fingerprint"
+                    app:iconGravity="textStart"
+                    app:iconTint="@color/tn_indigo" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnGoogle"

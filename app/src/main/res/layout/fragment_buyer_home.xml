@@ -1,85 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Catálogo del comprador (RF-02): búsqueda, filtro por categoría y productos -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- Pantalla de inicio del comprador: saludo, promoción, categorías y más vendidos -->
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <TextView
-        style="@style/Text.TechNova.Title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/space_l"
-        android:layout_marginTop="@dimen/space_l"
-        android:text="@string/buyer_title" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/tilSearch"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/space_l"
-        android:layout_marginTop="@dimen/space_m"
-        android:layout_marginEnd="@dimen/space_l"
-        android:hint="@string/hint_search"
-        app:boxCornerRadiusBottomEnd="@dimen/radius_l"
-        app:boxCornerRadiusBottomStart="@dimen/radius_l"
-        app:boxCornerRadiusTopEnd="@dimen/radius_l"
-        app:boxCornerRadiusTopStart="@dimen/radius_l"
-        app:endIconMode="clear_text"
-        app:startIconDrawable="@drawable/ic_search"
-        app:startIconTint="@color/tn_indigo">
+        android:orientation="vertical"
+        android:paddingTop="@dimen/space_l"
+        android:paddingBottom="@dimen/space_xl">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etSearch"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:imeOptions="actionSearch"
-            android:inputType="text" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <HorizontalScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/space_s"
-        android:paddingStart="@dimen/space_l"
-        android:paddingEnd="@dimen/space_l"
-        android:clipToPadding="false"
-        android:scrollbars="none">
-
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/chipCategories"
+        <TextView
+            style="@style/Text.TechNova.Headline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:checkedChip="@id/chipAll"
-            app:selectionRequired="true"
-            app:singleLine="true"
-            app:singleSelection="true">
+            android:layout_marginStart="@dimen/space_l"
+            android:text="@string/home_greeting" />
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chipAll"
-                style="@style/Widget.Material3.Chip.Filter"
+        <TextView
+            style="@style/Text.TechNova.Body"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_l"
+            android:text="@string/home_subtitle" />
+
+        <!-- Banner de promoción -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/promo_height"
+            android:layout_marginStart="@dimen/space_l"
+            android:layout_marginTop="@dimen/space_l"
+            android:layout_marginEnd="@dimen/space_l"
+            android:background="@drawable/bg_promo">
+
+            <ImageView
+                android:layout_width="@dimen/product_image_grid"
+                android:layout_height="@dimen/product_image_grid"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="@dimen/space_l"
+                android:alpha="0.9"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_watch"
+                app:tint="@color/tn_white" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:padding="@dimen/space_l">
+
+                <TextView
+                    style="@style/Text.TechNova.Badge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_badge_ok"
+                    android:text="@string/promo_tag"
+                    android:textColor="@color/tn_status_ok" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_s"
+                    android:maxWidth="@dimen/product_image_detail"
+                    android:text="@string/promo_title"
+                    android:textColor="@color/tn_white"
+                    android:textSize="@dimen/text_title"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnPromo"
+                    style="@style/Widget.TechNova.Button.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/space_s"
+                    android:text="@string/promo_button"
+                    app:backgroundTint="@color/tn_mint" />
+            </LinearLayout>
+        </FrameLayout>
+
+        <TextView
+            style="@style/Text.TechNova.Subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_l"
+            android:layout_marginTop="@dimen/space_l"
+            android:text="@string/section_categories" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvCategories"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_s"
+            android:clipToPadding="false"
+            android:orientation="horizontal"
+            android:paddingStart="@dimen/space_m"
+            android:paddingEnd="@dimen/space_m"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/space_l"
+            android:layout_marginTop="@dimen/space_m"
+            android:layout_marginEnd="@dimen/space_s"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/Text.TechNova.Subtitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/section_best_sellers" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSeeAll"
+                style="@style/Widget.TechNova.Button.Text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/filter_all"
-                app:chipBackgroundColor="@color/selector_chip_bg" />
-        </com.google.android.material.chip.ChipGroup>
-    </HorizontalScrollView>
+                android:text="@string/btn_see_all" />
+        </LinearLayout>
 
-    <TextView
-        style="@style/Text.TechNova.Subtitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/space_l"
-        android:layout_marginTop="@dimen/space_s"
-        android:text="@string/section_featured" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvProducts"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:padding="@dimen/space_m"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="2" />
-</LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvBestSellers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:orientation="horizontal"
+            android:paddingStart="@dimen/space_m"
+            android:paddingEnd="@dimen/space_m"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>
