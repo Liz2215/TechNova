@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Configuración general de la tienda -->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/space_l">
+
+        <TextView
+            style="@style/Text.TechNova.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/settings_title" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_m">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/space_s">
+
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/swMaintenance"
+                    style="@style/Widget.TechNova.Switch"
+                    android:text="@string/setting_maintenance" />
+
+                <TextView
+                    style="@style/Text.TechNova.Caption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_s"
+                    android:text="@string/setting_maintenance_desc" />
+
+                <View
+                    style="@style/Widget.TechNova.Divider"
+                    android:layout_marginTop="@dimen/space_s" />
+
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/swNotifications"
+                    style="@style/Widget.TechNova.Switch"
+                    android:checked="true"
+                    android:text="@string/setting_notifications" />
+
+                <TextView
+                    style="@style/Text.TechNova.Caption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_s"
+                    android:text="@string/setting_notifications_desc" />
+
+                <View
+                    style="@style/Widget.TechNova.Divider"
+                    android:layout_marginTop="@dimen/space_s" />
+
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/swNewSellers"
+                    style="@style/Widget.TechNova.Switch"
+                    android:checked="true"
+                    android:text="@string/setting_new_sellers" />
+
+                <TextView
+                    style="@style/Text.TechNova.Caption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/space_s"
+                    android:layout_marginBottom="@dimen/space_s"
+                    android:text="@string/setting_new_sellers_desc" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilShipping"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_l"
+            android:hint="@string/setting_shipping"
+            app:startIconDrawable="@drawable/ic_shipping"
+            app:startIconTint="@color/tn_indigo">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etShipping"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            style="@style/Text.TechNova.Subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_l"
+            android:text="@string/section_payment_gateways" />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/cbWompi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:minHeight="@dimen/touch_min"
+            android:text="@string/gateway_wompi"
+            app:buttonTint="@color/tn_indigo" />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/cbPayU"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/touch_min"
+            android:text="@string/gateway_payu"
+            app:buttonTint="@color/tn_indigo" />
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/cbMercadoPago"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/touch_min"
+            android:text="@string/gateway_mercadopago"
+            app:buttonTint="@color/tn_indigo" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSave"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_l"
+            android:text="@string/action_save" />
+    </LinearLayout>
+</ScrollView>
