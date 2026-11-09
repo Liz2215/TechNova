@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Espaciados -->
     <dimen name="space_xs">4dp</dimen>
     <dimen name="space_s">8dp</dimen>
     <dimen name="space_m">12dp</dimen>
@@ -8,14 +7,12 @@
     <dimen name="space_xl">24dp</dimen>
     <dimen name="space_xxl">32dp</dimen>
 
-    <!-- Bordes y elevación -->
     <dimen name="radius_s">8dp</dimen>
     <dimen name="radius_m">14dp</dimen>
     <dimen name="radius_l">22dp</dimen>
     <dimen name="card_elevation">3dp</dimen>
     <dimen name="stroke_width">1dp</dimen>
 
-    <!-- Tamaños táctiles y de componentes (RNF-03: mínimo 48dp) -->
     <dimen name="touch_min">48dp</dimen>
     <dimen name="button_height">52dp</dimen>
     <dimen name="icon_s">20dp</dimen>
@@ -37,7 +34,6 @@
     <dimen name="chart_bar_width">36dp</dimen>
     <dimen name="stat_card_min_height">96dp</dimen>
 
-    <!-- Textos -->
     <dimen name="text_caption">12sp</dimen>
     <dimen name="text_body">14sp</dimen>
     <dimen name="text_subtitle">16sp</dimen>

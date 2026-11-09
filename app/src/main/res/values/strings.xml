@@ -3,7 +3,6 @@
     <string name="app_name">TechNova</string>
     <string name="app_slogan">Gadgets y tecnología a un toque</string>
 
-    <!-- Generales -->
     <string name="action_logout">Cerrar sesión</string>
     <string name="action_save">Guardar</string>
     <string name="action_cancel">Cancelar</string>
@@ -20,7 +19,6 @@
     <string name="cd_plus">Sumar uno</string>
     <string name="msg_not_available">Función disponible en la siguiente entrega</string>
 
-    <!-- Login / registro -->
     <string name="login_title">Bienvenido de nuevo</string>
     <string name="login_subtitle">Ingresa para continuar comprando o gestionando tu tienda</string>
     <string name="hint_email">Correo electrónico</string>
@@ -46,7 +44,6 @@
     <string name="err_accept">Debes aceptar la autorización y los términos</string>
     <string name="msg_register_ok">Cuenta creada. Ahora inicia sesión.</string>
 
-    <!-- Comprador -->
     <string name="buyer_title">Hola, ¿qué buscas hoy?</string>
     <string name="hint_search">Buscar gadgets…</string>
     <string name="section_featured">Destacados</string>
@@ -92,7 +89,6 @@
     <string name="nav_categories">Categorías</string>
     <string name="nav_profile">Perfil</string>
 
-    <!-- Vendedor -->
     <string name="seller_title">Panel de vendedor</string>
     <string name="section_summary_week">Ventas de la semana</string>
     <string name="stat_sales">Ventas (COP)</string>
@@ -122,7 +118,6 @@
     <string name="btn_change_status">Cambiar estado</string>
     <string name="msg_status_changed">Pedido #%1$s: %2$s</string>
 
-    <!-- Administrador -->
     <string name="admin_title">Administración</string>
     <string name="section_business_stats">Estadísticas del negocio</string>
     <string name="stat_active_sellers">Vendedores activos</string>
@@ -157,7 +152,6 @@
     <string name="label_percent">%1$d%%</string>
     <string name="msg_settings_saved">Configuración guardada</string>
 
-    <!-- Splash, biometría y recuperación -->
     <string name="splash_loading">Cargando…</string>
     <string name="btn_biometric">Ingresar con huella</string>
     <string name="cd_fingerprint">Huella digital</string>
@@ -174,7 +168,6 @@
     <string name="btn_back_login">Volver al inicio de sesión</string>
     <string name="btn_resend">Reenviar enlace</string>
 
-    <!-- Inicio del comprador -->
     <string name="nav_catalog">Catálogo</string>
     <string name="home_greeting">Hola, Laura</string>
     <string name="home_subtitle">Descubre lo último en tecnología</string>
@@ -184,7 +177,6 @@
     <string name="section_best_sellers">Más vendidos</string>
     <string name="btn_see_all">Ver todo</string>
 
-    <!-- Pasarela de pago -->
     <string name="hint_card_number">Número de tarjeta</string>
     <string name="hint_card_name">Nombre en la tarjeta</string>
     <string name="hint_card_expiry">MM/AA</string>
@@ -199,7 +191,6 @@
     <string name="processing_payment">Procesando pago…</string>
     <string name="err_card_number">Número de tarjeta inválido</string>
 
-    <!-- Vendedor: perfil -->
     <string name="seller_store_name">Tienda Samuel Tech</string>
     <string name="seller_email">samuel.ortiz@technova.co</string>
     <string name="seller_rating">4,8</string>
@@ -211,7 +202,6 @@
     <string name="seller_notifications">Notificaciones</string>
     <string name="seller_help">Ayuda y soporte</string>
 
-    <!-- Administrador: usuarios, productos y reportes -->
     <string name="nav_dashboard">Inicio</string>
     <string name="nav_reports">Reportes</string>
     <string name="nav_settings_short">Ajustes</string>
