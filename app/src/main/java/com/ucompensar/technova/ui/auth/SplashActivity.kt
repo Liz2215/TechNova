@@ -8,15 +8,13 @@ import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import com.ucompensar.technova.databinding.ActivitySplashBinding
 
-/** Pantalla de bienvenida: muestra el logo unos segundos y abre el inicio de sesión. */
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivitySplashBinding
     private val handler = Handler(Looper.getMainLooper())
     private val openLogin = Runnable {
         startActivity(Intent(this, LoginActivity::class.java))
-        finish() // para que el botón atrás no regrese al splash
+        finish()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,7 +22,6 @@ class SplashActivity : AppCompatActivity() {
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Animación de entrada del logo
         binding.ivLogo.alpha = 0f
         binding.ivLogo.scaleX = 0.6f
         binding.ivLogo.scaleY = 0.6f

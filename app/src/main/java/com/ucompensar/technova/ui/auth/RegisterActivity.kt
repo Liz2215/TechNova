@@ -7,9 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.ucompensar.technova.R
 import com.ucompensar.technova.databinding.ActivityRegisterBinding
 
-/** Registro de usuarios con aceptación de tratamiento de datos y términos. */
 class RegisterActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityRegisterBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {

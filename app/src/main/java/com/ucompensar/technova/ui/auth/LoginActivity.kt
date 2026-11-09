@@ -16,9 +16,7 @@ import com.ucompensar.technova.ui.admin.AdminActivity
 import com.ucompensar.technova.ui.buyer.BuyerActivity
 import com.ucompensar.technova.ui.seller.SellerActivity
 
-/** Inicio de sesión. Según el rol elegido abre el panel correspondiente. */
 class LoginActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,7 +50,6 @@ class LoginActivity : AppCompatActivity() {
         return binding.tilEmail.error == null && binding.tilPassword.error == null
     }
 
-    /** Autenticación con huella o rostro usando BiometricPrompt. */
     private fun showBiometricPrompt() {
         val authenticators = BIOMETRIC_STRONG or BIOMETRIC_WEAK
         val manager = BiometricManager.from(this)

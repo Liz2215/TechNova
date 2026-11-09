@@ -8,9 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.ucompensar.technova.R
 import com.ucompensar.technova.databinding.ActivityForgotPasswordBinding
 
-/** Recuperación de contraseña: valida el correo y muestra la confirmación de envío. */
 class ForgotPasswordActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityForgotPasswordBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,7 +31,6 @@ class ForgotPasswordActivity : AppCompatActivity() {
             return
         }
         binding.tilEmail.error = null
-        // En la fase de backend aquí se llamará al servicio que envía el correo
         binding.tvSentMessage.text = getString(R.string.forgot_sent_msg, email)
         binding.layoutForm.visibility = View.GONE
         binding.layoutSent.visibility = View.VISIBLE
