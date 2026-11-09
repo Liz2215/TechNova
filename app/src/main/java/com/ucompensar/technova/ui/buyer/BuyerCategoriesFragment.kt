@@ -12,9 +12,7 @@ import com.ucompensar.technova.data.FakeRepository
 import com.ucompensar.technova.databinding.FragmentBuyerCategoriesBinding
 import com.ucompensar.technova.databinding.ItemCategoryBinding
 
-/** Lista de categorías. Al tocar una se abre el catálogo filtrado. */
 class BuyerCategoriesFragment : Fragment() {
-
     private var _binding: FragmentBuyerCategoriesBinding? = null
     private val binding get() = _binding!!
 
@@ -38,7 +36,6 @@ class BuyerCategoriesFragment : Fragment() {
         private val items: List<Category>,
         private val onClick: (Category) -> Unit
     ) : RecyclerView.Adapter<CategoryAdapter.Holder>() {
-
         class Holder(val binding: ItemCategoryBinding) : RecyclerView.ViewHolder(binding.root)
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =

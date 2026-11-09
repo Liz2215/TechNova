@@ -11,9 +11,7 @@ import com.ucompensar.technova.R
 import com.ucompensar.technova.databinding.FragmentBuyerProfileBinding
 import com.ucompensar.technova.ui.common.logout
 
-/** Perfil del comprador con opciones de cuenta exigidas por la normativa. */
 class BuyerProfileFragment : Fragment() {
-
     private var _binding: FragmentBuyerProfileBinding? = null
     private val binding get() = _binding!!
 

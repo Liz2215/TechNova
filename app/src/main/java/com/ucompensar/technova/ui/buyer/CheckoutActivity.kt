@@ -17,12 +17,7 @@ import com.ucompensar.technova.databinding.ActivityCheckoutBinding
 import com.ucompensar.technova.databinding.DialogOrderSuccessBinding
 import com.ucompensar.technova.ui.common.toCop
 
-/**
- * Pasarela de pagos: dirección de envío, método de pago (tarjeta, PSE, Nequi o contraentrega)
- * con su propio formulario, resumen y confirmación del pedido.
- */
 class CheckoutActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityCheckoutBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,11 +34,9 @@ class CheckoutActivity : AppCompatActivity() {
         val banks = resources.getStringArray(R.array.banks)
         binding.actBank.setAdapter(ArrayAdapter(this, android.R.layout.simple_list_item_1, banks))
 
-        // Muestra solo el formulario del método de pago elegido
         binding.rgPayment.setOnCheckedChangeListener { _, checkedId -> showPaymentForm(checkedId) }
         showPaymentForm(binding.rgPayment.checkedRadioButtonId)
 
-        // La tarjeta de vista previa se actualiza mientras se escribe
         binding.etCardNumber.doAfterTextChanged { text ->
             binding.tvCardNumber.text = if (text.isNullOrEmpty()) getString(R.string.card_preview_number)
             else text.chunked(4).joinToString(" ")
@@ -94,7 +87,6 @@ class CheckoutActivity : AppCompatActivity() {
         return valid
     }
 
-    /** Simula la respuesta de la pasarela (en la fase de backend se conectará con Wompi / PayU). */
     private fun processPayment() {
         binding.btnPay.isEnabled = false
         binding.btnPay.setText(R.string.processing_payment)

@@ -8,9 +8,7 @@ import com.ucompensar.technova.data.FakeRepository
 import com.ucompensar.technova.databinding.ActivityProductDetailBinding
 import com.ucompensar.technova.ui.common.toCop
 
-/** Detalle de un producto del catálogo. */
 class ProductDetailActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityProductDetailBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {

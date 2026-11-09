@@ -14,9 +14,7 @@ import com.ucompensar.technova.data.FakeRepository
 import com.ucompensar.technova.databinding.FragmentBuyerHomeBinding
 import com.ucompensar.technova.databinding.ItemCategoryTileBinding
 
-/** Inicio del comprador: promoción, accesos a categorías y productos más vendidos. */
 class BuyerHomeFragment : Fragment() {
-
     private var _binding: FragmentBuyerHomeBinding? = null
     private val binding get() = _binding!!
 
@@ -35,7 +33,6 @@ class BuyerHomeFragment : Fragment() {
             buyer?.openCatalog(category.name)
         }
 
-        // Más vendidos: los 5 productos con mejor calificación
         val bestSellers = FakeRepository.products.sortedByDescending { it.rating }.take(5)
         val adapter = ProductGridAdapter(
             onClick = { product ->
@@ -58,12 +55,10 @@ class BuyerHomeFragment : Fragment() {
         _binding = null
     }
 
-    /** Adaptador de los íconos de categoría (fila horizontal). */
     class CategoryTileAdapter(
         private val items: List<Category>,
         private val onClick: (Category) -> Unit
     ) : RecyclerView.Adapter<CategoryTileAdapter.Holder>() {
-
         class Holder(val binding: ItemCategoryTileBinding) : RecyclerView.ViewHolder(binding.root)
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =

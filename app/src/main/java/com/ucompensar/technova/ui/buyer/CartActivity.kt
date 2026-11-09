@@ -13,9 +13,7 @@ import com.ucompensar.technova.databinding.ActivityCartBinding
 import com.ucompensar.technova.databinding.ItemCartBinding
 import com.ucompensar.technova.ui.common.toCop
 
-/** Carrito de compras: cambiar cantidades, eliminar y ver totales (RF-03). */
 class CartActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityCartBinding
     private val adapter = CartAdapter { refreshTotals() }
 
@@ -50,7 +48,6 @@ class CartActivity : AppCompatActivity() {
 
     private class CartAdapter(private val onChange: () -> Unit) :
         RecyclerView.Adapter<CartAdapter.Holder>() {
-
         class Holder(val binding: ItemCartBinding) : RecyclerView.ViewHolder(binding.root)
 
         private val items: MutableList<CartItem> get() = FakeRepository.cart
@@ -68,7 +65,7 @@ class CartActivity : AppCompatActivity() {
                 tvPrice.text = (item.product.price * item.quantity).toCop()
                 tvQty.text = item.quantity.toString()
                 btnPlus.setOnClickListener {
-                    if (item.quantity < item.product.stock) item.quantity++ // validar stock
+                    if (item.quantity < item.product.stock) item.quantity++
                     notifyItemChanged(holder.bindingAdapterPosition)
                     onChange()
                 }

@@ -8,9 +8,7 @@ import com.ucompensar.technova.R
 import com.ucompensar.technova.databinding.ActivityPanelBinding
 import com.ucompensar.technova.ui.common.logout
 
-/** Panel del rol Comprador: Inicio, Catálogo, Categorías y Perfil. */
 class BuyerActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityPanelBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,7 +39,6 @@ class BuyerActivity : AppCompatActivity() {
         if (savedInstanceState == null) show(BuyerHomeFragment())
     }
 
-    /** Abre la pestaña Catálogo, filtrada por categoría si se indica una. */
     fun openCatalog(category: String? = null) {
         binding.bottomNav.menu.findItem(R.id.nav_buyer_catalog).isChecked = true
         show(CatalogFragment.newInstance(category))

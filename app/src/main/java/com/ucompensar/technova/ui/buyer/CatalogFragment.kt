@@ -13,9 +13,7 @@ import com.ucompensar.technova.R
 import com.ucompensar.technova.data.FakeRepository
 import com.ucompensar.technova.databinding.FragmentCatalogBinding
 
-/** Catálogo de productos: búsqueda por nombre y filtro por categoría (RF-02). */
 class CatalogFragment : Fragment() {
-
     private var _binding: FragmentCatalogBinding? = null
     private val binding get() = _binding!!
     private lateinit var adapter: ProductGridAdapter
@@ -47,7 +45,6 @@ class CatalogFragment : Fragment() {
         applyFilters()
     }
 
-    /** Crea un chip por cada categoría a partir del arreglo de recursos. */
     private fun buildCategoryChips() {
         val categories = resources.getStringArray(R.array.product_categories)
         categories.forEach { name ->
