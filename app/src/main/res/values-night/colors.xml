@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- RNF-03: soporte de modo oscuro -->
 <resources>
     <color name="tn_indigo">#9C95F0</color>
     <color name="tn_indigo_dark">#14122E</color>
