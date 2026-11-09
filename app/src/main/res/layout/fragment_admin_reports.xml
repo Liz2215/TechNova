@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Reporte de ventas: filtro por período, indicadores, gráfico, más vendidos y ventas por categoría -->
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -65,7 +64,6 @@
             <include android:id="@+id/statTicket" layout="@layout/layout_stat_card" />
         </LinearLayout>
 
-        <!-- Gráfico de ventas (se dibuja desde el código) -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -100,7 +98,6 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Productos más vendidos -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -119,11 +116,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/space_xs"
                     android:text="@string/section_top_products" />
-                <!-- Las filas se agregan desde el código con item_top_product -->
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- Participación por categoría -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -142,7 +137,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/space_s"
                     android:text="@string/section_sales_by_category" />
-                <!-- Las filas se agregan desde el código con item_category_progress -->
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 

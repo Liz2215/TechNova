@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Pantalla de inicio del comprador: saludo, promoción, categorías y más vendidos -->
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -26,7 +25,6 @@
             android:layout_marginStart="@dimen/space_l"
             android:text="@string/home_subtitle" />
 
-        <!-- Banner de promoción -->
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/promo_height"
@@ -35,15 +33,15 @@
             android:layout_marginEnd="@dimen/space_l"
             android:background="@drawable/bg_promo">
 
-            <ImageView
+            <com.google.android.material.imageview.ShapeableImageView
                 android:layout_width="@dimen/product_image_grid"
                 android:layout_height="@dimen/product_image_grid"
                 android:layout_gravity="end|center_vertical"
                 android:layout_marginEnd="@dimen/space_l"
-                android:alpha="0.9"
                 android:importantForAccessibility="no"
-                android:src="@drawable/ic_watch"
-                app:tint="@color/tn_white" />
+                android:scaleType="centerCrop"
+                android:src="@drawable/promo_watch"
+                app:shapeAppearanceOverlay="@style/ShapeAppearance.TechNova.Photo" />
 
             <LinearLayout
                 android:layout_width="wrap_content"

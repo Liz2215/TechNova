@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Checkout y pasarela de pagos (RF-03): dirección, método de pago con su formulario y confirmación -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -137,7 +136,6 @@
                             app:buttonTint="@color/tn_mint" />
                     </RadioGroup>
 
-                    <!-- Formulario de tarjeta (visible cuando se elige tarjeta) -->
                     <LinearLayout
                         android:id="@+id/layoutCard"
                         android:layout_width="match_parent"
@@ -145,7 +143,6 @@
                         android:layout_marginTop="@dimen/space_m"
                         android:orientation="vertical">
 
-                        <!-- Vista previa de la tarjeta -->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/credit_card_height"
@@ -272,7 +269,6 @@
                         </LinearLayout>
                     </LinearLayout>
 
-                    <!-- PSE: selección de banco -->
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/tilBank"
                         style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
@@ -289,7 +285,6 @@
                             android:inputType="none" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <!-- Nequi: número de celular -->
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/tilNequi"
                         android:layout_width="match_parent"
@@ -306,7 +301,6 @@
                             android:maxLength="10" />
                     </com.google.android.material.textfield.TextInputLayout>
 
-                    <!-- Contraentrega: solo información -->
                     <TextView
                         android:id="@+id/tvCashInfo"
                         style="@style/Text.TechNova.Body"
