@@ -79,6 +79,11 @@ app/src/main/
 **Generar el APK:** `Build > Build App Bundle(s) / APK(s) > Build APK(s)` o `./gradlew assembleDebug`
 → queda en `app/build/outputs/apk/debug/app-debug.apk`.
 
+## Imágenes
+
+Las fotos de los productos están en `res/drawable-nodpi/` (formato WebP, livianas) y provienen de
+[Unsplash](https://unsplash.com/license), de uso libre. Los íconos de categorías y de la interfaz son vectores propios en `res/drawable/`.
+
 ## Tecnologías
 
 Kotlin 1.9 · Android Gradle Plugin 8.5 · compileSdk 34 · minSdk 24 · Material Components 1.12 · ConstraintLayout · RecyclerView · Fragments · ViewBinding · AndroidX Biometric
