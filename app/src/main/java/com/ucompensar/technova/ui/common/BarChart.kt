@@ -9,11 +9,6 @@ import android.widget.TextView
 import androidx.core.widget.TextViewCompat
 import com.ucompensar.technova.R
 
-/**
- * Dibuja un gráfico de barras sencillo con Views:
- * una barra (drawable bg_chart_bar) por valor, con altura proporcional al valor más alto.
- * Lo usan el panel del Vendedor y el reporte de ventas del Administrador.
- */
 fun drawBarChart(context: Context, bars: LinearLayout, labels: LinearLayout, values: List<Int>, names: List<String>) {
     bars.removeAllViews()
     labels.removeAllViews()

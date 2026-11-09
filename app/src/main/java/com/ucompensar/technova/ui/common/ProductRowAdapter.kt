@@ -8,12 +8,10 @@ import com.ucompensar.technova.data.FakeRepository
 import com.ucompensar.technova.data.Product
 import com.ucompensar.technova.databinding.ItemProductRowBinding
 
-/** Fila de producto con botones editar y eliminar. La usan el Vendedor y el Administrador. */
 class ProductRowAdapter(
     private val onEdit: (Product) -> Unit,
     private val onDelete: (Product) -> Unit
 ) : RecyclerView.Adapter<ProductRowAdapter.Holder>() {
-
     class Holder(val binding: ItemProductRowBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
