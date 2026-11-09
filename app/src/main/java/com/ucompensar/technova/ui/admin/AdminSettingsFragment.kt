@@ -9,9 +9,7 @@ import androidx.fragment.app.Fragment
 import com.ucompensar.technova.R
 import com.ucompensar.technova.databinding.FragmentAdminSettingsBinding
 
-/** Configuración general de la tienda (mantenimiento, notificaciones, envío y pasarelas). */
 class AdminSettingsFragment : Fragment() {
-
     private var _binding: FragmentAdminSettingsBinding? = null
     private val binding get() = _binding!!
 

@@ -15,9 +15,7 @@ import com.ucompensar.technova.databinding.ItemTopProductBinding
 import com.ucompensar.technova.ui.common.drawBarChart
 import com.ucompensar.technova.ui.common.toCompactCop
 
-/** Reporte de ventas: indicadores y gráfico según el período (semana, mes o año). */
 class AdminReportsFragment : Fragment() {
-
     private var _binding: FragmentAdminReportsBinding? = null
     private val binding get() = _binding!!
 
@@ -52,11 +50,10 @@ class AdminReportsFragment : Fragment() {
         }
     }
 
-    /** Actualiza indicadores y gráfico con los datos del período elegido. */
     private fun showPeriod(period: String) {
         val values = FakeRepository.salesByPeriod.getValue(period)
         val orders = FakeRepository.ordersByPeriod.getValue(period)
-        val total = values.sum() * 1_000L // los datos están en miles de pesos
+        val total = values.sum() * 1_000L
         val labels = when (period) {
             "month" -> R.array.month_weeks
             "year" -> R.array.year_quarters

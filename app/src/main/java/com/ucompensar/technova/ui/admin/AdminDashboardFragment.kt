@@ -12,9 +12,7 @@ import com.ucompensar.technova.data.Role
 import com.ucompensar.technova.databinding.FragmentAdminDashboardBinding
 import com.ucompensar.technova.ui.seller.OrderAdapter
 
-/** Dashboard principal del administrador: indicadores del negocio y pedidos recientes. */
 class AdminDashboardFragment : Fragment() {
-
     private var _binding: FragmentAdminDashboardBinding? = null
     private val binding get() = _binding!!
 
@@ -48,7 +46,6 @@ class AdminDashboardFragment : Fragment() {
             tvStatLabel.setText(R.string.stat_app_status)
         }
 
-        // Últimos pedidos de toda la tienda (solo lectura)
         val adapter = OrderAdapter(showActions = false)
         adapter.submit(FakeRepository.orders.take(4))
         binding.rvRecentOrders.adapter = adapter

@@ -17,9 +17,7 @@ import com.ucompensar.technova.data.User
 import com.ucompensar.technova.databinding.FragmentAdminUsersBinding
 import com.ucompensar.technova.databinding.ItemUserBinding
 
-/** Gestión de usuarios (RBAC): listado con filtro por rol, crear, editar y eliminar. */
 class AdminUsersFragment : Fragment() {
-
     private var _binding: FragmentAdminUsersBinding? = null
     private val binding get() = _binding!!
     private var filter: Role? = null
@@ -50,14 +48,13 @@ class AdminUsersFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        refresh() // al volver del formulario se ven los cambios
+        refresh()
     }
 
     private fun refresh() {
         adapter.submit(FakeRepository.users.filter { filter == null || it.role == filter })
     }
 
-    /** Abre el formulario: sin id crea un usuario nuevo, con id lo edita. */
     private fun openForm(userId: Int?) {
         val intent = Intent(requireContext(), UserFormActivity::class.java)
         userId?.let { intent.putExtra(UserFormActivity.EXTRA_ID, it) }
@@ -85,7 +82,6 @@ class AdminUsersFragment : Fragment() {
         private val onEdit: (User) -> Unit,
         private val onDelete: (User) -> Unit
     ) : RecyclerView.Adapter<UserAdapter.Holder>() {
-
         private var items: List<User> = emptyList()
 
         fun submit(list: List<User>) {
@@ -117,7 +113,6 @@ class AdminUsersFragment : Fragment() {
                     tvStatus.setBackgroundResource(R.drawable.bg_badge_error)
                 }
                 btnEdit.setOnClickListener { onEdit(user) }
-                // Un administrador no se puede eliminar desde la app
                 btnDelete.visibility = if (user.role == Role.ADMIN) View.INVISIBLE else View.VISIBLE
                 btnDelete.setOnClickListener { onDelete(user) }
             }
@@ -125,7 +120,6 @@ class AdminUsersFragment : Fragment() {
     }
 }
 
-/** Texto del rol para mostrar en pantalla. */
 fun roleLabel(role: Role): Int = when (role) {
     Role.BUYER -> R.string.role_buyer
     Role.SELLER -> R.string.role_seller

@@ -15,9 +15,7 @@ import com.ucompensar.technova.databinding.FragmentAdminProductsBinding
 import com.ucompensar.technova.ui.common.ProductRowAdapter
 import com.ucompensar.technova.ui.seller.ProductFormActivity
 
-/** Gestión de productos del administrador: ve, crea, edita y elimina productos de toda la tienda. */
 class AdminProductsFragment : Fragment() {
-
     private var _binding: FragmentAdminProductsBinding? = null
     private val binding get() = _binding!!
     private lateinit var adapter: ProductRowAdapter
@@ -28,7 +26,6 @@ class AdminProductsFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        // Reutiliza el mismo adaptador y formulario del vendedor
         adapter = ProductRowAdapter(
             onEdit = { product ->
                 val intent = Intent(requireContext(), ProductFormActivity::class.java)

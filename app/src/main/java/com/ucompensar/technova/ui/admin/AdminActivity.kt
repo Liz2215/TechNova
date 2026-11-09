@@ -7,9 +7,7 @@ import com.ucompensar.technova.R
 import com.ucompensar.technova.databinding.ActivityPanelBinding
 import com.ucompensar.technova.ui.common.logout
 
-/** Panel del rol Administrador: Inicio (dashboard), Usuarios, Productos, Reportes y Ajustes. */
 class AdminActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityPanelBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {

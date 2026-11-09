@@ -11,9 +11,7 @@ import com.ucompensar.technova.data.Role
 import com.ucompensar.technova.data.User
 import com.ucompensar.technova.databinding.ActivityUserFormBinding
 
-/** Crear o editar un usuario. Si recibe un ID carga sus datos para editarlos. */
 class UserFormActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityUserFormBinding
     private var user: User? = null
     private val roles = Role.values()
@@ -24,7 +22,7 @@ class UserFormActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.toolbar.setNavigationOnClickListener { finish() }
 
-        val roleNames = resources.getStringArray(R.array.user_roles) // mismo orden que Role
+        val roleNames = resources.getStringArray(R.array.user_roles)
         binding.actRole.setAdapter(ArrayAdapter(this, android.R.layout.simple_list_item_1, roleNames))
 
         user = FakeRepository.findUser(intent.getIntExtra(EXTRA_ID, -1))
