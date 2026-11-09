@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Menú emergente para cambiar el estado de un pedido -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/status_pending" android:title="@string/status_pending" />
     <item android:id="@+id/status_shipped" android:title="@string/status_shipped" />

@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Menú inferior del rol Vendedor -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/nav_seller_home" android:icon="@drawable/ic_home" android:title="@string/nav_home" />
     <item android:id="@+id/nav_seller_products" android:icon="@drawable/ic_products" android:title="@string/nav_products" />
