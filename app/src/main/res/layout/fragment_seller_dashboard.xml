@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Inicio del vendedor: indicadores, gráfico de ventas y pedidos recientes -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -18,7 +17,6 @@
             android:paddingEnd="@dimen/space_m"
             android:paddingBottom="@dimen/fab_clearance">
 
-            <!-- Indicadores -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -31,7 +29,6 @@
                 <include android:id="@+id/statToShip" layout="@layout/layout_stat_card" />
             </LinearLayout>
 
-            <!-- Gráfico de barras de la semana (se dibuja desde el código) -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

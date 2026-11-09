@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Tarjeta de producto en la cuadrícula del catálogo -->
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/space_xs"
@@ -13,13 +13,13 @@
         android:orientation="vertical"
         android:padding="@dimen/space_m">
 
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/ivProduct"
             android:layout_width="match_parent"
             android:layout_height="@dimen/product_image_grid"
-            android:background="@drawable/bg_product_image"
             android:contentDescription="@string/cd_product_image"
-            android:padding="@dimen/space_xl" />
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.TechNova.Photo" />
 
         <TextView
             android:id="@+id/tvName"

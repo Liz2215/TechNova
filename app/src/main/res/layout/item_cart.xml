@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Producto dentro del carrito con control de cantidad -->
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -13,13 +12,13 @@
         android:orientation="horizontal"
         android:padding="@dimen/space_m">
 
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/ivProduct"
             android:layout_width="@dimen/product_thumb"
             android:layout_height="@dimen/product_thumb"
-            android:background="@drawable/bg_product_image"
             android:contentDescription="@string/cd_product_image"
-            android:padding="@dimen/space_m" />
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.TechNova.PhotoSmall" />
 
         <LinearLayout
             android:layout_width="0dp"
