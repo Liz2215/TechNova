@@ -12,12 +12,10 @@ import com.ucompensar.technova.data.OrderStatus
 import com.ucompensar.technova.databinding.ItemOrderBinding
 import com.ucompensar.technova.ui.common.toCop
 
-/** Adaptador de pedidos. Permite cambiar el estado con un menú emergente. */
 class OrderAdapter(
     private val showActions: Boolean,
     private val onStatusChanged: (Order) -> Unit = {}
 ) : RecyclerView.Adapter<OrderAdapter.Holder>() {
-
     private var items: List<Order> = emptyList()
 
     fun submit(list: List<Order>) {
@@ -59,7 +57,6 @@ class OrderAdapter(
         }
     }
 
-    /** Cambia texto, color y fondo de la etiqueta según el estado. */
     private fun bindStatus(binding: ItemOrderBinding, status: OrderStatus) {
         val ctx = binding.root.context
         val (text, color, background) = when (status) {
@@ -73,7 +70,6 @@ class OrderAdapter(
     }
 }
 
-/** Texto de un estado, usado en mensajes. */
 fun OrderStatus.label(): Int = when (this) {
     OrderStatus.PENDING -> R.string.status_pending
     OrderStatus.SHIPPED -> R.string.status_shipped

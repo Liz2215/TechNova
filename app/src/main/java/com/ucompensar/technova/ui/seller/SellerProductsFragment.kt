@@ -14,9 +14,7 @@ import com.ucompensar.technova.data.Product
 import com.ucompensar.technova.databinding.FragmentSellerProductsBinding
 import com.ucompensar.technova.ui.common.ProductRowAdapter
 
-/** Inventario del vendedor: crear, editar y eliminar productos. */
 class SellerProductsFragment : Fragment() {
-
     private var _binding: FragmentSellerProductsBinding? = null
     private val binding get() = _binding!!
     private lateinit var adapter: ProductRowAdapter
@@ -43,7 +41,7 @@ class SellerProductsFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        adapter.notifyDataSetChanged() // refresca al volver del formulario
+        adapter.notifyDataSetChanged()
     }
 
     private fun confirmDelete(product: Product) {

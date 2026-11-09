@@ -11,9 +11,7 @@ import com.ucompensar.technova.data.FakeRepository
 import com.ucompensar.technova.data.OrderStatus
 import com.ucompensar.technova.databinding.FragmentSellerOrdersBinding
 
-/** Pedidos del vendedor con filtro por estado. */
 class SellerOrdersFragment : Fragment() {
-
     private var _binding: FragmentSellerOrdersBinding? = null
     private val binding get() = _binding!!
     private var filter: OrderStatus? = null

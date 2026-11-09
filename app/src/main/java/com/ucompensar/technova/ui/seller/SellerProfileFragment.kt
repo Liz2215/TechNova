@@ -12,9 +12,7 @@ import com.ucompensar.technova.databinding.FragmentSellerProfileBinding
 import com.ucompensar.technova.ui.common.logout
 import com.ucompensar.technova.ui.common.toCompactCop
 
-/** Perfil del vendedor: datos de la tienda, indicadores y opciones de cuenta. */
 class SellerProfileFragment : Fragment() {
-
     private var _binding: FragmentSellerProfileBinding? = null
     private val binding get() = _binding!!
 

@@ -7,9 +7,7 @@ import com.ucompensar.technova.R
 import com.ucompensar.technova.databinding.ActivityPanelBinding
 import com.ucompensar.technova.ui.common.logout
 
-/** Panel del rol Vendedor: Inicio (resumen), Productos, Pedidos y Perfil. */
 class SellerActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityPanelBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {

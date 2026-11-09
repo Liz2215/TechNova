@@ -2,6 +2,7 @@ package com.ucompensar.technova.ui.seller
 
 import android.os.Bundle
 import android.widget.ArrayAdapter
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.ucompensar.technova.R
@@ -9,9 +10,7 @@ import com.ucompensar.technova.data.FakeRepository
 import com.ucompensar.technova.data.Product
 import com.ucompensar.technova.databinding.ActivityProductFormBinding
 
-/** Crear o editar un producto. Si recibe un ID, carga sus datos para editarlos. */
 class ProductFormActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityProductFormBinding
     private var product: Product? = null
 
@@ -27,6 +26,8 @@ class ProductFormActivity : AppCompatActivity() {
         product = FakeRepository.findProduct(intent.getIntExtra(EXTRA_ID, -1))
         product?.let { p ->
             binding.toolbar.setTitle(R.string.product_form_edit)
+            binding.ivPreview.setPadding(0, 0, 0, 0)
+            binding.ivPreview.scaleType = ImageView.ScaleType.CENTER_CROP
             binding.ivPreview.setImageResource(p.imageRes)
             binding.etName.setText(p.name)
             binding.actCategory.setText(p.category, false)

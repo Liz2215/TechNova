@@ -13,9 +13,7 @@ import com.ucompensar.technova.databinding.FragmentSellerDashboardBinding
 import com.ucompensar.technova.ui.common.drawBarChart
 import com.ucompensar.technova.ui.common.toCompactCop
 
-/** Resumen del vendedor: indicadores, ventas de la semana y pedidos recientes. */
 class SellerDashboardFragment : Fragment() {
-
     private var _binding: FragmentSellerDashboardBinding? = null
     private val binding get() = _binding!!
 
