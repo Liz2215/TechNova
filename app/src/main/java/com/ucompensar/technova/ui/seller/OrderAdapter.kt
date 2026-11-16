@@ -12,44 +12,57 @@ import com.ucompensar.technova.data.OrderStatus
 import com.ucompensar.technova.databinding.ItemOrderBinding
 import com.ucompensar.technova.ui.common.toCop
 
+/**
+ * Lista de pedidos con número, cliente, cantidad de artículos, total y estado.
+ * Para el vendedor muestra el botón "Cambiar estado"; al tocar un pedido se ven sus detalles.
+ *
+ * @param showActions si es true, muestra el botón para cambiar el estado.
+ */
 class OrderAdapter(
     private val showActions: Boolean,
-    private val onStatusChanged: (Order) -> Unit = {}
+    private val onStatusSelected: (Order, OrderStatus) -> Unit = { _, _ -> },
+    private val onClick: (Order) -> Unit = {}
 ) : RecyclerView.Adapter<OrderAdapter.Holder>() {
     private var items: List<Order> = emptyList()
 
+    /** Reemplaza los pedidos mostrados. */
     fun submit(list: List<Order>) {
         items = list
         notifyDataSetChanged()
     }
 
+    /** Contenedor de las vistas de una fila de la lista. */
     class Holder(val binding: ItemOrderBinding) : RecyclerView.ViewHolder(binding.root)
 
+    /** Crea la vista de una fila nueva. */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         Holder(ItemOrderBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
+    /** Cantidad de filas de la lista. */
     override fun getItemCount() = items.size
 
+    /** Llena la tarjeta del pedido y, si aplica, el menú para cambiar su estado. */
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val order = items[position]
         val ctx = holder.itemView.context
         with(holder.binding) {
-            tvOrderNumber.text = ctx.getString(R.string.label_order_number, order.id)
+            tvOrderNumber.text = ctx.getString(R.string.label_order_number, order.number)
             tvCustomer.text = order.customer
-            tvDetail.text = ctx.getString(R.string.label_order_items, order.items, order.total.toCop())
+            tvDetail.text = ctx.getString(R.string.label_order_items, order.itemCount, order.total.toCop())
             bindStatus(this, order.status)
+            root.setOnClickListener { onClick(order) }
 
             btnChangeStatus.visibility = if (showActions) View.VISIBLE else View.GONE
             btnChangeStatus.setOnClickListener { anchor ->
                 val popup = PopupMenu(ctx, anchor)
                 popup.menuInflater.inflate(R.menu.menu_order_status, popup.menu)
                 popup.setOnMenuItemClickListener { item ->
-                    order.status = when (item.itemId) {
+                    val status = when (item.itemId) {
                         R.id.status_shipped -> OrderStatus.SHIPPED
                         R.id.status_delivered -> OrderStatus.DELIVERED
                         else -> OrderStatus.PENDING
                     }
-                    onStatusChanged(order)
+                    onStatusSelected(order, status)
                     true
                 }
                 popup.show()
@@ -57,6 +70,7 @@ class OrderAdapter(
         }
     }
 
+    /** Pinta la etiqueta del estado con su color (pendiente, enviado o entregado). */
     private fun bindStatus(binding: ItemOrderBinding, status: OrderStatus) {
         val ctx = binding.root.context
         val (text, color, background) = when (status) {
@@ -70,6 +84,7 @@ class OrderAdapter(
     }
 }
 
+/** Texto (recurso) que corresponde a cada estado del pedido. */
 fun OrderStatus.label(): Int = when (this) {
     OrderStatus.PENDING -> R.string.status_pending
     OrderStatus.SHIPPED -> R.string.status_shipped

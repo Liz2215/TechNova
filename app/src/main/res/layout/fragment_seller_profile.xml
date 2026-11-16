@@ -40,6 +40,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/tvStoreEmail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/seller_email"

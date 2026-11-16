@@ -1,29 +1,44 @@
 package com.ucompensar.technova.ui.admin
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.ucompensar.technova.R
-import com.ucompensar.technova.data.FakeRepository
+import com.ucompensar.technova.data.Order
+import com.ucompensar.technova.data.OrderRepository
+import com.ucompensar.technova.data.SalesStats
 import com.ucompensar.technova.databinding.FragmentAdminReportsBinding
 import com.ucompensar.technova.databinding.ItemCategoryProgressBinding
 import com.ucompensar.technova.databinding.ItemTopProductBinding
+import com.ucompensar.technova.ui.common.ReportPdf
 import com.ucompensar.technova.ui.common.drawBarChart
+import com.ucompensar.technova.ui.common.errorMessage
+import com.ucompensar.technova.ui.common.launchUi
 import com.ucompensar.technova.ui.common.toCompactCop
+import com.ucompensar.technova.ui.common.toastLong
 
+/**
+ * Reporte de ventas del administrador calculado con los pedidos de Firestore:
+ * ventas, pedidos y ticket promedio por semana, mes o año, gráfico, productos más
+ * vendidos, ventas por categoría y exportación del reporte en PDF.
+ */
 class AdminReportsFragment : Fragment() {
     private var _binding: FragmentAdminReportsBinding? = null
     private val binding get() = _binding!!
+    private var orders: List<Order> = emptyList()
+    private var period = SalesStats.Period.WEEK
 
+    /** Crea la vista del fragment a partir de su layout (ViewBinding). */
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, state: Bundle?): View {
         _binding = FragmentAdminReportsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
+    /** Prepara los indicadores, los chips de período y carga los pedidos. */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.statTotal.ivStatIcon.setImageResource(R.drawable.ic_chart)
         binding.statTotal.tvStatLabel.setText(R.string.stat_total_sales)
@@ -33,42 +48,43 @@ class AdminReportsFragment : Fragment() {
         binding.statTicket.tvStatLabel.setText(R.string.stat_avg_ticket)
 
         binding.chipPeriod.setOnCheckedStateChangeListener { _, ids ->
-            showPeriod(
-                when (ids.firstOrNull()) {
-                    R.id.chipMonth -> "month"
-                    R.id.chipYear -> "year"
-                    else -> "week"
-                }
-            )
+            period = when (ids.firstOrNull()) {
+                R.id.chipMonth -> SalesStats.Period.MONTH
+                R.id.chipYear -> SalesStats.Period.YEAR
+                else -> SalesStats.Period.WEEK
+            }
+            showPeriod()
         }
-        showPeriod("week")
-        fillTopProducts()
-        fillCategories()
+        binding.btnExport.setOnClickListener { exportPdf() }
 
-        binding.btnExport.setOnClickListener {
-            Toast.makeText(requireContext(), R.string.msg_not_available, Toast.LENGTH_SHORT).show()
+        launchUi {
+            orders = OrderRepository.all()
+            showPeriod()
         }
     }
 
-    private fun showPeriod(period: String) {
-        val values = FakeRepository.salesByPeriod.getValue(period)
-        val orders = FakeRepository.ordersByPeriod.getValue(period)
-        val total = values.sum() * 1_000L
+    /** Muestra indicadores, gráfico, top de productos y categorías del período elegido. */
+    private fun showPeriod() {
+        val inPeriod = SalesStats.inPeriod(orders, period)
+        val total = inPeriod.sumOf { it.subtotal }
         val labels = when (period) {
-            "month" -> R.array.month_weeks
-            "year" -> R.array.year_quarters
-            else -> R.array.week_days
+            SalesStats.Period.MONTH -> R.array.month_weeks
+            SalesStats.Period.YEAR -> R.array.year_quarters
+            SalesStats.Period.WEEK -> R.array.week_days
         }
-
         binding.statTotal.tvStatValue.text = total.toCompactCop()
-        binding.statOrders.tvStatValue.text = orders.toString()
-        binding.statTicket.tvStatValue.text = (total / orders).toCompactCop()
+        binding.statOrders.tvStatValue.text = inPeriod.size.toString()
+        binding.statTicket.tvStatValue.text = (if (inPeriod.isEmpty()) 0L else total / inPeriod.size).toCompactCop()
         drawBarChart(requireContext(), binding.chartBars, binding.chartLabels,
-            values, resources.getStringArray(labels).toList())
+            SalesStats.chart(orders, period), resources.getStringArray(labels).toList())
+        fillTopProducts(inPeriod)
+        fillCategories(inPeriod)
     }
 
-    private fun fillTopProducts() {
-        FakeRepository.topProducts.forEachIndexed { index, (name, units) ->
+    /** Llena la lista de los 5 productos con más unidades vendidas. */
+    private fun fillTopProducts(list: List<Order>) {
+        binding.layoutTopProducts.removeAllViews()
+        SalesStats.topProducts(list).forEachIndexed { index, (name, units) ->
             val row = ItemTopProductBinding.inflate(layoutInflater, binding.layoutTopProducts, true)
             row.tvRank.text = (index + 1).toString()
             row.tvName.text = name
@@ -76,17 +92,38 @@ class AdminReportsFragment : Fragment() {
         }
     }
 
-    private fun fillCategories() {
-        FakeRepository.salesByCategory.forEach { (category, percent) ->
+    /** Llena las barras de porcentaje de ventas por categoría. */
+    private fun fillCategories(list: List<Order>) {
+        binding.layoutCategories.removeAllViews()
+        SalesStats.salesByCategory(list).forEach { (category, percent) ->
             val row = ItemCategoryProgressBinding.inflate(layoutInflater, binding.layoutCategories, true)
             row.tvCategory.text = category
             row.tvPercent.text = getString(R.string.label_percent, percent)
             val params = row.barFill.layoutParams as LinearLayout.LayoutParams
-            params.weight = percent.toFloat()
+            params.weight = percent.toFloat().coerceAtLeast(1f)
             row.barFill.layoutParams = params
         }
     }
 
+    /** Genera el PDF del reporte del período y abre el menú para compartirlo o guardarlo. */
+    private fun exportPdf() {
+        try {
+            val title = getString(R.string.reports_title) + " · " + when (period) {
+                SalesStats.Period.WEEK -> getString(R.string.period_week)
+                SalesStats.Period.MONTH -> getString(R.string.period_month)
+                SalesStats.Period.YEAR -> getString(R.string.period_year)
+            }
+            val uri = ReportPdf.create(requireContext(), title, SalesStats.inPeriod(orders, period))
+            val share = Intent(Intent.ACTION_SEND).setType("application/pdf")
+                .putExtra(Intent.EXTRA_STREAM, uri)
+                .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            startActivity(Intent.createChooser(share, getString(R.string.btn_export_report)))
+        } catch (e: Exception) {
+            requireContext().toastLong(requireContext().errorMessage(e))
+        }
+    }
+
+    /** Libera la referencia a la vista para evitar fugas de memoria. */
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

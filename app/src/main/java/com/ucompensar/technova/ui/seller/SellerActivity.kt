@@ -7,9 +7,11 @@ import com.ucompensar.technova.R
 import com.ucompensar.technova.databinding.ActivityPanelBinding
 import com.ucompensar.technova.ui.common.logout
 
+/** Panel del vendedor con navegación inferior: Inicio, Productos, Pedidos y Perfil. */
 class SellerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPanelBinding
 
+    /** Arma la barra superior (con cerrar sesión) y la navegación inferior. */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPanelBinding.inflate(layoutInflater)
@@ -35,6 +37,7 @@ class SellerActivity : AppCompatActivity() {
         if (savedInstanceState == null) show(SellerDashboardFragment())
     }
 
+    /** Reemplaza el contenido del panel por el fragment indicado. */
     private fun show(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragmentContainer, fragment)

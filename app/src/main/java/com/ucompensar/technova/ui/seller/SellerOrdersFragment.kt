@@ -4,29 +4,39 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.ucompensar.technova.R
-import com.ucompensar.technova.data.FakeRepository
+import com.ucompensar.technova.data.Order
+import com.ucompensar.technova.data.OrderRepository
 import com.ucompensar.technova.data.OrderStatus
 import com.ucompensar.technova.databinding.FragmentSellerOrdersBinding
+import com.ucompensar.technova.ui.common.launchUi
+import com.ucompensar.technova.ui.common.showOrderDetails
+import com.ucompensar.technova.ui.common.toast
 
+/**
+ * Pedidos del vendedor (o de toda la tienda si es administrador) con filtro por estado.
+ * Permite cambiar el estado del pedido (pendiente, enviado, entregado) y guardarlo en Firestore.
+ */
 class SellerOrdersFragment : Fragment() {
     private var _binding: FragmentSellerOrdersBinding? = null
     private val binding get() = _binding!!
     private var filter: OrderStatus? = null
+    private var orders: List<Order> = emptyList()
 
-    private val adapter = OrderAdapter(showActions = true) { order ->
-        val status = getString(order.status.label())
-        Toast.makeText(requireContext(), getString(R.string.msg_status_changed, order.id, status), Toast.LENGTH_SHORT).show()
-        refresh()
-    }
+    private val adapter = OrderAdapter(
+        showActions = true,
+        onStatusSelected = { order, status -> changeStatus(order, status) },
+        onClick = { context?.showOrderDetails(it) }
+    )
 
+    /** Crea la vista del fragment a partir de su layout (ViewBinding). */
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, state: Bundle?): View {
         _binding = FragmentSellerOrdersBinding.inflate(inflater, container, false)
         return binding.root
     }
 
+    /** Prepara la lista y los chips de filtro, y carga los pedidos. */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.rvOrders.adapter = adapter
         binding.chipStatus.setOnCheckedStateChangeListener { _, ids ->
@@ -36,15 +46,29 @@ class SellerOrdersFragment : Fragment() {
                 R.id.chipDelivered -> OrderStatus.DELIVERED
                 else -> null
             }
-            refresh()
+            applyFilter()
         }
-        refresh()
+        launchUi {
+            orders = OrderRepository.forCurrentRole()
+            applyFilter()
+        }
     }
 
-    private fun refresh() {
-        adapter.submit(FakeRepository.orders.filter { filter == null || it.status == filter })
+    /** Guarda el nuevo estado del pedido en Firestore y refresca la lista. */
+    private fun changeStatus(order: Order, status: OrderStatus) {
+        launchUi {
+            OrderRepository.updateStatus(order, status)
+            requireContext().toast(getString(R.string.msg_status_changed, order.number, getString(status.label())))
+            applyFilter()
+        }
     }
 
+    /** Muestra solo los pedidos del estado elegido en los chips. */
+    private fun applyFilter() {
+        adapter.submit(orders.filter { filter == null || it.status == filter })
+    }
+
+    /** Libera la referencia a la vista para evitar fugas de memoria. */
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

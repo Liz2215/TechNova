@@ -5,25 +5,30 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.ucompensar.technova.R
-import com.ucompensar.technova.data.FakeRepository
 import com.ucompensar.technova.data.Product
+import com.ucompensar.technova.data.ProductRepository
 import com.ucompensar.technova.databinding.FragmentSellerProductsBinding
 import com.ucompensar.technova.ui.common.ProductRowAdapter
+import com.ucompensar.technova.ui.common.launchUi
+import com.ucompensar.technova.ui.common.toast
 
+
+/** Productos del vendedor: lista solo los productos que él publicó y permite crearlos, editarlos y eliminarlos (CRUD en Firestore). */
 class SellerProductsFragment : Fragment() {
     private var _binding: FragmentSellerProductsBinding? = null
     private val binding get() = _binding!!
     private lateinit var adapter: ProductRowAdapter
 
+    /** Crea la vista del fragment a partir de su layout (ViewBinding). */
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, state: Bundle?): View {
         _binding = FragmentSellerProductsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
+    /** Prepara la lista con las acciones de editar y eliminar, y el botón de agregar. */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         adapter = ProductRowAdapter(
             onEdit = { product ->
@@ -39,23 +44,33 @@ class SellerProductsFragment : Fragment() {
         }
     }
 
+    /** Recarga los productos al volver del formulario para ver los cambios. */
     override fun onResume() {
         super.onResume()
-        adapter.notifyDataSetChanged()
+        refresh()
     }
 
+    /** Lee de Firestore los productos que este usuario puede gestionar. */
+    private fun refresh() {
+        launchUi { adapter.submit(ProductRepository.getManageable()) }
+    }
+
+    /** Pide confirmación y elimina el producto de Firestore. */
     private fun confirmDelete(product: Product) {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(getString(R.string.delete_product_confirm, product.name))
             .setNegativeButton(R.string.action_cancel, null)
             .setPositiveButton(R.string.action_delete) { _, _ ->
-                FakeRepository.products.remove(product)
-                adapter.notifyDataSetChanged()
-                Toast.makeText(requireContext(), R.string.msg_product_deleted, Toast.LENGTH_SHORT).show()
+                launchUi {
+                    ProductRepository.delete(product.id)
+                    requireContext().toast(getString(R.string.msg_product_deleted))
+                    refresh()
+                }
             }
             .show()
     }
 
+    /** Libera la referencia a la vista para evitar fugas de memoria. */
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
