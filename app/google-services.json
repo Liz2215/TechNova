@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "660582994363",
+    "project_id": "technova-47d47",
+    "storage_bucket": "technova-47d47.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:660582994363:android:ee5fc9107ba7d4bd67b49e",
+        "android_client_info": {
+          "package_name": "com.ucompensar.technova"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjAV-u0RBOVAWjsfzsvjUIhr1M_Z0cJrg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
