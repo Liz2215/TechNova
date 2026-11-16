@@ -117,17 +117,20 @@
                     android:text="@string/txt_forgot_password" />
 
                 <TextView
+                    android:id="@+id/tvRoleLabel"
                     style="@style/Text.TechNova.Caption"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/space_xs"
-                    android:text="@string/label_role" />
+                    android:text="@string/label_role"
+                    android:visibility="gone" />
 
                 <com.google.android.material.button.MaterialButtonToggleGroup
                     android:id="@+id/toggleRole"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/space_xs"
+                    android:visibility="gone"
                     app:checkedButton="@id/btnRoleBuyer"
                     app:selectionRequired="true"
                     app:singleSelection="true">

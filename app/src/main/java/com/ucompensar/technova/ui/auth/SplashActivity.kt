@@ -3,20 +3,24 @@ package com.ucompensar.technova.ui.auth
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import com.ucompensar.technova.data.AuthRepository
+import com.ucompensar.technova.data.Db
 import com.ucompensar.technova.databinding.ActivitySplashBinding
+import com.ucompensar.technova.ui.common.openPanelFor
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
+/**
+ * Pantalla de bienvenida. Muestra el logo con una animación y, si ya hay una sesión
+ * guardada en Firebase, abre directamente el panel del rol del usuario; si no, va al login.
+ */
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySplashBinding
-    private val handler = Handler(Looper.getMainLooper())
-    private val openLogin = Runnable {
-        startActivity(Intent(this, LoginActivity::class.java))
-        finish()
-    }
 
+    /** Inicia la animación del logo y decide a qué pantalla continuar. */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySplashBinding.inflate(layoutInflater)
@@ -27,15 +31,25 @@ class SplashActivity : AppCompatActivity() {
         binding.ivLogo.scaleY = 0.6f
         binding.ivLogo.animate().alpha(1f).scaleX(1f).scaleY(1f).setDuration(700).start()
 
-        handler.postDelayed(openLogin, SPLASH_DURATION)
+        lifecycleScope.launch {
+            delay(SPLASH_DURATION)
+            if (Db.auth.currentUser == null) {
+                openLogin()
+                return@launch
+            }
+            runCatching { AuthRepository.loadProfile() }
+                .onSuccess { openPanelFor(it.role) }
+                .onFailure { openLogin() }
+        }
     }
 
-    override fun onDestroy() {
-        handler.removeCallbacks(openLogin)
-        super.onDestroy()
+    /** Abre la pantalla de inicio de sesión y cierra la bienvenida. */
+    private fun openLogin() {
+        startActivity(Intent(this, LoginActivity::class.java))
+        finish()
     }
 
     companion object {
-        private const val SPLASH_DURATION = 2000L
+        private const val SPLASH_DURATION = 1500L
     }
 }

@@ -9,10 +9,14 @@ import android.widget.TextView
 import androidx.core.widget.TextViewCompat
 import com.ucompensar.technova.R
 
+/**
+ * Dibuja un gráfico de barras sencillo con vistas: una barra por valor, con altura
+ * proporcional al valor más alto, y su etiqueta debajo.
+ */
 fun drawBarChart(context: Context, bars: LinearLayout, labels: LinearLayout, values: List<Int>, names: List<String>) {
     bars.removeAllViews()
     labels.removeAllViews()
-    val max = values.max().toFloat()
+    val max = (values.maxOrNull() ?: 0).coerceAtLeast(1).toFloat()
     val chartHeight = context.resources.getDimensionPixelSize(R.dimen.chart_height)
     val barWidth = context.resources.getDimensionPixelSize(R.dimen.chart_bar_width)
 
