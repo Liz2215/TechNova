@@ -5,12 +5,19 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.ucompensar.technova.R
+import com.ucompensar.technova.data.CartRepository
 import com.ucompensar.technova.databinding.ActivityPanelBinding
+import com.ucompensar.technova.ui.common.launchUi
 import com.ucompensar.technova.ui.common.logout
 
+/**
+ * Panel del comprador con navegación inferior (Inicio, Catálogo, Categorías y Perfil)
+ * y accesos al carrito y al cierre de sesión en la barra superior.
+ */
 class BuyerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPanelBinding
 
+    /** Arma la barra superior, la navegación inferior y carga el carrito guardado. */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPanelBinding.inflate(layoutInflater)
@@ -37,13 +44,16 @@ class BuyerActivity : AppCompatActivity() {
             true
         }
         if (savedInstanceState == null) show(BuyerHomeFragment())
+        launchUi { CartRepository.load() }
     }
 
+    /** Abre el catálogo, opcionalmente filtrado por una categoría. */
     fun openCatalog(category: String? = null) {
         binding.bottomNav.menu.findItem(R.id.nav_buyer_catalog).isChecked = true
         show(CatalogFragment.newInstance(category))
     }
 
+    /** Reemplaza el contenido del panel por el fragment indicado. */
     private fun show(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragmentContainer, fragment)
