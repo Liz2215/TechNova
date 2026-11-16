@@ -42,7 +42,7 @@
     <string name="err_email">Correo no válido</string>
     <string name="err_password">Mínimo 6 caracteres</string>
     <string name="err_accept">Debes aceptar la autorización y los términos</string>
-    <string name="msg_register_ok">Cuenta creada. Ahora inicia sesión.</string>
+    <string name="msg_register_ok">¡Cuenta creada! Bienvenido a TechNova.</string>
 
     <string name="buyer_title">Hola, ¿qué buscas hoy?</string>
     <string name="hint_search">Buscar gadgets…</string>
@@ -145,7 +145,7 @@
     <string name="setting_new_sellers_desc">Revisión manual antes de publicar</string>
     <string name="setting_shipping">Costo de envío (COP)</string>
     <string name="section_payment_gateways">Pasarelas de pago</string>
-    <string name="gateway_wompi">Wompi</string>
+    <string name="gateway_wompi">ePayco</string>
     <string name="gateway_payu">PayU</string>
     <string name="gateway_mercadopago">Mercado Pago</string>
     <string name="default_shipping">12000</string>
@@ -164,7 +164,7 @@
     <string name="forgot_subtitle">Escribe el correo con el que te registraste y te enviaremos un enlace para crear una nueva contraseña.</string>
     <string name="btn_send_link">Enviar enlace</string>
     <string name="forgot_sent_title">Revisa tu correo</string>
-    <string name="forgot_sent_msg">Enviamos un enlace de recuperación a %1$s. El enlace vence en 30 minutos.</string>
+    <string name="forgot_sent_msg">Enviamos un enlace de recuperación a %1$s. El enlace vence en 1 hora. Revisa también la carpeta de spam.</string>
     <string name="btn_back_login">Volver al inicio de sesión</string>
     <string name="btn_resend">Reenviar enlace</string>
 
@@ -229,4 +229,68 @@
         <item quantity="one">%1$d producto</item>
         <item quantity="other">%1$d productos</item>
     </plurals>
+
+    <string name="home_greeting_name">Hola, %1$s</string>
+    <string name="label_new">Nuevo</string>
+    <string name="msg_loading">Cargando…</string>
+    <string name="msg_generic_error">Ocurrió un error. Revisa tu conexión e inténtalo de nuevo.</string>
+    <string name="msg_google_error">No se pudo iniciar sesión con Google. Inténtalo de nuevo.</string>
+    <string name="msg_google_not_configured">El acceso con Google aún no está configurado en Firebase (falta la huella SHA-1 de la app).</string>
+    <string name="biometric_need_login">Para usar la huella, inicia sesión una vez con tu correo y contraseña en este celular.</string>
+    <string name="msg_link_resent">Enlace reenviado. Revisa tu correo.</string>
+    <string name="msg_out_of_stock">%1$s no tiene unidades disponibles</string>
+    <string name="msg_seeded">Se cargaron %1$d productos de ejemplo en la base de datos</string>
+    <string name="msg_account_deleted">Tu cuenta y tus datos fueron eliminados</string>
+    <string name="msg_address_saved">Dirección guardada</string>
+    <string name="msg_store_saved">Datos de la tienda guardados</string>
+    <string name="action_close">Cerrar</string>
+    <string name="action_send">Enviar</string>
+    <string name="action_view_map">Ver en Google Maps</string>
+
+    <string name="btn_use_location">Usar mi ubicación actual (GPS)</string>
+    <string name="msg_locating">Buscando ubicación…</string>
+    <string name="msg_location_denied">Sin permiso de ubicación. Puedes escribir la dirección a mano.</string>
+    <string name="label_location">📍 Ubicación GPS: %1$s (toca para ver en el mapa)</string>
+
+    <string name="online_payment_info">Al confirmar se abrirá la pasarela segura de ePayco (modo pruebas) para pagar con tarjeta, PSE o Nequi. TechNova no guarda los datos de tu tarjeta.</string>
+    <string name="payment_title">Pago seguro con ePayco</string>
+    <string name="payment_description">Pedido TechNova (%1$d artículos)</string>
+    <string name="payment_cancel_title">¿Salir del pago? Tu pedido no se creará.</string>
+    <string name="payment_cancel_confirm">Salir</string>
+    <string name="msg_payment_canceled">Pago cancelado. Tu carrito sigue guardado.</string>
+    <string name="msg_validating_payment">Confirmando pago con ePayco…</string>
+    <string name="msg_payment_rejected">El pago no fue aprobado (%1$s). Puedes intentarlo de nuevo.</string>
+    <string name="label_order_with_ref">Pedido #%1$s · Ref. ePayco %2$s</string>
+    <string name="payment_approved">Aprobado</string>
+    <string name="payment_rejected">Rechazado</string>
+    <string name="payment_pending">Pendiente</string>
+    <string name="msg_maintenance">La tienda está en mantenimiento. Intenta comprar más tarde.</string>
+
+    <string name="orders_empty">Aún no tienes pedidos</string>
+    <string name="detail_subtotal">Subtotal: %1$s</string>
+    <string name="detail_shipping">Envío: %1$s</string>
+    <string name="detail_total">Total: %1$s</string>
+    <string name="detail_date">Fecha: %1$s</string>
+    <string name="detail_customer">Cliente: %1$s</string>
+    <string name="detail_status">Estado: %1$s</string>
+    <string name="detail_payment">Pago: %1$s (%2$s)</string>
+    <string name="detail_payment_ref">Referencia ePayco: %1$s</string>
+    <string name="detail_address">Entrega: %1$s, %2$s</string>
+
+    <string name="hint_pqr_type">Tipo de solicitud</string>
+    <string name="hint_pqr_message">Cuéntanos tu caso</string>
+    <string name="err_pqr_empty">Escribe el detalle de tu solicitud</string>
+    <string name="msg_pqr_sent">Recibimos tu solicitud. Radicado %1$s. Te responderemos en máximo 15 días hábiles.</string>
+    <string name="privacy_text">TechNova trata tus datos personales (nombre, correo, celular, dirección y ubicación) solo para gestionar tu cuenta, tus compras y tus envíos, conforme a la Ley 1581 de 2012 y el Decreto 1377 de 2013.\n\nTus datos se guardan en Google Firebase con acceso restringido por rol. Los pagos se procesan en ePayco; TechNova no guarda datos de tarjetas.\n\nPuedes conocer, actualizar o eliminar tus datos desde tu perfil (opción Eliminar mi cuenta) o escribiendo a soporte@technova.co.</string>
+
+    <string name="hint_store_name">Nombre de la tienda</string>
+    <string name="seller_payout_info">Los pagos de tus ventas en línea se reciben por la pasarela ePayco de TechNova y se liquidan a tu cuenta registrada cada 8 días.</string>
+    <string name="seller_notifications_info">Recibirás un aviso cuando un comprador haga un pedido con tus productos. Revisa la pestaña Pedidos para cambiar su estado.</string>
+    <string name="seller_help_info">¿Necesitas ayuda? Escríbenos a soporte@technova.co o llama a la línea (601) 555 0100, de lunes a viernes de 8 a.m. a 6 p.m.</string>
+
+    <string name="hint_temp_password">Contraseña temporal (mín. 6 caracteres)</string>
+    <string name="value_app_maintenance">Mantenimiento</string>
+    <string name="err_number">Escribe un número válido</string>
+    <string name="err_image_required">Agrega una foto del producto</string>
+    <string name="msg_no_camera">No se encontró una app de cámara</string>
 </resources>

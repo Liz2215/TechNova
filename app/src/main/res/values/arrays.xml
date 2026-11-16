@@ -45,4 +45,14 @@
         <item>@string/role_seller</item>
         <item>@string/role_admin</item>
     </string-array>
+    <string-array name="image_sources">
+        <item>Tomar foto con la cámara</item>
+        <item>Elegir de la galería</item>
+    </string-array>
+    <string-array name="pqr_types">
+        <item>Petición</item>
+        <item>Queja</item>
+        <item>Reclamo</item>
+        <item>Garantía</item>
+    </string-array>
 </resources>
