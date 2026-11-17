@@ -71,14 +71,13 @@ app/src/main/
     ├── drawable/        ic_* (íconos vectoriales) y bg_* (fondos con <shape>: degradados, bordes, etiquetas)
     ├── menu/            menu_*_nav (menús inferiores), menu_toolbar_* y menu_order_status (menú emergente)
     ├── color/           selectores de color según estado (seleccionado / no seleccionado)
-    ├── values/          colors, dimens, strings, styles, themes, arrays
-    └── values-night/    colores para modo oscuro
+    └── values/          colors, dimens, strings, styles, themes, arrays
 ```
 
 ## Decisiones de diseño (XML)
 
 - **Paleta propia** (no se usan los colores por defecto): índigo `#2E2A6B`, menta `#12B886`, coral `#FF6B4A` para precios y ámbar `#FFB020` para calificaciones. Definida en `values/colors.xml`.
-- **Modo oscuro** (RNF-03): `values-night/colors.xml` redefine los mismos nombres de color.
+- **Tema claro fijo**: la app usa siempre la paleta clara (`Theme.Material3.Light`) para que se vea igual en todos los celulares, aunque el teléfono esté en modo oscuro.
 - **Recursos centralizados**: ningún layout tiene textos, colores ni medidas escritos directamente; todo sale de `strings.xml`, `colors.xml` y `dimens.xml`.
 - **Estilos reutilizables** en `styles.xml`: botones (`Widget.TechNova.Button`, `.Accent`, `.Outlined`, `.Text`), tarjetas, campos de texto, barra superior, menú inferior y tipografías (`Text.TechNova.Title`, `.Body`, `.Price`, `.Badge`…).
 - **Accesibilidad** (RNF-03): áreas táctiles mínimas de 48dp (`@dimen/touch_min`) y `contentDescription` en imágenes.
@@ -122,4 +121,4 @@ Kotlin 1.9 · Android Gradle Plugin 8.5 · compileSdk 34 · minSdk 24 · Materia
 | RF-07 Perfiles | `BuyerProfileFragment`, `SellerProfileFragment` |
 | Geolocalización | `LocationHelper`, `CheckoutActivity`, `BuyerProfileFragment` (dirección con GPS) |
 | RNF-02 Seguridad | `firestore.rules` (RBAC), `SecureStore` (Keystore), R8 |
-| RNF-03 Usabilidad | Material 3, 48dp, modo oscuro |
+| RNF-03 Usabilidad | Material 3, 48dp, tema claro consistente |
