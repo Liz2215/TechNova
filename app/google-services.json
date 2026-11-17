@@ -12,7 +12,20 @@
           "package_name": "com.ucompensar.technova"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "660582994363-anjqcsjojamu4t23f7947ahnh8t561f0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ucompensar.technova",
+            "certificate_hash": "18d82d902bf3fdaeadf06874116bffe051c40da0"
+          }
+        },
+        {
+          "client_id": "660582994363-6n1g0o2acfbv04uce4rub5c013fj8tkl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAjAV-u0RBOVAWjsfzsvjUIhr1M_Z0cJrg"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "660582994363-6n1g0o2acfbv04uce4rub5c013fj8tkl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
