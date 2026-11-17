@@ -6,27 +6,20 @@ import org.json.JSONObject
 import java.net.HttpURLConnection
 import java.net.URL
 
-/**
- * Integración con la pasarela de pagos ePayco en modo de pruebas.
- *
- * El pago se hace en el Checkout estándar de ePayco (página segura de la pasarela abierta
- * dentro de la app), así los datos de la tarjeta nunca pasan por TechNova (PCI-DSS).
- * Al terminar, ePayco devuelve una referencia (ref_payco) y la app consulta el servicio
- * de validación de ePayco para confirmar si la transacción fue aceptada.
- */
+/** Conexión con la pasarela de pagos ePayco en modo de pruebas */
 object EpaycoGateway {
-    /** Llave pública del comercio en ePayco (panel de ePayco > Integraciones > Llaves API). */
+    /** Llave pública de la cuenta de ePayco */
     const val PUBLIC_KEY = "45b960805ced5c27ce34b1600b4b9f54"
 
-    /** true = transacciones de prueba (no se cobra dinero real). */
+    /** Modo de pruebas para no cobrar dinero real */
     const val TEST_MODE = true
 
-    /** Dirección a la que ePayco redirige al terminar; la app la intercepta y no se carga. */
+    /** Página a la que vuelve ePayco cuando termina el pago */
     const val RESPONSE_URL = "https://technova.app/epayco/respuesta"
 
     private const val VALIDATION_URL = "https://secure.epayco.co/validation/v1/reference/"
 
-    /** Resultado de una transacción consultada en ePayco. */
+    /** Resultado del pago que responde ePayco */
     data class Result(
         val code: Int,
         val message: String,
@@ -38,10 +31,7 @@ object EpaycoGateway {
         val pending get() = code == 3
     }
 
-    /**
-     * Arma la página HTML que carga el checkout.js oficial de ePayco y abre el pago
-     * con los datos del pedido y del comprador.
-     */
+    /** Arma la página que abre el pago de ePayco */
     fun checkoutHtml(invoice: String, description: String, amount: Long, buyer: User, address: String): String {
         val data = JSONObject().apply {
             put("name", "Compra TechNova")
@@ -75,10 +65,7 @@ object EpaycoGateway {
         """.trimIndent()
     }
 
-    /**
-     * Consulta en ePayco el estado real de la transacción (servicio de validación).
-     * Códigos de respuesta: 1 aceptada, 2 rechazada, 3 pendiente, 4 fallida.
-     */
+    /** Pregunta a ePayco si el pago fue aceptado o rechazado */
     suspend fun validate(refPayco: String): Result = withContext(Dispatchers.IO) {
         val connection = URL(VALIDATION_URL + refPayco).openConnection() as HttpURLConnection
         connection.connectTimeout = 15_000

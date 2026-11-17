@@ -11,22 +11,18 @@ import androidx.annotation.DrawableRes
 import com.ucompensar.technova.R
 import java.io.ByteArrayOutputStream
 
-/**
- * Manejo de las fotos de productos. Como el proyecto usa el plan gratuito de Firebase
- * (sin Cloud Storage), cada foto se reduce a máximo 800 px, se comprime en JPEG y se
- * guarda como texto Base64 dentro del documento del producto en Firestore.
- */
+/** Funciones para manejar las fotos de los productos que se guardan como texto en Firestore */
 object ImageUtils {
     private const val MAX_SIZE = 800
     private const val QUALITY = 75
 
-    /** Caché en memoria de las fotos ya decodificadas para que las listas no se pongan lentas. */
+    /** Guarda en memoria las fotos ya abiertas para que las listas vayan rápido */
     private val cache = object : LruCache<String, Bitmap>(16 * 1024 * 1024) {
-        /** Tamaño en bytes de cada imagen guardada en la caché. */
+        /** Dice cuánto pesa cada foto en la memoria */
         override fun sizeOf(key: String, value: Bitmap) = value.byteCount
     }
 
-    /** Lee una foto de la galería o la cámara (por su Uri), la reduce y la devuelve en Base64. */
+    /** Toma la foto de la cámara o la galería y la convierte en texto */
     fun uriToBase64(context: Context, uri: Uri): String {
         val bounds = BitmapFactory.Options().apply { inJustDecodeBounds = true }
         context.contentResolver.openInputStream(uri)?.use { BitmapFactory.decodeStream(it, null, bounds) }
@@ -36,11 +32,11 @@ object ImageUtils {
         return bitmapToBase64(bitmap)
     }
 
-    /** Convierte una imagen de los recursos de la app (fotos de ejemplo) a Base64. */
+    /** Convierte una foto de la app en texto */
     fun resourceToBase64(context: Context, @DrawableRes res: Int): String =
         bitmapToBase64(BitmapFactory.decodeResource(context.resources, res))
 
-    /** Escala la imagen a máximo [MAX_SIZE] px por lado y la comprime en JPEG Base64. */
+    /** Achica la foto y la convierte en texto */
     fun bitmapToBase64(source: Bitmap): String {
         val scale = minOf(1f, MAX_SIZE.toFloat() / maxOf(source.width, source.height))
         val bitmap = if (scale < 1f) {
@@ -51,7 +47,7 @@ object ImageUtils {
         return Base64.encodeToString(out.toByteArray(), Base64.NO_WRAP)
     }
 
-    /** Convierte el texto Base64 guardado en Firestore de nuevo en imagen (usando la caché). */
+    /** Vuelve a convertir el texto en foto */
     fun decode(base64: String): Bitmap? {
         if (base64.isEmpty()) return null
         val key = base64.length.toString() + base64.takeLast(32)
@@ -62,7 +58,7 @@ object ImageUtils {
         }.getOrNull()?.also { cache.put(key, it) }
     }
 
-    /** Calcula cuánto reducir la foto al leerla para no gastar memoria con fotos muy grandes. */
+    /** Calcula cuánto achicar una foto muy grande */
     private fun sampleSize(width: Int, height: Int): Int {
         var sample = 1
         while (width / (sample * 2) >= MAX_SIZE && height / (sample * 2) >= MAX_SIZE) sample *= 2
@@ -70,7 +66,7 @@ object ImageUtils {
     }
 }
 
-/** Muestra en el ImageView la foto del producto o un ícono genérico si no tiene foto. */
+/** Muestra la foto del producto o un ícono si no tiene */
 fun ImageView.showProductImage(base64: String) {
     val bitmap = ImageUtils.decode(base64)
     if (bitmap != null) setImageBitmap(bitmap) else setImageResource(R.drawable.ic_image)

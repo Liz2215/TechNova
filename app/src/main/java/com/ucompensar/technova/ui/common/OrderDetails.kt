@@ -9,10 +9,7 @@ import com.ucompensar.technova.data.Order
 import com.ucompensar.technova.data.PaymentStatus
 import com.ucompensar.technova.ui.seller.label
 
-/**
- * Muestra en un diálogo el detalle de un pedido: productos, totales, pago, estado y
- * dirección de entrega. Si el pedido tiene coordenadas GPS, ofrece abrirlas en Google Maps.
- */
+/** Muestra todo el detalle de un pedido en una ventana */
 fun Context.showOrderDetails(order: Order) {
     val lines = buildString {
         order.items.forEach { appendLine("• ${it.quantity} x ${it.name} — ${(it.price * it.quantity).toCop()}") }
@@ -40,7 +37,7 @@ fun Context.showOrderDetails(order: Order) {
     dialog.show()
 }
 
-/** Texto (recurso) de cada estado de pago. */
+/** Devuelve el nombre del estado del pago */
 fun paymentLabel(status: PaymentStatus): Int = when (status) {
     PaymentStatus.APPROVED -> R.string.payment_approved
     PaymentStatus.REJECTED -> R.string.payment_rejected

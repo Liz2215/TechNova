@@ -2,25 +2,16 @@ package com.ucompensar.technova.data
 
 import androidx.annotation.DrawableRes
 
-/**
- * Roles de la aplicación. Se guardan en Firestore como texto (BUYER, SELLER, ADMIN)
- * y deciden qué panel ve cada usuario y qué permisos tiene en las reglas de seguridad.
- */
+/** Roles que puede tener un usuario */
 enum class Role { BUYER, SELLER, ADMIN }
 
-/** Estados por los que pasa un pedido desde que se crea hasta que llega al comprador. */
+/** Estados de un pedido */
 enum class OrderStatus { PENDING, SHIPPED, DELIVERED }
 
-/** Estado del pago de un pedido según la respuesta de la pasarela (ePayco) o el pago contraentrega. */
+/** Estados del pago de un pedido */
 enum class PaymentStatus { PENDING, APPROVED, REJECTED }
 
-/**
- * Producto del catálogo (colección "products" de Firestore).
- *
- * @property id identificador del documento en Firestore.
- * @property imageBase64 foto del producto comprimida en JPEG y codificada en Base64.
- * @property sellerId uid del vendedor dueño del producto.
- */
+/** Datos de un producto */
 data class Product(
     val id: String = "",
     val sku: String = "",
@@ -35,10 +26,10 @@ data class Product(
     val sellerName: String = ""
 )
 
-/** Producto agregado al carrito con la cantidad elegida (subcolección users/{uid}/cart). */
+/** Producto que está en el carrito con su cantidad */
 data class CartItem(val product: Product, var quantity: Int)
 
-/** Línea de un pedido: copia de los datos del producto en el momento de la compra. */
+/** Producto dentro de un pedido */
 data class OrderItem(
     val productId: String = "",
     val name: String = "",
@@ -48,14 +39,7 @@ data class OrderItem(
     val sellerId: String = ""
 )
 
-/**
- * Pedido de compra (colección "orders" de Firestore).
- *
- * @property number número corto y legible del pedido que se muestra al usuario.
- * @property sellerIds vendedores con productos en el pedido; permite que cada uno vea sus pedidos.
- * @property latitude latitud capturada con el GPS para la dirección de entrega (0 si no se capturó).
- * @property paymentRef referencia de la transacción devuelta por ePayco (ref_payco).
- */
+/** Datos de un pedido */
 data class Order(
     val id: String = "",
     val number: String = "",
@@ -76,13 +60,11 @@ data class Order(
     val longitude: Double = 0.0,
     val createdAt: Long = 0
 ) {
-    /** Cantidad total de unidades del pedido. */
+    /** Cuenta cuántas unidades tiene el pedido */
     val itemCount: Int get() = items.sumOf { it.quantity }
 }
 
-/**
- * Usuario de la tienda (colección "users" de Firestore; el id es el uid de Firebase Authentication).
- */
+/** Datos de un usuario */
 data class User(
     val id: String = "",
     var name: String = "",
@@ -96,14 +78,14 @@ data class User(
     var longitude: Double = 0.0
 )
 
-/** Categoría del catálogo con su ícono y la cantidad de productos que tiene. */
+/** Datos de una categoría */
 data class Category(
     val name: String,
     @DrawableRes val iconRes: Int,
     val count: Int
 )
 
-/** Configuración general de la tienda que edita el administrador (documento settings/general). */
+/** Ajustes generales de la tienda */
 data class StoreSettings(
     val shippingCost: Long = Catalog.DEFAULT_SHIPPING,
     val maintenance: Boolean = false,

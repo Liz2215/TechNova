@@ -19,23 +19,19 @@ import com.ucompensar.technova.ui.common.showOrderDetails
 import com.ucompensar.technova.ui.common.toastLong
 import com.ucompensar.technova.ui.seller.OrderAdapter
 
-/**
- * Inicio del administrador con datos reales: vendedores activos, clientes registrados,
- * pedidos del mes, estado de la tienda (operando o en mantenimiento) y pedidos recientes.
- * La primera vez que entra con la base vacía, carga los productos de ejemplo.
- */
+/** Pantalla de inicio del administrador con los números generales de la tienda y los últimos pedidos */
 class AdminDashboardFragment : Fragment() {
     private var _binding: FragmentAdminDashboardBinding? = null
     private val binding get() = _binding!!
     private val adapter = OrderAdapter(showActions = false, onClick = { context?.showOrderDetails(it) })
 
-    /** Crea la vista del fragment a partir de su layout (ViewBinding). */
+    /** Carga el diseño de esta pantalla */
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, state: Bundle?): View {
         _binding = FragmentAdminDashboardBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    /** Prepara las tarjetas de indicadores y la lista de pedidos recientes. */
+    /** Pone los íconos y nombres de las tarjetas de resumen */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.statSellers.ivStatIcon.setImageResource(R.drawable.ic_users)
         binding.statSellers.tvStatLabel.setText(R.string.stat_active_sellers)
@@ -49,7 +45,7 @@ class AdminDashboardFragment : Fragment() {
         binding.rvRecentOrders.adapter = adapter
     }
 
-    /** Carga usuarios, pedidos y configuración desde Firestore y calcula los indicadores. */
+    /** Cada vez que se abre trae los usuarios y pedidos de Firestore y calcula los números */
     override fun onResume() {
         super.onResume()
         launchUi {
@@ -70,7 +66,7 @@ class AdminDashboardFragment : Fragment() {
         }
     }
 
-    /** Libera la referencia a la vista para evitar fugas de memoria. */
+    /** Limpia la vista cuando se cierra la pantalla */
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

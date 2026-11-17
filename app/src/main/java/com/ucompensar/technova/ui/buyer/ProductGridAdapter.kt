@@ -9,12 +9,7 @@ import com.ucompensar.technova.databinding.ItemProductGridBinding
 import com.ucompensar.technova.ui.common.showProductImage
 import com.ucompensar.technova.ui.common.toCop
 
-/**
- * Tarjetas de producto (foto, nombre, calificación y precio) para la cuadrícula del
- * catálogo o la lista horizontal del inicio.
- *
- * @param horizontal si es true, las tarjetas tienen ancho fijo para desplazarse de lado.
- */
+/** Adaptador que muestra los productos en tarjetas */
 class ProductGridAdapter(
     private val onClick: (Product) -> Unit,
     private val onAddCart: (Product) -> Unit,
@@ -22,16 +17,16 @@ class ProductGridAdapter(
 ) : RecyclerView.Adapter<ProductGridAdapter.Holder>() {
     private var items: List<Product> = emptyList()
 
-    /** Reemplaza los productos mostrados. */
+    /** Cambia los productos que se muestran */
     fun submit(list: List<Product>) {
         items = list
         notifyDataSetChanged()
     }
 
-    /** Contenedor de las vistas de una fila de la lista. */
+    /** Guarda las vistas de una tarjeta */
     inner class Holder(val binding: ItemProductGridBinding) : RecyclerView.ViewHolder(binding.root)
 
-    /** Crea la vista de una fila nueva. */
+    /** Crea una tarjeta nueva */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val binding = ItemProductGridBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         if (horizontal) {
@@ -40,10 +35,10 @@ class ProductGridAdapter(
         return Holder(binding)
     }
 
-    /** Cantidad de filas de la lista. */
+    /** Dice cuántas tarjetas hay */
     override fun getItemCount() = items.size
 
-    /** Llena la tarjeta con los datos del producto y conecta sus botones. */
+    /** Pone los datos del producto en su tarjeta */
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val product = items[position]
         val ctx = holder.itemView.context

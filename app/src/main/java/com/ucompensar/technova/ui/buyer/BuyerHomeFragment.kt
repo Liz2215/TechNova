@@ -15,21 +15,18 @@ import com.ucompensar.technova.databinding.FragmentBuyerHomeBinding
 import com.ucompensar.technova.databinding.ItemCategoryTileBinding
 import com.ucompensar.technova.ui.common.launchUi
 
-/**
- * Inicio del comprador: saludo con su nombre, banner de promoción, categorías
- * y los productos mejor calificados, leídos desde Firestore.
- */
+/** Pantalla de inicio del comprador con promoción categorías y productos destacados */
 class BuyerHomeFragment : Fragment() {
     private var _binding: FragmentBuyerHomeBinding? = null
     private val binding get() = _binding!!
 
-    /** Crea la vista del fragment a partir de su layout (ViewBinding). */
+    /** Carga el diseño de esta pantalla */
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, state: Bundle?): View {
         _binding = FragmentBuyerHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    /** Configura los botones y carga los productos del catálogo. */
+    /** Prepara los botones y carga los productos */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val buyer = activity as? BuyerActivity
         val firstName = Session.current?.name?.substringBefore(" ").orEmpty()
@@ -54,28 +51,28 @@ class BuyerHomeFragment : Fragment() {
         }
     }
 
-    /** Libera la referencia a la vista para evitar fugas de memoria. */
+    /** Limpia la vista cuando se cierra la pantalla */
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
-    /** Lista horizontal de categorías con su ícono; al tocar una abre el catálogo filtrado. */
+    /** Adaptador de las categorías que se ven de lado */
     class CategoryTileAdapter(
         private val items: List<Category>,
         private val onClick: (Category) -> Unit
     ) : RecyclerView.Adapter<CategoryTileAdapter.Holder>() {
-        /** Contenedor de las vistas de una fila de la lista. */
+        /** Guarda las vistas de una fila */
         class Holder(val binding: ItemCategoryTileBinding) : RecyclerView.ViewHolder(binding.root)
 
-        /** Crea la vista de una fila nueva. */
+        /** Crea una fila nueva */
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
             Holder(ItemCategoryTileBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
-        /** Cantidad de filas de la lista. */
+        /** Dice cuántas filas hay */
         override fun getItemCount() = items.size
 
-        /** Llena la fila con los datos del elemento en esa posición. */
+        /** Pone el ícono y el nombre de la categoría */
         override fun onBindViewHolder(holder: Holder, position: Int) {
             val category = items[position]
             holder.binding.ivIcon.setImageResource(category.iconRes)

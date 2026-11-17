@@ -19,22 +19,19 @@ import com.ucompensar.technova.ui.common.showOrderDetails
 import com.ucompensar.technova.ui.common.toCompactCop
 import com.ucompensar.technova.ui.common.toastLong
 
-/**
- * Inicio del vendedor con datos reales de Firestore: ventas de sus productos, clientes
- * distintos, pedidos por enviar, gráfico de ventas de la semana y pedidos recientes.
- */
+/** Pantalla de inicio del vendedor con sus ventas y sus pedidos recientes */
 class SellerDashboardFragment : Fragment() {
     private var _binding: FragmentSellerDashboardBinding? = null
     private val binding get() = _binding!!
     private val adapter = OrderAdapter(showActions = false, onClick = { context?.showOrderDetails(it) })
 
-    /** Crea la vista del fragment a partir de su layout (ViewBinding). */
+    /** Carga el diseño de esta pantalla */
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, state: Bundle?): View {
         _binding = FragmentSellerDashboardBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    /** Prepara los indicadores y el botón para agregar productos. */
+    /** Pone los íconos de las tarjetas y el botón para agregar productos */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.statSales.ivStatIcon.setImageResource(R.drawable.ic_chart)
         binding.statSales.tvStatLabel.setText(R.string.stat_sales)
@@ -49,7 +46,7 @@ class SellerDashboardFragment : Fragment() {
         }
     }
 
-    /** Carga los pedidos del vendedor y calcula los indicadores cada vez que se muestra. */
+    /** Cada vez que se abre trae los pedidos del vendedor y calcula sus números */
     override fun onResume() {
         super.onResume()
         launchUi {
@@ -69,7 +66,7 @@ class SellerDashboardFragment : Fragment() {
         }
     }
 
-    /** Libera la referencia a la vista para evitar fugas de memoria. */
+    /** Limpia la vista cuando se cierra la pantalla */
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

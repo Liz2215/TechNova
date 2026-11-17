@@ -13,27 +13,21 @@ import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import java.util.Locale
 
-/**
- * Geolocalización con las APIs de Google Play Services: obtiene la ubicación actual
- * del celular (Fused Location Provider) y la convierte en dirección y ciudad con Geocoder.
- */
+/** Funciones para sacar la ubicación del celular con el GPS */
 object LocationHelper {
 
-    /** Permisos de ubicación que se piden al usuario. */
+    /** Permisos de ubicación que se le piden al usuario */
     val PERMISSIONS = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
 
-    /** Resultado de la geolocalización: coordenadas y dirección aproximada. */
+    /** Guarda las coordenadas y la dirección encontrada */
     data class Place(val latitude: Double, val longitude: Double, val address: String, val city: String)
 
-    /** Indica si el usuario ya dio permiso de ubicación. */
+    /** Revisa si el usuario ya dio permiso de ubicación */
     fun hasPermission(context: Context): Boolean = PERMISSIONS.any {
         ContextCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
     }
 
-    /**
-     * Obtiene la ubicación actual y busca la dirección correspondiente.
-     * Lanza un error con mensaje claro si el GPS está apagado o no hay señal.
-     */
+    /** Saca la ubicación actual y busca la dirección */
     @SuppressLint("MissingPermission")
     suspend fun currentPlace(context: Context): Place {
         val client = LocationServices.getFusedLocationProviderClient(context)
@@ -44,7 +38,7 @@ object LocationHelper {
         return Place(location.latitude, location.longitude, address, city)
     }
 
-    /** Convierte coordenadas en dirección y ciudad. Si no hay servicio, devuelve las coordenadas como texto. */
+    /** Convierte las coordenadas en una dirección y una ciudad */
     @Suppress("DEPRECATION")
     private fun reverseGeocode(context: Context, lat: Double, lng: Double): Pair<String, String> {
         val fallback = String.format(Locale.US, "%.5f, %.5f", lat, lng) to ""
@@ -57,7 +51,7 @@ object LocationHelper {
         }.getOrDefault(fallback)
     }
 
-    /** Enlace de Google Maps para ver unas coordenadas. */
+    /** Arma el enlace para ver la ubicación en Google Maps */
     fun mapsUrl(lat: Double, lng: Double): String =
         String.format(Locale.US, "https://www.google.com/maps/search/?api=1&query=%.6f,%.6f", lat, lng)
 }

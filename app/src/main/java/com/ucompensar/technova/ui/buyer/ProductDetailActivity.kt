@@ -9,11 +9,11 @@ import com.ucompensar.technova.ui.common.launchUi
 import com.ucompensar.technova.ui.common.showProductImage
 import com.ucompensar.technova.ui.common.toCop
 
-/** Detalle de un producto (foto, precio, stock, SKU y descripción) con botón para agregarlo al carrito. */
+/** Pantalla con el detalle de un producto */
 class ProductDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityProductDetailBinding
 
-    /** Lee el producto desde Firestore usando el id recibido y lo muestra. */
+    /** Trae el producto de Firestore y lo muestra */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProductDetailBinding.inflate(layoutInflater)

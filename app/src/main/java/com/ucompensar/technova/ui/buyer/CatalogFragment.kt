@@ -13,10 +13,7 @@ import com.ucompensar.technova.data.ProductRepository
 import com.ucompensar.technova.databinding.FragmentCatalogBinding
 import com.ucompensar.technova.ui.common.launchUi
 
-/**
- * Catálogo completo de productos leído desde Firestore, con búsqueda por nombre
- * y filtro por categoría mediante chips.
- */
+/** Pantalla del catálogo con búsqueda y filtro por categoría */
 class CatalogFragment : Fragment() {
     private var _binding: FragmentCatalogBinding? = null
     private val binding get() = _binding!!
@@ -24,13 +21,13 @@ class CatalogFragment : Fragment() {
     private var selectedCategory: String? = null
     private var products: List<Product> = emptyList()
 
-    /** Crea la vista del fragment a partir de su layout (ViewBinding). */
+    /** Carga el diseño de esta pantalla */
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, state: Bundle?): View {
         _binding = FragmentCatalogBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    /** Prepara la cuadrícula, los filtros y carga los productos. */
+    /** Prepara la lista y los filtros */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         selectedCategory = arguments?.getString(ARG_CATEGORY)
 
@@ -44,7 +41,7 @@ class CatalogFragment : Fragment() {
         binding.etSearch.doAfterTextChanged { applyFilters() }
     }
 
-    /** Recarga los productos cada vez que la pantalla vuelve a verse (stock actualizado). */
+    /** Vuelve a cargar los productos cada vez que se abre */
     override fun onResume() {
         super.onResume()
         launchUi {
@@ -53,7 +50,7 @@ class CatalogFragment : Fragment() {
         }
     }
 
-    /** Crea un chip por cada categoría y marca la que venga seleccionada. */
+    /** Crea un botón de filtro por cada categoría */
     private fun buildCategoryChips() {
         val categories = resources.getStringArray(R.array.product_categories)
         categories.forEach { name ->
@@ -70,7 +67,7 @@ class CatalogFragment : Fragment() {
         }
     }
 
-    /** Muestra solo los productos que coinciden con la búsqueda y la categoría elegida. */
+    /** Muestra solo los productos que coinciden con la búsqueda */
     private fun applyFilters() {
         val b = _binding ?: return
         val query = b.etSearch.text.toString().trim()
@@ -81,7 +78,7 @@ class CatalogFragment : Fragment() {
         adapter.submit(list)
     }
 
-    /** Libera la referencia a la vista para evitar fugas de memoria. */
+    /** Limpia la vista cuando se cierra la pantalla */
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -90,7 +87,7 @@ class CatalogFragment : Fragment() {
     companion object {
         private const val ARG_CATEGORY = "category"
 
-        /** Crea el catálogo filtrado por la categoría indicada (null = todas). */
+        /** Crea el catálogo filtrado por una categoría */
         fun newInstance(category: String?) = CatalogFragment().apply {
             arguments = Bundle().apply { putString(ARG_CATEGORY, category) }
         }

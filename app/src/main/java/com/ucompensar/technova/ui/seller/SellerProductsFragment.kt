@@ -16,19 +16,19 @@ import com.ucompensar.technova.ui.common.launchUi
 import com.ucompensar.technova.ui.common.toast
 
 
-/** Productos del vendedor: lista solo los productos que él publicó y permite crearlos, editarlos y eliminarlos (CRUD en Firestore). */
+/** Lista de los productos del vendedor para crearlos editarlos o borrarlos */
 class SellerProductsFragment : Fragment() {
     private var _binding: FragmentSellerProductsBinding? = null
     private val binding get() = _binding!!
     private lateinit var adapter: ProductRowAdapter
 
-    /** Crea la vista del fragment a partir de su layout (ViewBinding). */
+    /** Carga el diseño de esta pantalla */
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, state: Bundle?): View {
         _binding = FragmentSellerProductsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    /** Prepara la lista con las acciones de editar y eliminar, y el botón de agregar. */
+    /** Prepara la lista de productos y el botón para agregar uno nuevo */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         adapter = ProductRowAdapter(
             onEdit = { product ->
@@ -44,18 +44,18 @@ class SellerProductsFragment : Fragment() {
         }
     }
 
-    /** Recarga los productos al volver del formulario para ver los cambios. */
+    /** Vuelve a cargar los productos cuando regresamos del formulario */
     override fun onResume() {
         super.onResume()
         refresh()
     }
 
-    /** Lee de Firestore los productos que este usuario puede gestionar. */
+    /** Trae de Firestore los productos de este vendedor */
     private fun refresh() {
         launchUi { adapter.submit(ProductRepository.getManageable()) }
     }
 
-    /** Pide confirmación y elimina el producto de Firestore. */
+    /** Pregunta si de verdad quiere borrar el producto y lo borra */
     private fun confirmDelete(product: Product) {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(getString(R.string.delete_product_confirm, product.name))
@@ -70,7 +70,7 @@ class SellerProductsFragment : Fragment() {
             .show()
     }
 
-    /** Libera la referencia a la vista para evitar fugas de memoria. */
+    /** Limpia la vista cuando se cierra la pantalla */
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

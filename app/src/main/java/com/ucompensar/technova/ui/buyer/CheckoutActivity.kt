@@ -29,12 +29,7 @@ import com.ucompensar.technova.ui.common.toCop
 import com.ucompensar.technova.ui.common.toastLong
 import java.util.Locale
 
-/**
- * Confirmación de la compra: dirección de entrega (con opción de tomarla del GPS),
- * método de pago y resumen. Los pagos en línea se hacen en ePayco; el pago contraentrega
- * crea el pedido directamente. Al confirmar, se guarda el pedido en Firestore,
- * se descuenta el stock y se vacía el carrito.
- */
+/** Pantalla para terminar la compra con la dirección y la forma de pago */
 class CheckoutActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCheckoutBinding
     private var shipping = 0L
@@ -42,12 +37,12 @@ class CheckoutActivity : AppCompatActivity() {
     private var longitude = 0.0
     private var pendingNumber = ""
 
-    /** Pide el permiso de ubicación y, si se concede, captura la dirección. */
+    /** Pide permiso de ubicación y si lo dan saca la dirección */
     private val locationPermission = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->
         if (result.values.any { it }) captureLocation() else toastLong(getString(R.string.msg_location_denied))
     }
 
-    /** Recibe el resultado de la pantalla de pago de ePayco. */
+    /** Recibe la respuesta de la pantalla de pago de ePayco */
     private val paymentLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         val ref = result.data?.getStringExtra(PaymentActivity.RESULT_REF)
         if (result.resultCode == Activity.RESULT_OK && !ref.isNullOrEmpty()) confirmPayment(ref)
@@ -57,7 +52,7 @@ class CheckoutActivity : AppCompatActivity() {
         }
     }
 
-    /** Llena la dirección guardada, conecta los botones y calcula los totales. */
+    /** Pone la dirección guardada y conecta los botones */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCheckoutBinding.inflate(layoutInflater)
@@ -93,7 +88,7 @@ class CheckoutActivity : AppCompatActivity() {
         }
     }
 
-    /** Muestra subtotal, envío y total del carrito. */
+    /** Muestra el subtotal el envío y el total */
     private fun updateTotals() {
         val subtotal = CartRepository.subtotal()
         binding.summary.tvSubtotal.text = subtotal.toCop()
@@ -101,14 +96,14 @@ class CheckoutActivity : AppCompatActivity() {
         binding.summary.tvTotal.text = (subtotal + shipping).toCop()
     }
 
-    /** Muestra el aviso de pago en línea (ePayco) o el de pago contraentrega. */
+    /** Muestra el aviso según la forma de pago elegida */
     private fun showPaymentInfo(checkedId: Int) {
         val cash = checkedId == R.id.rbCash
         binding.tvCashInfo.visibility = if (cash) View.VISIBLE else View.GONE
         binding.tvOnlineInfo.visibility = if (cash) View.GONE else View.VISIBLE
     }
 
-    /** Obtiene la ubicación con el GPS y llena la dirección y la ciudad. */
+    /** Saca la ubicación con el GPS y llena la dirección */
     private fun captureLocation() {
         binding.btnLocation.isEnabled = false
         binding.btnLocation.setText(R.string.msg_locating)
@@ -127,7 +122,7 @@ class CheckoutActivity : AppCompatActivity() {
         }
     }
 
-    /** Muestra las coordenadas capturadas; al tocarlas se abren en Google Maps. */
+    /** Muestra las coordenadas y deja abrirlas en el mapa */
     private fun showCoordinates() {
         if (latitude == 0.0 && longitude == 0.0) return
         binding.tvLocation.visibility = View.VISIBLE
@@ -136,10 +131,10 @@ class CheckoutActivity : AppCompatActivity() {
         )
     }
 
-    /** Revisa la dirección, la ciudad y la aceptación de los términos. */
+    /** Revisa que la dirección esté completa */
     private fun validate(): Boolean {
         val required = getString(R.string.err_required)
-        /** Marca el campo con error si no es válido y devuelve si está bien. */
+        /** Marca el campo si está vacío */
         fun check(layout: TextInputLayout, ok: Boolean): Boolean {
             layout.error = if (ok) null else required
             return ok
@@ -154,10 +149,7 @@ class CheckoutActivity : AppCompatActivity() {
         return valid
     }
 
-    /**
-     * Valida el stock en Firestore y, según el método elegido, abre la pasarela de ePayco
-     * o crea el pedido contraentrega.
-     */
+    /** Revisa el stock y abre el pago con ePayco o crea el pedido contraentrega */
     private fun startPayment() {
         setPaying(true)
         launchUi {
@@ -181,10 +173,7 @@ class CheckoutActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * Consulta en ePayco el resultado real de la transacción. Si fue aceptada (o quedó
-     * pendiente) se crea el pedido; si fue rechazada se avisa y se puede intentar de nuevo.
-     */
+    /** Pregunta a ePayco si el pago salió bien y crea el pedido */
     private fun confirmPayment(ref: String) {
         binding.btnPay.setText(R.string.msg_validating_payment)
         launchUi {
@@ -205,7 +194,7 @@ class CheckoutActivity : AppCompatActivity() {
         }
     }
 
-    /** Guarda el pedido en Firestore, vacía el carrito, recuerda la dirección y muestra la confirmación. */
+    /** Guarda el pedido y vacía el carrito */
     private suspend fun finishOrder(paymentStatus: PaymentStatus, reference: String) {
         val user = Session.current
         val items = CartRepository.cart.toList()
@@ -238,7 +227,7 @@ class CheckoutActivity : AppCompatActivity() {
         showSuccess(order)
     }
 
-    /** Nombre del método de pago elegido, tal como se guarda en el pedido. */
+    /** Devuelve el nombre de la forma de pago elegida */
     private fun selectedMethod(): String = when (binding.rgPayment.checkedRadioButtonId) {
         R.id.rbPse -> getString(R.string.pay_pse)
         R.id.rbNequi -> getString(R.string.pay_nequi)
@@ -246,13 +235,13 @@ class CheckoutActivity : AppCompatActivity() {
         else -> getString(R.string.pay_card)
     }
 
-    /** Bloquea el botón de pagar mientras se procesa el pago. */
+    /** Bloquea el botón mientras se paga */
     private fun setPaying(paying: Boolean) {
         binding.btnPay.isEnabled = !paying
         binding.btnPay.setText(if (paying) R.string.processing_payment else R.string.btn_pay)
     }
 
-    /** Muestra el diálogo de pedido confirmado y vuelve al panel del comprador. */
+    /** Muestra el mensaje de pedido confirmado */
     private fun showSuccess(order: Order) {
         val dialogBinding = DialogOrderSuccessBinding.inflate(layoutInflater)
         dialogBinding.tvOrderNumber.text = if (order.paymentRef.isNotEmpty())

@@ -10,20 +10,17 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-/** Muestra un mensaje corto en pantalla. */
+/** Muestra un mensaje corto */
 fun Context.toast(message: String) = Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 
-/** Muestra un mensaje largo en pantalla. */
+/** Muestra un mensaje largo */
 fun Context.toastLong(message: String) = Toast.makeText(this, message, Toast.LENGTH_LONG).show()
 
-/** Mensaje legible para un error: usa el texto del error o uno genérico si no tiene. */
+/** Saca el texto del error para mostrarlo */
 fun Context.errorMessage(error: Throwable): String =
     error.message?.takeIf { it.isNotBlank() } ?: getString(R.string.msg_generic_error)
 
-/**
- * Ejecuta una tarea con Firebase en segundo plano ligada al ciclo de vida de la pantalla.
- * Si ocurre un error, lo muestra al usuario en lugar de cerrar la app.
- */
+/** Hace una tarea con Firebase en segundo plano y si falla muestra el error */
 fun LifecycleOwner.launchSafe(context: () -> Context?, block: suspend CoroutineScope.() -> Unit): Job =
     lifecycleScope.launch {
         try {
@@ -35,10 +32,10 @@ fun LifecycleOwner.launchSafe(context: () -> Context?, block: suspend CoroutineS
         }
     }
 
-/** Atajo de [launchSafe] para fragments: usa el viewLifecycleOwner y el contexto del fragment. */
+/** Lo mismo de arriba pero para los fragments */
 fun Fragment.launchUi(block: suspend CoroutineScope.() -> Unit): Job =
     viewLifecycleOwner.launchSafe({ context }, block)
 
-/** Atajo de [launchSafe] para activities. */
+/** Lo mismo de arriba pero para las activities */
 fun androidx.appcompat.app.AppCompatActivity.launchUi(block: suspend CoroutineScope.() -> Unit): Job =
     launchSafe({ this }, block)

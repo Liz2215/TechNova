@@ -10,16 +10,13 @@ import com.ucompensar.technova.data.Order
 import com.ucompensar.technova.data.SalesStats
 import java.io.File
 
-/**
- * Genera el reporte de ventas en PDF con la clase PdfDocument de Android
- * (sin librerías externas): totales, productos más vendidos y lista de pedidos.
- */
+/** Crea el reporte de ventas en PDF */
 object ReportPdf {
     private const val WIDTH = 595
     private const val HEIGHT = 842
     private const val MARGIN = 40f
 
-    /** Crea el PDF en la caché de la app y devuelve su Uri para compartirlo. */
+    /** Arma el PDF y lo guarda para poder compartirlo */
     fun create(context: Context, title: String, orders: List<Order>): Uri {
         val pdf = PdfDocument()
         var pageNumber = 1
@@ -30,7 +27,7 @@ object ReportPdf {
         val textPaint = Paint().apply { textSize = 11f }
         var y = MARGIN + 10
 
-        /** Escribe una línea y pasa a una página nueva si ya no cabe. */
+        /** Escribe una línea y si no cabe pasa a otra página */
         fun line(text: String, paint: Paint = textPaint, gap: Float = 18f) {
             if (y > HEIGHT - MARGIN) {
                 pdf.finishPage(page)

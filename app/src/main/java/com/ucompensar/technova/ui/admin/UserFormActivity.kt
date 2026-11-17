@@ -15,17 +15,14 @@ import com.ucompensar.technova.ui.common.launchUi
 import com.ucompensar.technova.ui.common.toast
 import com.ucompensar.technova.ui.common.toastLong
 
-/**
- * Formulario del administrador para crear o editar usuarios (nombre, correo, celular,
- * rol y estado). Al crear, también se define una contraseña temporal para la cuenta.
- */
+/** Formulario del administrador para crear o editar usuarios */
 class UserFormActivity : AppCompatActivity() {
     private lateinit var binding: ActivityUserFormBinding
     private var user: User? = null
     private val roles = Role.values()
     private lateinit var roleNames: Array<String>
 
-    /** Prepara el formulario y, si se recibe un id, carga el usuario para editarlo. */
+    /** Esta función es para crear o editar un usuario y si llega un id carga sus datos */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityUserFormBinding.inflate(layoutInflater)
@@ -45,7 +42,7 @@ class UserFormActivity : AppCompatActivity() {
         }
     }
 
-    /** Llena el formulario con los datos del usuario. El correo y la contraseña no se editan aquí. */
+    /** Pone en el formulario los datos del usuario que se va a editar */
     private fun fill(u: User) {
         binding.toolbar.setTitle(R.string.user_form_edit)
         binding.etName.setText(u.name)
@@ -57,7 +54,7 @@ class UserFormActivity : AppCompatActivity() {
         binding.swActive.isChecked = u.active
     }
 
-    /** Revisa nombre, correo, rol y (solo al crear) la contraseña temporal. */
+    /** Revisa que los datos del usuario estén bien escritos */
     private fun validate(): Boolean {
         val required = getString(R.string.err_required)
         binding.tilName.error = if (binding.etName.text.isNullOrBlank()) required else null
@@ -70,7 +67,7 @@ class UserFormActivity : AppCompatActivity() {
         return listOf(binding.tilName, binding.tilEmail, binding.tilRole, binding.tilPassword).all { it.error == null }
     }
 
-    /** Crea la cuenta nueva o guarda los cambios del usuario en Firestore. */
+    /** Guarda el usuario nuevo o los cambios en Firestore */
     private fun save() {
         val role = roles[roleNames.indexOf(binding.actRole.text.toString()).coerceAtLeast(0)]
         val data = User(

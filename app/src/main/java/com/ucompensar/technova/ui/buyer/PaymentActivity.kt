@@ -18,15 +18,11 @@ import com.ucompensar.technova.data.EpaycoGateway
 import com.ucompensar.technova.data.Session
 import com.ucompensar.technova.databinding.ActivityPaymentBinding
 
-/**
- * Pantalla de pago: abre el Checkout de ePayco dentro de un WebView. Cuando ePayco
- * termina y redirige a la URL de respuesta, la app la intercepta, toma la referencia
- * de la transacción (ref_payco) y la devuelve a la pantalla de checkout para validarla.
- */
+/** Pantalla que abre la pasarela de ePayco para pagar */
 class PaymentActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPaymentBinding
 
-    /** Configura el WebView y carga la página con el checkout de ePayco. */
+    /** Prepara el navegador interno y abre el pago */
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +30,7 @@ class PaymentActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.toolbar.setNavigationOnClickListener { confirmCancel() }
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
-            /** Al presionar atrás, pregunta antes de cancelar el pago. */
+            /** Si se presiona atrás pregunta antes de salir */
             override fun handleOnBackPressed() = confirmCancel()
         })
 
@@ -51,16 +47,16 @@ class PaymentActivity : AppCompatActivity() {
             setSupportMultipleWindows(false)
         }
         binding.webView.webViewClient = object : WebViewClient() {
-            /** Revisa cada página que se va a abrir para detectar la respuesta de ePayco. */
+            /** Revisa cada página que se abre para saber cuándo terminó el pago */
             override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean =
                 handleUrl(request.url)
 
-            /** Muestra la barra de carga mientras se abre la página. */
+            /** Muestra la barra de carga */
             override fun onPageStarted(view: WebView, url: String, favicon: Bitmap?) {
                 binding.progress.visibility = View.VISIBLE
             }
 
-            /** Oculta la barra de carga cuando la página terminó de cargar. */
+            /** Oculta la barra de carga */
             override fun onPageFinished(view: WebView, url: String) {
                 binding.progress.visibility = View.GONE
             }
@@ -76,10 +72,7 @@ class PaymentActivity : AppCompatActivity() {
         binding.webView.loadDataWithBaseURL("https://technova.app/", html, "text/html", "UTF-8", null)
     }
 
-    /**
-     * Revisa cada dirección que intenta abrir el WebView. Si es la URL de respuesta de
-     * ePayco, termina la pantalla devolviendo la referencia de la transacción.
-     */
+    /** Cuando ePayco termina toma la referencia del pago y vuelve */
     private fun handleUrl(uri: Uri): Boolean {
         if (!uri.toString().startsWith(EpaycoGateway.RESPONSE_URL)) return false
         val ref = uri.getQueryParameter("ref_payco") ?: uri.getQueryParameter("x_ref_payco")
@@ -89,7 +82,7 @@ class PaymentActivity : AppCompatActivity() {
         return true
     }
 
-    /** Pregunta antes de salir para no abandonar un pago a medias por error. */
+    /** Pregunta si de verdad quiere salir del pago */
     private fun confirmCancel() {
         MaterialAlertDialogBuilder(this)
             .setTitle(R.string.payment_cancel_title)

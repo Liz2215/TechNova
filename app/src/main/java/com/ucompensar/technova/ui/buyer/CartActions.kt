@@ -9,10 +9,7 @@ import com.ucompensar.technova.ui.common.errorMessage
 import com.ucompensar.technova.ui.common.toast
 import com.ucompensar.technova.ui.common.toastLong
 
-/**
- * Agrega una unidad del producto al carrito guardado en Firestore y avisa al usuario.
- * Si el producto no tiene más stock, muestra el motivo.
- */
+/** Agrega un producto al carrito y le avisa al usuario */
 suspend fun Context.addToCart(product: Product) {
     try {
         if (product.stock <= 0) {
@@ -26,7 +23,7 @@ suspend fun Context.addToCart(product: Product) {
     }
 }
 
-/** Abre el detalle del producto indicado. */
+/** Abre el detalle de un producto */
 fun Context.openProductDetail(product: Product) {
     val intent = Intent(this, ProductDetailActivity::class.java)
     intent.putExtra(ProductDetailActivity.EXTRA_ID, product.id)

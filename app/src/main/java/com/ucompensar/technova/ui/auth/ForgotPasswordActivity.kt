@@ -12,15 +12,12 @@ import com.ucompensar.technova.ui.common.launchUi
 import com.ucompensar.technova.ui.common.toast
 import com.ucompensar.technova.ui.common.toastLong
 
-/**
- * Recuperación de contraseña: Firebase envía al correo un enlace para crear una
- * contraseña nueva. Luego se muestra el mensaje "Revisa tu correo" con opción de reenviar.
- */
+/** Pantalla para recuperar la contraseña por correo */
 class ForgotPasswordActivity : AppCompatActivity() {
     private lateinit var binding: ActivityForgotPasswordBinding
     private var email = ""
 
-    /** Conecta los botones de enviar, reenviar y volver al login. */
+    /** Conecta los botones de la pantalla */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityForgotPasswordBinding.inflate(layoutInflater)
@@ -32,7 +29,7 @@ class ForgotPasswordActivity : AppCompatActivity() {
         binding.btnResend.setOnClickListener { send(resend = true) }
     }
 
-    /** Valida el correo escrito y pide a Firebase enviar el enlace. */
+    /** Revisa el correo y manda el enlace */
     private fun sendLink() {
         email = binding.etEmail.text.toString().trim()
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
@@ -43,7 +40,7 @@ class ForgotPasswordActivity : AppCompatActivity() {
         send(resend = false)
     }
 
-    /** Envía (o reenvía) el correo de recuperación y muestra el resultado. */
+    /** Le pide a Firebase que mande el correo de recuperación */
     private fun send(resend: Boolean) {
         binding.btnSend.isEnabled = false
         launchUi {

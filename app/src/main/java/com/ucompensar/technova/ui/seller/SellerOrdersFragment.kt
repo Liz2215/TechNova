@@ -14,10 +14,7 @@ import com.ucompensar.technova.ui.common.launchUi
 import com.ucompensar.technova.ui.common.showOrderDetails
 import com.ucompensar.technova.ui.common.toast
 
-/**
- * Pedidos del vendedor (o de toda la tienda si es administrador) con filtro por estado.
- * Permite cambiar el estado del pedido (pendiente, enviado, entregado) y guardarlo en Firestore.
- */
+/** Pedidos del vendedor donde puede filtrar y cambiar el estado */
 class SellerOrdersFragment : Fragment() {
     private var _binding: FragmentSellerOrdersBinding? = null
     private val binding get() = _binding!!
@@ -30,13 +27,13 @@ class SellerOrdersFragment : Fragment() {
         onClick = { context?.showOrderDetails(it) }
     )
 
-    /** Crea la vista del fragment a partir de su layout (ViewBinding). */
+    /** Carga el diseño de esta pantalla */
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, state: Bundle?): View {
         _binding = FragmentSellerOrdersBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    /** Prepara la lista y los chips de filtro, y carga los pedidos. */
+    /** Prepara la lista y los filtros y carga los pedidos */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.rvOrders.adapter = adapter
         binding.chipStatus.setOnCheckedStateChangeListener { _, ids ->
@@ -54,7 +51,7 @@ class SellerOrdersFragment : Fragment() {
         }
     }
 
-    /** Guarda el nuevo estado del pedido en Firestore y refresca la lista. */
+    /** Guarda el nuevo estado del pedido */
     private fun changeStatus(order: Order, status: OrderStatus) {
         launchUi {
             OrderRepository.updateStatus(order, status)
@@ -63,12 +60,12 @@ class SellerOrdersFragment : Fragment() {
         }
     }
 
-    /** Muestra solo los pedidos del estado elegido en los chips. */
+    /** Muestra solo los pedidos del estado que se eligió */
     private fun applyFilter() {
         adapter.submit(orders.filter { filter == null || it.status == filter })
     }
 
-    /** Libera la referencia a la vista para evitar fugas de memoria. */
+    /** Limpia la vista cuando se cierra la pantalla */
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

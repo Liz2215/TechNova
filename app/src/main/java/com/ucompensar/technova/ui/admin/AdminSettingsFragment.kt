@@ -12,21 +12,18 @@ import com.ucompensar.technova.databinding.FragmentAdminSettingsBinding
 import com.ucompensar.technova.ui.common.launchUi
 import com.ucompensar.technova.ui.common.toast
 
-/**
- * Configuración general de la tienda guardada en Firestore: modo mantenimiento,
- * notificaciones, aprobación de vendedores, costo de envío y pasarelas de pago.
- */
+/** Ajustes generales de la tienda que se guardan en Firestore */
 class AdminSettingsFragment : Fragment() {
     private var _binding: FragmentAdminSettingsBinding? = null
     private val binding get() = _binding!!
 
-    /** Crea la vista del fragment a partir de su layout (ViewBinding). */
+    /** Carga el diseño de esta pantalla */
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, state: Bundle?): View {
         _binding = FragmentAdminSettingsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    /** Carga la configuración actual y conecta el botón de guardar. */
+    /** Trae los ajustes guardados y los pone en pantalla */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.btnSave.isEnabled = false
         launchUi {
@@ -43,7 +40,7 @@ class AdminSettingsFragment : Fragment() {
         binding.btnSave.setOnClickListener { save() }
     }
 
-    /** Valida el costo de envío y guarda la configuración en Firestore. */
+    /** Revisa el costo de envío y guarda los ajustes */
     private fun save() {
         val shipping = binding.etShipping.text.toString().toLongOrNull()
         binding.tilShipping.error = if (shipping == null) getString(R.string.err_required) else null
@@ -66,7 +63,7 @@ class AdminSettingsFragment : Fragment() {
         }
     }
 
-    /** Libera la referencia a la vista para evitar fugas de memoria. */
+    /** Limpia la vista cuando se cierra la pantalla */
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

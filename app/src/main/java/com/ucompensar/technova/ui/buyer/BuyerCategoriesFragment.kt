@@ -14,18 +14,18 @@ import com.ucompensar.technova.databinding.FragmentBuyerCategoriesBinding
 import com.ucompensar.technova.databinding.ItemCategoryBinding
 import com.ucompensar.technova.ui.common.launchUi
 
-/** Lista de categorías con la cantidad real de productos de cada una (según Firestore). */
+/** Pantalla con la lista de categorías */
 class BuyerCategoriesFragment : Fragment() {
     private var _binding: FragmentBuyerCategoriesBinding? = null
     private val binding get() = _binding!!
 
-    /** Crea la vista del fragment a partir de su layout (ViewBinding). */
+    /** Carga el diseño de esta pantalla */
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, state: Bundle?): View {
         _binding = FragmentBuyerCategoriesBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    /** Carga los productos para contar cuántos hay por categoría. */
+    /** Trae los productos para contar cuántos hay en cada categoría */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         launchUi {
             val categories = Catalog.categories(ProductRepository.getAll())
@@ -35,28 +35,28 @@ class BuyerCategoriesFragment : Fragment() {
         }
     }
 
-    /** Libera la referencia a la vista para evitar fugas de memoria. */
+    /** Limpia la vista cuando se cierra la pantalla */
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
-    /** Filas de categorías con ícono, nombre y número de productos. */
+    /** Adaptador que pinta cada categoría */
     class CategoryAdapter(
         private val items: List<Category>,
         private val onClick: (Category) -> Unit
     ) : RecyclerView.Adapter<CategoryAdapter.Holder>() {
-        /** Contenedor de las vistas de una fila de la lista. */
+        /** Guarda las vistas de una fila */
         class Holder(val binding: ItemCategoryBinding) : RecyclerView.ViewHolder(binding.root)
 
-        /** Crea la vista de una fila nueva. */
+        /** Crea una fila nueva */
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
             Holder(ItemCategoryBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
-        /** Cantidad de filas de la lista. */
+        /** Dice cuántas filas hay */
         override fun getItemCount() = items.size
 
-        /** Llena la fila con los datos del elemento en esa posición. */
+        /** Pone los datos de la categoría en su fila */
         override fun onBindViewHolder(holder: Holder, position: Int) {
             val category = items[position]
             with(holder.binding) {

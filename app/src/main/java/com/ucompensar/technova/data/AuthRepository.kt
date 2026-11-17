@@ -11,19 +11,13 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.FirebaseNetworkException
 import kotlinx.coroutines.tasks.await
 
-/**
- * Autenticación con Firebase Authentication (correo/contraseña y Google) y
- * lectura del perfil del usuario en Firestore para saber su rol.
- */
+/** Aquí está todo lo del inicio de sesión y el registro con Firebase */
 object AuthRepository {
 
-    /** Error de autenticación con un mensaje claro en español para mostrar al usuario. */
+    /** Error de inicio de sesión con un mensaje en español */
     class AuthError(message: String) : Exception(message)
 
-    /**
-     * Crea la cuenta en Firebase Authentication y guarda el perfil en Firestore.
-     * Solo se permiten los roles Comprador y Vendedor (el administrador se crea desde el panel).
-     */
+    /** Esta función crea la cuenta del usuario y guarda su perfil */
     suspend fun register(name: String, email: String, phone: String, password: String, role: Role): User {
         val result = runAuth { Db.auth.createUserWithEmailAndPassword(email, password).await() }
         val uid = result.user!!.uid
@@ -33,17 +27,13 @@ object AuthRepository {
         return user
     }
 
-    /** Inicia sesión con correo y contraseña y carga el perfil (rol) del usuario. */
+    /** Inicia sesión con correo y contraseña */
     suspend fun login(email: String, password: String): User {
         runAuth { Db.auth.signInWithEmailAndPassword(email, password).await() }
         return loadProfile()
     }
 
-    /**
-     * Inicia sesión con la cuenta de Google. Si es la primera vez, crea el perfil como Comprador.
-     *
-     * @param idToken token que entrega Google Sign-In al elegir la cuenta.
-     */
+    /** Inicia sesión con Google y si es nuevo lo crea como comprador */
     suspend fun loginWithGoogle(idToken: String): User {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         val result = runAuth { Db.auth.signInWithCredential(credential).await() }
@@ -59,10 +49,7 @@ object AuthRepository {
         return loadProfile()
     }
 
-    /**
-     * Lee el perfil del usuario con sesión iniciada. Si la cuenta fue eliminada o
-     * suspendida por el administrador, cierra la sesión y lanza un error.
-     */
+    /** Trae el perfil del usuario y revisa que la cuenta siga activa */
     suspend fun loadProfile(): User {
         val uid = Db.uid ?: throw AuthError("No hay una sesión activa.")
         val doc = Db.store.collection(Db.USERS).document(uid).get().await()
@@ -79,22 +66,19 @@ object AuthRepository {
         return user
     }
 
-    /** Envía el correo de Firebase para restablecer la contraseña. */
+    /** Manda el correo para cambiar la contraseña */
     suspend fun sendPasswordReset(email: String) {
         runAuth { Db.auth.sendPasswordResetEmail(email).await() }
     }
 
-    /** Cierra la sesión en Firebase y borra el perfil guardado en memoria. */
+    /** Cierra la sesión */
     fun logout() {
         Db.auth.signOut()
         Session.current = null
         CartRepository.clearLocal()
     }
 
-    /**
-     * Elimina la cuenta del usuario actual: su carrito, su perfil en Firestore y su
-     * usuario en Firebase Authentication (derecho de supresión, Decreto 1377 de 2013).
-     */
+    /** Borra la cuenta del usuario con todos sus datos */
     suspend fun deleteAccount() {
         val firebaseUser = Db.auth.currentUser ?: return
         val userRef = Db.store.collection(Db.USERS).document(firebaseUser.uid)
@@ -109,12 +93,7 @@ object AuthRepository {
         logout()
     }
 
-    /**
-     * Crea una cuenta nueva desde el panel del administrador sin cerrar su propia sesión.
-     * Para eso usa una segunda instancia de Firebase solo para el registro.
-     *
-     * @return uid de la cuenta creada.
-     */
+    /** Crea una cuenta desde el panel del administrador sin cerrar su sesión */
     suspend fun createAccountAsAdmin(email: String, password: String): String {
         val main = FirebaseApp.getInstance()
         val helper = FirebaseApp.getApps(main.applicationContext).find { it.name == HELPER_APP }
@@ -125,7 +104,7 @@ object AuthRepository {
         return result.user!!.uid
     }
 
-    /** Ejecuta una operación de Firebase Auth y traduce sus errores a mensajes en español. */
+    /** Hace la tarea y si falla cambia el error por un mensaje en español */
     private suspend fun <T> runAuth(block: suspend () -> T): T = try {
         block()
     } catch (e: FirebaseAuthUserCollisionException) {

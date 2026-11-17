@@ -16,10 +16,7 @@ import com.ucompensar.technova.ui.common.launchUi
 import com.ucompensar.technova.ui.common.showProductImage
 import com.ucompensar.technova.ui.common.toCop
 
-/**
- * Carrito de compras guardado en Firestore: permite sumar, restar y quitar productos,
- * y muestra subtotal, costo de envío (configurado por el admin) y total.
- */
+/** Pantalla del carrito de compras */
 class CartActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCartBinding
     private var shippingCost = 0L
@@ -28,7 +25,7 @@ class CartActivity : AppCompatActivity() {
         onRemove = { item -> launchUi { CartRepository.remove(item.product.id); refresh() } }
     )
 
-    /** Prepara la lista y el botón para ir a pagar. */
+    /** Prepara la lista y el botón para pagar */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCartBinding.inflate(layoutInflater)
@@ -41,7 +38,7 @@ class CartActivity : AppCompatActivity() {
         }
     }
 
-    /** Recarga el carrito desde Firestore cada vez que la pantalla se muestra. */
+    /** Vuelve a cargar el carrito cada vez que se abre */
     override fun onResume() {
         super.onResume()
         binding.btnCheckout.isEnabled = false
@@ -52,7 +49,7 @@ class CartActivity : AppCompatActivity() {
         }
     }
 
-    /** Actualiza la lista, el mensaje de carrito vacío y los totales. */
+    /** Actualiza la lista y los totales */
     private fun refresh() {
         adapter.submit(CartRepository.cart.toList())
         val empty = CartRepository.cart.isEmpty()
@@ -65,30 +62,30 @@ class CartActivity : AppCompatActivity() {
         binding.summary.tvTotal.text = (subtotal + shipping).toCop()
     }
 
-    /** Filas del carrito con foto, nombre, precio y botones de cantidad. */
+    /** Adaptador que pinta cada producto del carrito */
     private class CartAdapter(
         private val onQuantity: (CartItem, Int) -> Unit,
         private val onRemove: (CartItem) -> Unit
     ) : RecyclerView.Adapter<CartAdapter.Holder>() {
-        /** Contenedor de las vistas de una fila de la lista. */
+        /** Guarda las vistas de una fila */
         class Holder(val binding: ItemCartBinding) : RecyclerView.ViewHolder(binding.root)
 
         private var items: List<CartItem> = emptyList()
 
-        /** Reemplaza los productos mostrados. */
+        /** Cambia los productos que se muestran */
         fun submit(list: List<CartItem>) {
             items = list
             notifyDataSetChanged()
         }
 
-        /** Crea la vista de una fila nueva. */
+        /** Crea una fila nueva */
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
             Holder(ItemCartBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
-        /** Cantidad de filas de la lista. */
+        /** Dice cuántas filas hay */
         override fun getItemCount() = items.size
 
-        /** Muestra el producto y permite subir (hasta el stock), bajar o quitar unidades. */
+        /** Pone el producto en su fila y conecta los botones de más y menos */
         override fun onBindViewHolder(holder: Holder, position: Int) {
             val item = items[position]
             with(holder.binding) {

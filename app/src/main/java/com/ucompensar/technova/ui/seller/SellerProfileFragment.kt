@@ -21,22 +21,18 @@ import com.ucompensar.technova.ui.common.toCompactCop
 import com.ucompensar.technova.ui.common.toast
 import java.util.Locale
 
-/**
- * Perfil del vendedor: nombre de la tienda, calificación promedio, número de productos,
- * ventas totales y opciones para editar los datos de la tienda, ver cómo recibe pagos,
- * notificaciones, ayuda y cerrar sesión.
- */
+/** Perfil del vendedor con sus datos y opciones */
 class SellerProfileFragment : Fragment() {
     private var _binding: FragmentSellerProfileBinding? = null
     private val binding get() = _binding!!
 
-    /** Crea la vista del fragment a partir de su layout (ViewBinding). */
+    /** Carga el diseño de esta pantalla */
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, state: Bundle?): View {
         _binding = FragmentSellerProfileBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    /** Muestra los datos del vendedor y calcula sus indicadores desde Firestore. */
+    /** Muestra los datos del vendedor y calcula sus números */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         showUser()
         binding.statRating.ivStatIcon.setImageResource(R.drawable.ic_star)
@@ -64,13 +60,13 @@ class SellerProfileFragment : Fragment() {
         binding.btnLogout.setOnClickListener { requireActivity().logout() }
     }
 
-    /** Muestra el nombre y el correo del vendedor que inició sesión. */
+    /** Pone el nombre y el correo del vendedor */
     private fun showUser() {
         binding.tvStoreName.text = Session.current?.name.orEmpty()
         binding.tvStoreEmail.text = Session.current?.email.orEmpty()
     }
 
-    /** Diálogo para editar el nombre de la tienda y el teléfono; se guarda en Firestore. */
+    /** Abre una ventana para cambiar el nombre de la tienda y el teléfono */
     private fun editStore() {
         val user = Session.current ?: return
         val dialogBinding = DialogStoreBinding.inflate(layoutInflater)
@@ -92,7 +88,7 @@ class SellerProfileFragment : Fragment() {
             .show()
     }
 
-    /** Muestra un diálogo informativo con un título y un texto. */
+    /** Abre una ventana con información */
     private fun info(title: Int, message: Int) {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(title)
@@ -101,7 +97,7 @@ class SellerProfileFragment : Fragment() {
             .show()
     }
 
-    /** Libera la referencia a la vista para evitar fugas de memoria. */
+    /** Limpia la vista cuando se cierra la pantalla */
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

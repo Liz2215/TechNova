@@ -1,15 +1,12 @@
 package com.ucompensar.technova.data
 
-/**
- * Guarda en memoria el perfil del usuario que inició sesión (nombre, correo y rol)
- * para no tener que leerlo de Firestore en cada pantalla.
- */
+/** Guarda en memoria los datos del usuario que inició sesión */
 object Session {
     var current: User? = null
 
-    /** Rol del usuario actual; si no hay sesión se asume Comprador. */
+    /** Rol del usuario que inició sesión */
     val role: Role get() = current?.role ?: Role.BUYER
 
-    /** Indica si el usuario actual es administrador. */
+    /** Dice si el usuario es administrador */
     val isAdmin: Boolean get() = role == Role.ADMIN
 }

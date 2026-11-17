@@ -21,24 +21,20 @@ import com.ucompensar.technova.ui.common.launchUi
 import com.ucompensar.technova.ui.common.toCompactCop
 import com.ucompensar.technova.ui.common.toastLong
 
-/**
- * Reporte de ventas del administrador calculado con los pedidos de Firestore:
- * ventas, pedidos y ticket promedio por semana, mes o año, gráfico, productos más
- * vendidos, ventas por categoría y exportación del reporte en PDF.
- */
+/** Reporte de ventas del administrador hecho con los pedidos reales de Firestore */
 class AdminReportsFragment : Fragment() {
     private var _binding: FragmentAdminReportsBinding? = null
     private val binding get() = _binding!!
     private var orders: List<Order> = emptyList()
     private var period = SalesStats.Period.WEEK
 
-    /** Crea la vista del fragment a partir de su layout (ViewBinding). */
+    /** Carga el diseño de esta pantalla */
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, state: Bundle?): View {
         _binding = FragmentAdminReportsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    /** Prepara los indicadores, los chips de período y carga los pedidos. */
+    /** Prepara las tarjetas y los botones de semana mes y año */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.statTotal.ivStatIcon.setImageResource(R.drawable.ic_chart)
         binding.statTotal.tvStatLabel.setText(R.string.stat_total_sales)
@@ -63,7 +59,7 @@ class AdminReportsFragment : Fragment() {
         }
     }
 
-    /** Muestra indicadores, gráfico, top de productos y categorías del período elegido. */
+    /** Muestra los números y el gráfico del periodo que se eligió */
     private fun showPeriod() {
         val inPeriod = SalesStats.inPeriod(orders, period)
         val total = inPeriod.sumOf { it.subtotal }
@@ -81,7 +77,7 @@ class AdminReportsFragment : Fragment() {
         fillCategories(inPeriod)
     }
 
-    /** Llena la lista de los 5 productos con más unidades vendidas. */
+    /** Llena la lista de los productos que más se venden */
     private fun fillTopProducts(list: List<Order>) {
         binding.layoutTopProducts.removeAllViews()
         SalesStats.topProducts(list).forEachIndexed { index, (name, units) ->
@@ -92,7 +88,7 @@ class AdminReportsFragment : Fragment() {
         }
     }
 
-    /** Llena las barras de porcentaje de ventas por categoría. */
+    /** Llena las barras de ventas por categoría */
     private fun fillCategories(list: List<Order>) {
         binding.layoutCategories.removeAllViews()
         SalesStats.salesByCategory(list).forEach { (category, percent) ->
@@ -105,7 +101,7 @@ class AdminReportsFragment : Fragment() {
         }
     }
 
-    /** Genera el PDF del reporte del período y abre el menú para compartirlo o guardarlo. */
+    /** Crea el PDF del reporte y deja compartirlo o guardarlo */
     private fun exportPdf() {
         try {
             val title = getString(R.string.reports_title) + " · " + when (period) {
@@ -123,7 +119,7 @@ class AdminReportsFragment : Fragment() {
         }
     }
 
-    /** Libera la referencia a la vista para evitar fugas de memoria. */
+    /** Limpia la vista cuando se cierra la pantalla */
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

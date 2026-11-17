@@ -23,14 +23,11 @@ import com.ucompensar.technova.ui.common.launchUi
 import com.ucompensar.technova.ui.common.openPanelFor
 import com.ucompensar.technova.ui.common.toastLong
 
-/**
- * Inicio de sesión con tres opciones: correo y contraseña, cuenta de Google y huella digital.
- * El panel que se abre depende del rol guardado en Firestore para la cuenta.
- */
+/** Pantalla de inicio de sesión con correo con Google o con huella */
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
 
-    /** Recibe la cuenta elegida en la ventana de Google y entra con ella a Firebase. */
+    /** Recibe la cuenta de Google que se eligió y entra con ella */
     private val googleLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         try {
             val account = GoogleSignIn.getSignedInAccountFromIntent(result.data).getResult(ApiException::class.java)
@@ -41,7 +38,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    /** Conecta los botones de la pantalla con sus acciones. */
+    /** Conecta los botones de la pantalla */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
@@ -58,7 +55,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    /** Revisa que el correo tenga formato válido y la contraseña al menos 6 caracteres. */
+    /** Revisa que el correo y la contraseña estén bien escritos */
     private fun validate(): Boolean {
         val email = binding.etEmail.text.toString().trim()
         val password = binding.etPassword.text.toString()
@@ -72,7 +69,7 @@ class LoginActivity : AppCompatActivity() {
         return binding.tilEmail.error == null && binding.tilPassword.error == null
     }
 
-    /** Inicia sesión en Firebase y guarda las credenciales cifradas para la huella. */
+    /** Entra con correo y contraseña y los guarda para poder usar la huella */
     private fun loginWithEmail() {
         val email = binding.etEmail.text.toString().trim()
         val password = binding.etPassword.text.toString()
@@ -81,11 +78,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * Abre la ventana de Google para elegir la cuenta. Requiere que el proyecto de Firebase
-     * tenga registrada la huella SHA-1 de la app (si no, el archivo google-services.json
-     * no trae el id de cliente web y se avisa al usuario).
-     */
+    /** Abre la ventana de Google para escoger la cuenta */
     private fun startGoogleSignIn() {
         val clientIdRes = resources.getIdentifier("default_web_client_id", "string", packageName)
         if (clientIdRes == 0) {
@@ -100,10 +93,7 @@ class LoginActivity : AppCompatActivity() {
         client.signOut().addOnCompleteListener { googleLauncher.launch(client.signInIntent) }
     }
 
-    /**
-     * Muestra la ventana de huella del sistema (BiometricPrompt). Si el usuario se
-     * autentica, entra con las credenciales guardadas cifradas en el último inicio de sesión.
-     */
+    /** Muestra la ventana de la huella y si es correcta entra a la app */
     private fun showBiometricPrompt() {
         val authenticators = BIOMETRIC_STRONG or BIOMETRIC_WEAK
         val manager = BiometricManager.from(this)
@@ -119,12 +109,12 @@ class LoginActivity : AppCompatActivity() {
 
         val prompt = BiometricPrompt(this, ContextCompat.getMainExecutor(this),
             object : BiometricPrompt.AuthenticationCallback() {
-                /** Huella reconocida: inicia sesión con las credenciales guardadas. */
+                /** La huella es correcta entonces entra con los datos guardados */
                 override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                     runLogin { AuthRepository.login(saved.first, saved.second) }
                 }
 
-                /** Huella no reconocida: avisa al usuario para que lo intente de nuevo. */
+                /** La huella no coincide y se le avisa al usuario */
                 override fun onAuthenticationFailed() {
                     toastLong(getString(R.string.biometric_failed))
                 }
@@ -139,7 +129,7 @@ class LoginActivity : AppCompatActivity() {
         prompt.authenticate(info)
     }
 
-    /** Ejecuta un inicio de sesión mostrando "cargando" y, si funciona, abre el panel del rol. */
+    /** Hace el inicio de sesión y abre el panel según el rol */
     private fun runLogin(action: suspend () -> User) {
         setLoading(true)
         launchUi {
@@ -153,7 +143,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    /** Desactiva los botones y cambia el texto mientras se inicia sesión. */
+    /** Bloquea los botones mientras carga */
     private fun setLoading(loading: Boolean) {
         binding.btnLogin.isEnabled = !loading
         binding.btnGoogle.isEnabled = !loading

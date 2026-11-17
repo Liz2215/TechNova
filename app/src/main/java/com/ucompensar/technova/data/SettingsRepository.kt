@@ -2,11 +2,11 @@ package com.ucompensar.technova.data
 
 import kotlinx.coroutines.tasks.await
 
-/** Lectura y guardado de la configuración general de la tienda (documento settings/general). */
+/** Aquí se leen y guardan los ajustes de la tienda */
 object SettingsRepository {
     private val doc get() = Db.store.collection(Db.SETTINGS).document("general")
 
-    /** Lee la configuración; si aún no existe devuelve los valores por defecto. */
+    /** Trae los ajustes guardados */
     @Suppress("UNCHECKED_CAST")
     suspend fun get(): StoreSettings {
         val snap = doc.get().await()
@@ -20,7 +20,7 @@ object SettingsRepository {
         )
     }
 
-    /** Guarda la configuración (solo el administrador tiene permiso en las reglas). */
+    /** Guarda los ajustes */
     suspend fun save(settings: StoreSettings) {
         doc.set(
             mapOf(

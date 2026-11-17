@@ -25,11 +25,7 @@ import com.ucompensar.technova.ui.common.toast
 import com.ucompensar.technova.ui.common.toastLong
 import java.util.Locale
 
-/**
- * Perfil del comprador: historial de pedidos, dirección de entrega (con GPS),
- * PQR (Ley 1480 de 2011), aviso de privacidad (Ley 1581 de 2012), eliminación
- * de la cuenta (Decreto 1377 de 2013) y cierre de sesión.
- */
+/** Perfil del comprador con sus pedidos dirección PQR y opción de borrar la cuenta */
 class BuyerProfileFragment : Fragment() {
     private var _binding: FragmentBuyerProfileBinding? = null
     private val binding get() = _binding!!
@@ -37,18 +33,18 @@ class BuyerProfileFragment : Fragment() {
     private var latitude = 0.0
     private var longitude = 0.0
 
-    /** Pide el permiso de ubicación para llenar la dirección con el GPS. */
+    /** Pide permiso de ubicación para llenar la dirección */
     private val locationPermission = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->
         if (result.values.any { it }) captureLocation() else context?.toastLong(getString(R.string.msg_location_denied))
     }
 
-    /** Crea la vista del fragment a partir de su layout (ViewBinding). */
+    /** Carga el diseño de esta pantalla */
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, state: Bundle?): View {
         _binding = FragmentBuyerProfileBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    /** Muestra los datos del usuario y conecta cada opción del perfil. */
+    /** Muestra los datos del usuario y conecta las opciones */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.tvUserName.text = Session.current?.name.orEmpty()
         binding.tvUserEmail.text = Session.current?.email.orEmpty()
@@ -67,7 +63,7 @@ class BuyerProfileFragment : Fragment() {
         binding.btnLogout.setOnClickListener { requireActivity().logout() }
     }
 
-    /** Diálogo para ver y editar la dirección de entrega, con opción de usar el GPS. */
+    /** Abre una ventana para cambiar la dirección de entrega */
     private fun showAddressDialog() {
         val user = Session.current ?: return
         val dialogBinding = DialogAddressBinding.inflate(layoutInflater)
@@ -98,7 +94,7 @@ class BuyerProfileFragment : Fragment() {
             .show()
     }
 
-    /** Toma la ubicación actual y la escribe en el diálogo de dirección. */
+    /** Saca la ubicación con el GPS y la pone en la ventana */
     private fun captureLocation() {
         val dialogBinding = addressDialog ?: return
         dialogBinding.btnLocation.isEnabled = false
@@ -118,7 +114,7 @@ class BuyerProfileFragment : Fragment() {
         }
     }
 
-    /** Muestra las coordenadas capturadas debajo del botón de ubicación. */
+    /** Muestra las coordenadas que se encontraron */
     private fun showCoordinates() {
         val dialogBinding = addressDialog ?: return
         if (latitude == 0.0 && longitude == 0.0) return
@@ -128,7 +124,7 @@ class BuyerProfileFragment : Fragment() {
         )
     }
 
-    /** Formulario para radicar una petición, queja o reclamo; se guarda en Firestore. */
+    /** Abre el formulario para mandar una PQR */
     private fun showPqrDialog() {
         val dialogBinding = DialogPqrBinding.inflate(layoutInflater)
         val types = resources.getStringArray(R.array.pqr_types)
@@ -153,7 +149,7 @@ class BuyerProfileFragment : Fragment() {
             .show()
     }
 
-    /** Pide confirmación y elimina la cuenta, el perfil y el carrito del usuario. */
+    /** Pregunta si de verdad quiere borrar la cuenta y la borra */
     private fun confirmDelete() {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(R.string.profile_delete)
@@ -170,7 +166,7 @@ class BuyerProfileFragment : Fragment() {
             .show()
     }
 
-    /** Libera la referencia a la vista para evitar fugas de memoria. */
+    /** Limpia la vista cuando se cierra la pantalla */
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

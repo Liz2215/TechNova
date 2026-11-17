@@ -9,7 +9,7 @@ import com.ucompensar.technova.ui.auth.LoginActivity
 import com.ucompensar.technova.ui.buyer.BuyerActivity
 import com.ucompensar.technova.ui.seller.SellerActivity
 
-/** Cierra la sesión en Firebase y vuelve a la pantalla de inicio de sesión borrando el historial. */
+/** Cierra la sesión y vuelve al login */
 fun Activity.logout() {
     AuthRepository.logout()
     val intent = Intent(this, LoginActivity::class.java)
@@ -18,7 +18,7 @@ fun Activity.logout() {
     finish()
 }
 
-/** Abre el panel que corresponde al rol del usuario (comprador, vendedor o administrador). */
+/** Abre el panel que le toca al usuario según su rol */
 fun Activity.openPanelFor(role: Role) {
     val destination = when (role) {
         Role.SELLER -> SellerActivity::class.java

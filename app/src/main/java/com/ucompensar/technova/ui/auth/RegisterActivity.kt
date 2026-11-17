@@ -14,15 +14,11 @@ import com.ucompensar.technova.ui.common.openPanelFor
 import com.ucompensar.technova.ui.common.toast
 import com.ucompensar.technova.ui.common.toastLong
 
-/**
- * Registro de cuentas nuevas como Comprador o Vendedor. Crea el usuario en Firebase
- * Authentication y su perfil en Firestore, y exige aceptar el tratamiento de datos
- * (Ley 1581 de 2012) y los términos (Ley 527 de 1999).
- */
+/** Pantalla para crear una cuenta nueva de comprador o vendedor */
 class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding
 
-    /** Prepara la pantalla y el botón de crear cuenta. */
+    /** Conecta los botones de la pantalla */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
@@ -32,7 +28,7 @@ class RegisterActivity : AppCompatActivity() {
         binding.btnRegister.setOnClickListener { if (validate()) register() }
     }
 
-    /** Revisa los campos obligatorios, el formato del correo, la contraseña y las autorizaciones. */
+    /** Revisa que todos los datos estén bien y que acepte los términos */
     private fun validate(): Boolean {
         val required = getString(R.string.err_required)
         binding.tilName.error = if (binding.etName.text.isNullOrBlank()) required else null
@@ -50,7 +46,7 @@ class RegisterActivity : AppCompatActivity() {
         return fieldsOk && accepted
     }
 
-    /** Crea la cuenta con el rol elegido y entra directamente a su panel. */
+    /** Esta función crea la cuenta y abre el panel del usuario */
     private fun register() {
         val name = binding.etName.text.toString().trim()
         val email = binding.etEmail.text.toString().trim()

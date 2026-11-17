@@ -6,33 +6,30 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
-/**
- * CRUD de productos en la colección "products" de Firestore.
- * El vendedor gestiona solo sus productos; el administrador gestiona todos.
- */
+/** Aquí se manejan los productos que se guardan en Firestore */
 object ProductRepository {
     private val products get() = Db.store.collection(Db.PRODUCTS)
 
-    /** Devuelve todos los productos del catálogo ordenados por nombre. */
+    /** Trae todos los productos */
     suspend fun getAll(): List<Product> =
         products.get().await().documents.map { Db.toProduct(it) }.sortedBy { it.name.lowercase() }
 
-    /** Devuelve solo los productos publicados por un vendedor. */
+    /** Trae los productos de un vendedor */
     suspend fun getBySeller(sellerId: String): List<Product> =
         products.whereEqualTo("sellerId", sellerId).get().await()
             .documents.map { Db.toProduct(it) }.sortedBy { it.name.lowercase() }
 
-    /** Productos que puede gestionar el usuario actual: todos si es admin, los suyos si es vendedor. */
+    /** Trae los productos que el usuario puede manejar según su rol */
     suspend fun getManageable(): List<Product> =
         if (Session.isAdmin) getAll() else getBySeller(Db.uid.orEmpty())
 
-    /** Busca un producto por su id; devuelve null si no existe. */
+    /** Busca un producto por su id */
     suspend fun get(id: String): Product? {
         val doc = products.document(id).get().await()
         return if (doc.exists()) Db.toProduct(doc) else null
     }
 
-    /** Crea el producto si no tiene id o lo actualiza si ya existe. */
+    /** Guarda un producto nuevo o los cambios de uno que ya existe */
     suspend fun save(product: Product): Product {
         return if (product.id.isEmpty()) {
             val ref = products.add(Db.fromProduct(product)).await()
@@ -43,17 +40,12 @@ object ProductRepository {
         }
     }
 
-    /** Elimina un producto del catálogo. */
+    /** Borra un producto */
     suspend fun delete(id: String) {
         products.document(id).delete().await()
     }
 
-    /**
-     * Si el catálogo está vacío, sube los productos de ejemplo con sus fotos
-     * (comprimidas en Base64) a nombre del usuario actual. Solo lo hace un admin o vendedor.
-     *
-     * @return cantidad de productos creados (0 si el catálogo ya tenía datos).
-     */
+    /** Si no hay productos sube los de ejemplo */
     suspend fun seedIfEmpty(context: Context): Int {
         if (Session.role == Role.BUYER) return 0
         if (!products.limit(1).get().await().isEmpty) return 0

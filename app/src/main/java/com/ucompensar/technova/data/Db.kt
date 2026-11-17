@@ -4,13 +4,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 
-/**
- * Punto único de acceso a Firebase (Authentication y Cloud Firestore) y conversión
- * entre los documentos de Firestore y los modelos de la app.
- *
- * La conversión se hace a mano (y no con toObject) para que funcione igual
- * cuando R8 ofusca el código en la versión release.
- */
+/** Conexión con Firebase y funciones para pasar los datos de Firestore a la app */
 object Db {
     const val USERS = "users"
     const val PRODUCTS = "products"
@@ -22,10 +16,10 @@ object Db {
     val auth: FirebaseAuth get() = FirebaseAuth.getInstance()
     val store: FirebaseFirestore get() = FirebaseFirestore.getInstance()
 
-    /** Uid del usuario con sesión iniciada o null si no hay sesión. */
+    /** Id del usuario que inició sesión */
     val uid: String? get() = auth.currentUser?.uid
 
-    /** Convierte un documento de la colección users en un [User]. */
+    /** Pasa un documento de Firestore a usuario */
     fun toUser(doc: DocumentSnapshot) = User(
         id = doc.id,
         name = doc.getString("name").orEmpty(),
@@ -39,7 +33,7 @@ object Db {
         longitude = doc.getDouble("longitude") ?: 0.0
     )
 
-    /** Convierte un [User] en el mapa de campos que se guarda en Firestore. */
+    /** Pasa un usuario a datos de Firestore */
     fun fromUser(user: User): Map<String, Any> = mapOf(
         "name" to user.name,
         "email" to user.email,
@@ -52,7 +46,7 @@ object Db {
         "longitude" to user.longitude
     )
 
-    /** Convierte un documento de la colección products en un [Product]. */
+    /** Pasa un documento de Firestore a producto */
     fun toProduct(doc: DocumentSnapshot) = Product(
         id = doc.id,
         sku = doc.getString("sku").orEmpty(),
@@ -67,7 +61,7 @@ object Db {
         sellerName = doc.getString("sellerName").orEmpty()
     )
 
-    /** Convierte un [Product] en el mapa de campos que se guarda en Firestore. */
+    /** Pasa un producto a datos de Firestore */
     fun fromProduct(product: Product): Map<String, Any> = mapOf(
         "sku" to product.sku,
         "name" to product.name,
@@ -81,7 +75,7 @@ object Db {
         "sellerName" to product.sellerName
     )
 
-    /** Convierte un documento de la colección orders en un [Order], incluidas sus líneas. */
+    /** Pasa un documento de Firestore a pedido */
     @Suppress("UNCHECKED_CAST")
     fun toOrder(doc: DocumentSnapshot): Order {
         val rawItems = doc.get("items") as? List<Map<String, Any?>> ?: emptyList()
@@ -118,7 +112,7 @@ object Db {
         )
     }
 
-    /** Convierte un [Order] en el mapa de campos que se guarda en Firestore. */
+    /** Pasa un pedido a datos de Firestore */
     fun fromOrder(order: Order): Map<String, Any> = mapOf(
         "number" to order.number,
         "buyerId" to order.buyerId,

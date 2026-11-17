@@ -2,14 +2,11 @@ package com.ucompensar.technova.data
 
 import com.ucompensar.technova.R
 
-/**
- * Datos fijos del catálogo: categorías con su ícono, costo de envío por defecto
- * y los productos de ejemplo que se cargan una sola vez cuando la base de datos está vacía.
- */
+/** Datos fijos de la tienda como las categorías y los productos de ejemplo */
 object Catalog {
     const val DEFAULT_SHIPPING = 12_000L
 
-    /** Nombre de cada categoría con el ícono que la representa. */
+    /** Cada categoría con su ícono */
     private val categoryIcons = linkedMapOf(
         "Smartwatches" to R.drawable.ic_watch,
         "Audio" to R.drawable.ic_headphones,
@@ -18,15 +15,15 @@ object Catalog {
         "Gaming" to R.drawable.ic_gamepad
     )
 
-    /** Construye la lista de categorías contando cuántos productos tiene cada una. */
+    /** Arma las categorías y cuenta cuántos productos tiene cada una */
     fun categories(products: List<Product>): List<Category> = categoryIcons.map { (name, icon) ->
         Category(name, icon, products.count { it.category == name })
     }
 
-    /** Producto de ejemplo con la foto local que se sube a Firestore al sembrar la base de datos. */
+    /** Producto de ejemplo con su foto */
     data class Seed(val product: Product, val imageRes: Int)
 
-    /** Catálogo inicial de la tienda (los mismos productos de la entrega del frontend). */
+    /** Productos de ejemplo que se suben la primera vez */
     val seeds = listOf(
         Seed(Product(sku = "SW-PRO-01", name = "Smartwatch Nova Pro", category = "Smartwatches", price = 389_900, stock = 18, rating = 4.7,
             description = "Pantalla AMOLED de 1.9\", GPS, monitor de ritmo cardíaco y batería de 7 días."), R.drawable.prod_smartwatch_pro),

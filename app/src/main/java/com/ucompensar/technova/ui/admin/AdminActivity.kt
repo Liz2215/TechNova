@@ -7,11 +7,11 @@ import com.ucompensar.technova.R
 import com.ucompensar.technova.databinding.ActivityPanelBinding
 import com.ucompensar.technova.ui.common.logout
 
-/** Panel del administrador con navegación inferior: Inicio, Usuarios, Productos, Reportes y Ajustes. */
+/** Esta es la pantalla principal del administrador con su menú de abajo */
 class AdminActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPanelBinding
 
-    /** Arma la barra superior (con cerrar sesión) y la navegación inferior. */
+    /** Aquí se arma la barra de arriba y el menú de abajo del administrador */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPanelBinding.inflate(layoutInflater)
@@ -38,7 +38,7 @@ class AdminActivity : AppCompatActivity() {
         if (savedInstanceState == null) show(AdminDashboardFragment())
     }
 
-    /** Reemplaza el contenido del panel por el fragment indicado. */
+    /** Cambia la sección que se ve en el panel */
     private fun show(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragmentContainer, fragment)

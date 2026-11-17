@@ -2,33 +2,24 @@ package com.ucompensar.technova.data
 
 import java.util.Calendar
 
-/**
- * Cálculos de ventas a partir de los pedidos reales guardados en Firestore,
- * para los indicadores y gráficos del vendedor y del administrador.
- */
+/** Cálculos de ventas para los gráficos y reportes */
 object SalesStats {
 
-    /** Períodos del reporte de ventas. */
+    /** Periodos del reporte */
     enum class Period { WEEK, MONTH, YEAR }
 
-    /**
-     * Valor vendido en un pedido. Si se indica un vendedor, solo cuenta sus productos;
-     * si no, cuenta el subtotal completo del pedido.
-     */
+    /** Calcula cuánto se vendió en un pedido */
     fun amount(order: Order, sellerId: String? = null): Long =
         if (sellerId == null) order.subtotal
         else order.items.filter { it.sellerId == sellerId }.sumOf { it.price * it.quantity }
 
-    /** Pedidos creados dentro del período actual (esta semana, este mes o este año). */
+    /** Trae los pedidos del periodo elegido */
     fun inPeriod(orders: List<Order>, period: Period): List<Order> {
         val start = periodStart(period)
         return orders.filter { it.createdAt >= start }
     }
 
-    /**
-     * Ventas del período repartidas en barras (en miles de pesos):
-     * semana = 7 días (lunes a domingo), mes = 4 semanas, año = 4 trimestres.
-     */
+    /** Reparte las ventas en las barras del gráfico */
     fun chart(orders: List<Order>, period: Period, sellerId: String? = null): List<Int> {
         val buckets = LongArray(if (period == Period.WEEK) 7 else 4)
         val cal = Calendar.getInstance()
@@ -44,13 +35,13 @@ object SalesStats {
         return buckets.map { (it / 1000).toInt() }
     }
 
-    /** Productos más vendidos (nombre y unidades) ordenados de mayor a menor. */
+    /** Saca los productos más vendidos */
     fun topProducts(orders: List<Order>, limit: Int = 5): List<Pair<String, Int>> =
         orders.flatMap { it.items }.groupBy { it.name }
             .map { (name, items) -> name to items.sumOf { it.quantity } }
             .sortedByDescending { it.second }.take(limit)
 
-    /** Porcentaje de las ventas que corresponde a cada categoría. */
+    /** Calcula el porcentaje de ventas de cada categoría */
     fun salesByCategory(orders: List<Order>): List<Pair<String, Int>> {
         val byCategory = orders.flatMap { it.items }.groupBy { it.category.ifEmpty { "Otros" } }
             .mapValues { (_, items) -> items.sumOf { it.price * it.quantity } }
@@ -59,7 +50,7 @@ object SalesStats {
             .sortedByDescending { it.second }
     }
 
-    /** Fecha (en milisegundos) en que empieza el período actual. */
+    /** Calcula desde qué fecha empieza el periodo */
     private fun periodStart(period: Period): Long {
         val cal = Calendar.getInstance().apply {
             set(Calendar.HOUR_OF_DAY, 0); set(Calendar.MINUTE, 0); set(Calendar.SECOND, 0); set(Calendar.MILLISECOND, 0)

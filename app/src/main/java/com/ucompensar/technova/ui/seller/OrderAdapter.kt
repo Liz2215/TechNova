@@ -12,12 +12,7 @@ import com.ucompensar.technova.data.OrderStatus
 import com.ucompensar.technova.databinding.ItemOrderBinding
 import com.ucompensar.technova.ui.common.toCop
 
-/**
- * Lista de pedidos con número, cliente, cantidad de artículos, total y estado.
- * Para el vendedor muestra el botón "Cambiar estado"; al tocar un pedido se ven sus detalles.
- *
- * @param showActions si es true, muestra el botón para cambiar el estado.
- */
+/** Adaptador que muestra los pedidos en una lista y deja cambiar su estado */
 class OrderAdapter(
     private val showActions: Boolean,
     private val onStatusSelected: (Order, OrderStatus) -> Unit = { _, _ -> },
@@ -25,23 +20,23 @@ class OrderAdapter(
 ) : RecyclerView.Adapter<OrderAdapter.Holder>() {
     private var items: List<Order> = emptyList()
 
-    /** Reemplaza los pedidos mostrados. */
+    /** Cambia los pedidos que se muestran */
     fun submit(list: List<Order>) {
         items = list
         notifyDataSetChanged()
     }
 
-    /** Contenedor de las vistas de una fila de la lista. */
+    /** Guarda las vistas de una fila */
     class Holder(val binding: ItemOrderBinding) : RecyclerView.ViewHolder(binding.root)
 
-    /** Crea la vista de una fila nueva. */
+    /** Crea una fila nueva */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         Holder(ItemOrderBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
-    /** Cantidad de filas de la lista. */
+    /** Dice cuántas filas hay */
     override fun getItemCount() = items.size
 
-    /** Llena la tarjeta del pedido y, si aplica, el menú para cambiar su estado. */
+    /** Pone los datos del pedido en su tarjeta */
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val order = items[position]
         val ctx = holder.itemView.context
@@ -70,7 +65,7 @@ class OrderAdapter(
         }
     }
 
-    /** Pinta la etiqueta del estado con su color (pendiente, enviado o entregado). */
+    /** Le pone el color al estado del pedido */
     private fun bindStatus(binding: ItemOrderBinding, status: OrderStatus) {
         val ctx = binding.root.context
         val (text, color, background) = when (status) {
@@ -84,7 +79,7 @@ class OrderAdapter(
     }
 }
 
-/** Texto (recurso) que corresponde a cada estado del pedido. */
+/** Devuelve el nombre del estado para mostrarlo */
 fun OrderStatus.label(): Int = when (this) {
     OrderStatus.PENDING -> R.string.status_pending
     OrderStatus.SHIPPED -> R.string.status_shipped

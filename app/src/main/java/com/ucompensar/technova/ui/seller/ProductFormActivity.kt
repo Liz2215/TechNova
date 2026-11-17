@@ -25,29 +25,25 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
 
-/**
- * Formulario para crear o editar un producto (lo usan el vendedor y el administrador).
- * La foto se toma con la cámara o se elige de la galería, se comprime y se guarda
- * junto con los demás datos en Firestore.
- */
+/** Formulario para crear o editar un producto con su foto */
 class ProductFormActivity : AppCompatActivity() {
     private lateinit var binding: ActivityProductFormBinding
     private var product: Product? = null
     private var imageBase64 = ""
     private var cameraUri: Uri? = null
 
-    /** Selector de fotos de la galería (no necesita permisos). */
+    /** Abre la galería para escoger una foto */
     private val galleryLauncher = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
         uri?.let { loadImage(it) }
     }
 
-    /** Abre la cámara y guarda la foto en un archivo temporal de la app. */
+    /** Abre la cámara para tomar la foto */
     private val cameraLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { saved ->
         val uri = cameraUri
         if (saved && uri != null) loadImage(uri)
     }
 
-    /** Prepara el formulario y, si se recibe un id, carga el producto para editarlo. */
+    /** Esta función es para crear o editar un producto y si llega un id carga sus datos */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProductFormBinding.inflate(layoutInflater)
@@ -71,7 +67,7 @@ class ProductFormActivity : AppCompatActivity() {
         }
     }
 
-    /** Llena el formulario con los datos del producto que se va a editar. */
+    /** Pone en el formulario los datos del producto que se va a editar */
     private fun fill(p: Product) {
         binding.toolbar.setTitle(R.string.product_form_edit)
         imageBase64 = p.imageBase64
@@ -85,7 +81,7 @@ class ProductFormActivity : AppCompatActivity() {
         binding.etDescription.setText(p.description)
     }
 
-    /** Pregunta si la foto se toma con la cámara o se elige de la galería. */
+    /** Pregunta si la foto se toma con la cámara o se escoge de la galería */
     private fun chooseImageSource() {
         MaterialAlertDialogBuilder(this)
             .setTitle(R.string.btn_upload_image)
@@ -96,7 +92,7 @@ class ProductFormActivity : AppCompatActivity() {
             .show()
     }
 
-    /** Crea un archivo temporal y abre la cámara para tomar la foto del producto. */
+    /** Prepara un archivo y abre la cámara */
     private fun openCamera() {
         val dir = File(cacheDir, "images").apply { mkdirs() }
         val file = File(dir, "producto_${System.currentTimeMillis()}.jpg")
@@ -105,7 +101,7 @@ class ProductFormActivity : AppCompatActivity() {
         runCatching { cameraLauncher.launch(uri) }.onFailure { toastLong(getString(R.string.msg_no_camera)) }
     }
 
-    /** Comprime la foto elegida en segundo plano y la muestra en la vista previa. */
+    /** Achica la foto y la muestra en el recuadro */
     private fun loadImage(uri: Uri) {
         launchUi {
             imageBase64 = withContext(Dispatchers.Default) { ImageUtils.uriToBase64(this@ProductFormActivity, uri) }
@@ -113,7 +109,7 @@ class ProductFormActivity : AppCompatActivity() {
         }
     }
 
-    /** Muestra la foto actual del producto ocupando todo el recuadro. */
+    /** Muestra la foto del producto en el recuadro */
     private fun showPreview() {
         if (imageBase64.isEmpty()) return
         binding.ivPreview.setPadding(0, 0, 0, 0)
@@ -121,7 +117,7 @@ class ProductFormActivity : AppCompatActivity() {
         binding.ivPreview.showProductImage(imageBase64)
     }
 
-    /** Revisa que los campos obligatorios estén llenos y que precio y stock sean números válidos. */
+    /** Revisa que los campos estén llenos y que precio y stock sean números */
     private fun validate(): Boolean {
         val required = getString(R.string.err_required)
         val fields = listOf(
@@ -146,7 +142,7 @@ class ProductFormActivity : AppCompatActivity() {
         return ok
     }
 
-    /** Crea o actualiza el producto en Firestore. */
+    /** Guarda el producto en Firestore */
     private fun save() {
         val current = product
         val me = Session.current

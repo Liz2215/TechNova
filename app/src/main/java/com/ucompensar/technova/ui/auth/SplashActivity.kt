@@ -12,15 +12,12 @@ import com.ucompensar.technova.ui.common.openPanelFor
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-/**
- * Pantalla de bienvenida. Muestra el logo con una animación y, si ya hay una sesión
- * guardada en Firebase, abre directamente el panel del rol del usuario; si no, va al login.
- */
+/** Pantalla de bienvenida que decide si va al login o directo al panel */
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySplashBinding
 
-    /** Inicia la animación del logo y decide a qué pantalla continuar. */
+    /** Hace la animación del logo y revisa si ya hay una sesión abierta */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySplashBinding.inflate(layoutInflater)
@@ -43,7 +40,7 @@ class SplashActivity : AppCompatActivity() {
         }
     }
 
-    /** Abre la pantalla de inicio de sesión y cierra la bienvenida. */
+    /** Abre el login y cierra esta pantalla */
     private fun openLogin() {
         startActivity(Intent(this, LoginActivity::class.java))
         finish()

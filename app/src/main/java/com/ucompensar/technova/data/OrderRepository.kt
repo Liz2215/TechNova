@@ -2,24 +2,17 @@ package com.ucompensar.technova.data
 
 import kotlinx.coroutines.tasks.await
 
-/**
- * Pedidos en la colección "orders" de Firestore: creación al confirmar la compra
- * (descontando el stock), historial del comprador, pedidos del vendedor y del administrador,
- * y cambio de estado.
- */
+/** Aquí se manejan los pedidos que se guardan en Firestore */
 object OrderRepository {
     private val orders get() = Db.store.collection(Db.ORDERS)
 
-    /** Error de negocio con un mensaje claro para el usuario (por ejemplo, sin stock). */
+    /** Error del pedido con un mensaje para el usuario */
     class OrderError(message: String) : Exception(message)
 
-    /** Genera un número de pedido corto y legible a partir de la hora actual. */
+    /** Crea un número corto para el pedido */
     fun newNumber(): String = (System.currentTimeMillis() / 1000 % 1_000_000).toString().padStart(6, '0')
 
-    /**
-     * Revisa en Firestore que cada producto del carrito siga existiendo y tenga stock suficiente.
-     * Se llama antes de enviar al usuario a la pasarela de pagos.
-     */
+    /** Revisa que haya stock de todo antes de pagar */
     suspend fun validateStock(items: List<CartItem>) {
         for (item in items) {
             val current = ProductRepository.get(item.product.id)
@@ -30,11 +23,7 @@ object OrderRepository {
         }
     }
 
-    /**
-     * Crea el pedido dentro de una transacción de Firestore: vuelve a validar el stock,
-     * descuenta las unidades vendidas de cada producto y guarda el pedido. Si algo falla,
-     * no se guarda nada (todo o nada).
-     */
+    /** Esta función crea el pedido y descuenta el stock al mismo tiempo */
     suspend fun place(order: Order, items: List<CartItem>): Order {
         val ref = orders.document()
         val saved = order.copy(id = ref.id)
@@ -56,25 +45,25 @@ object OrderRepository {
         return saved
     }
 
-    /** Historial de pedidos del comprador actual, del más reciente al más antiguo. */
+    /** Trae los pedidos del comprador */
     suspend fun forBuyer(): List<Order> =
         orders.whereEqualTo("buyerId", Db.uid.orEmpty()).get().await()
             .documents.map { Db.toOrder(it) }.sortedByDescending { it.createdAt }
 
-    /** Pedidos que incluyen productos del vendedor indicado. */
+    /** Trae los pedidos que tienen productos del vendedor */
     suspend fun forSeller(sellerId: String): List<Order> =
         orders.whereArrayContains("sellerIds", sellerId).get().await()
             .documents.map { Db.toOrder(it) }.sortedByDescending { it.createdAt }
 
-    /** Todos los pedidos de la tienda (solo administrador). */
+    /** Trae todos los pedidos de la tienda */
     suspend fun all(): List<Order> =
         orders.get().await().documents.map { Db.toOrder(it) }.sortedByDescending { it.createdAt }
 
-    /** Pedidos visibles para el usuario actual según su rol (admin: todos; vendedor: los suyos). */
+    /** Trae los pedidos según el rol del usuario */
     suspend fun forCurrentRole(): List<Order> =
         if (Session.isAdmin) all() else forSeller(Db.uid.orEmpty())
 
-    /** Cambia el estado del pedido (pendiente, enviado o entregado). */
+    /** Cambia el estado del pedido */
     suspend fun updateStatus(order: Order, status: OrderStatus) {
         orders.document(order.id).update(mapOf("status" to status.name, "updatedAt" to System.currentTimeMillis())).await()
         order.status = status

@@ -18,10 +18,7 @@ import com.ucompensar.technova.databinding.ItemUserBinding
 import com.ucompensar.technova.ui.common.launchUi
 import com.ucompensar.technova.ui.common.toast
 
-/**
- * Gestión de cuentas del administrador: lista los usuarios de Firestore con filtro por rol
- * y permite crearlos, editarlos y eliminarlos. Las cuentas de administrador no se pueden eliminar.
- */
+/** Pantalla donde el administrador ve y maneja todas las cuentas de usuario */
 class AdminUsersFragment : Fragment() {
     private var _binding: FragmentAdminUsersBinding? = null
     private val binding get() = _binding!!
@@ -33,13 +30,13 @@ class AdminUsersFragment : Fragment() {
         onDelete = { user -> confirmDelete(user) }
     )
 
-    /** Crea la vista del fragment a partir de su layout (ViewBinding). */
+    /** Carga el diseño de esta pantalla */
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, state: Bundle?): View {
         _binding = FragmentAdminUsersBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    /** Prepara la lista, los filtros por rol y el botón para crear usuarios. */
+    /** Prepara la lista de usuarios con su filtro por rol y el botón para crear */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.rvUsers.adapter = adapter
         binding.chipRole.setOnCheckedStateChangeListener { _, ids ->
@@ -54,13 +51,13 @@ class AdminUsersFragment : Fragment() {
         binding.fabAdd.setOnClickListener { openForm(null) }
     }
 
-    /** Recarga los usuarios al volver del formulario. */
+    /** Vuelve a cargar los usuarios cuando regresamos del formulario */
     override fun onResume() {
         super.onResume()
         refresh()
     }
 
-    /** Lee todos los usuarios de Firestore. */
+    /** Trae todos los usuarios de Firestore */
     private fun refresh() {
         launchUi {
             users = UserRepository.getAll()
@@ -68,19 +65,19 @@ class AdminUsersFragment : Fragment() {
         }
     }
 
-    /** Muestra solo los usuarios del rol elegido en los chips. */
+    /** Muestra solo los usuarios del rol que se eligió */
     private fun applyFilter() {
         adapter.submit(users.filter { filter == null || it.role == filter })
     }
 
-    /** Abre el formulario para crear (id null) o editar un usuario. */
+    /** Abre el formulario para crear un usuario nuevo o editar uno que ya existe */
     private fun openForm(userId: String?) {
         val intent = Intent(requireContext(), UserFormActivity::class.java)
         userId?.let { intent.putExtra(UserFormActivity.EXTRA_ID, it) }
         startActivity(intent)
     }
 
-    /** Pide confirmación y elimina el perfil del usuario en Firestore. */
+    /** Pregunta si de verdad quiere borrar el usuario y lo borra */
     private fun confirmDelete(user: User) {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(getString(R.string.delete_user_confirm, user.name))
@@ -95,36 +92,36 @@ class AdminUsersFragment : Fragment() {
             .show()
     }
 
-    /** Libera la referencia a la vista para evitar fugas de memoria. */
+    /** Limpia la vista cuando se cierra la pantalla */
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
-    /** Filas de usuarios con nombre, correo, rol, estado y botones de editar y eliminar. */
+    /** Adaptador que pinta cada usuario en la lista */
     class UserAdapter(
         private val onEdit: (User) -> Unit,
         private val onDelete: (User) -> Unit
     ) : RecyclerView.Adapter<UserAdapter.Holder>() {
         private var items: List<User> = emptyList()
 
-        /** Reemplaza los usuarios mostrados. */
+        /** Cambia los usuarios que se muestran */
         fun submit(list: List<User>) {
             items = list
             notifyDataSetChanged()
         }
 
-        /** Contenedor de las vistas de una fila de la lista. */
+        /** Guarda las vistas de una fila */
         class Holder(val binding: ItemUserBinding) : RecyclerView.ViewHolder(binding.root)
 
-        /** Crea la vista de una fila nueva. */
+        /** Crea una fila nueva */
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
             Holder(ItemUserBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
-        /** Cantidad de filas de la lista. */
+        /** Dice cuántas filas hay */
         override fun getItemCount() = items.size
 
-        /** Llena la fila con los datos del usuario y su estado (activo o suspendido). */
+        /** Pone los datos del usuario en su fila */
         override fun onBindViewHolder(holder: Holder, position: Int) {
             val user = items[position]
             val ctx = holder.itemView.context
@@ -149,7 +146,7 @@ class AdminUsersFragment : Fragment() {
     }
 }
 
-/** Texto (recurso) que corresponde a cada rol. */
+/** Devuelve el nombre del rol para mostrarlo */
 fun roleLabel(role: Role): Int = when (role) {
     Role.BUYER -> R.string.role_buyer
     Role.SELLER -> R.string.role_seller
