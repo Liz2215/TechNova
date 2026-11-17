@@ -9,7 +9,7 @@ import java.net.URL
 /** Conexión con la pasarela de pagos ePayco en modo de pruebas */
 object EpaycoGateway {
     /** Llave pública de la cuenta de ePayco */
-    const val PUBLIC_KEY = "45b960805ced5c27ce34b1600b4b9f54"
+    const val PUBLIC_KEY = "1aae404a7db669536c6fd49ed06facad"
 
     /** Modo de pruebas para no cobrar dinero real */
     const val TEST_MODE = true
